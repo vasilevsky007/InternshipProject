@@ -10,26 +10,38 @@ import Foundation
 class Project: Equatable {
     var name = ""
     var descriprion = ""
-    private(set) var tasks: [Task] = []
+    private(set) var issues: [Issue] = []
     
     
     static func == (lhs: Project, rhs: Project) -> Bool {
         lhs.name == rhs.name &&
         lhs.descriprion == rhs.descriprion &&
-        lhs.tasks == rhs.tasks
+        lhs.issues == rhs.issues
     }
     
-    func addTask(_ task: Task, settings: Settings) throws {
-        if tasks.count < settings.maxEntries {
-            tasks.append(task)
+    func addIssue(_ issue: Issue, settings: Settings) throws {
+        if issues.count < settings.maxEntries {
+            issues.append(issue)
         } else {
             throw BusinessLogicErrors.MaxNumOfEtriesExceeded
         }
     }
     
-    func removeTask(_ removingTask: Task) {
-        tasks.removeAll { task in
-            task.id == removingTask.id
+    func removeIssue(_ removingIssue: Issue) {
+        issues.removeAll { issue in
+            issue.id == removingIssue.id
+        }
+    }
+    
+    func removeAllIssues() {
+        issues = []
+    }
+    
+    func removeEmployeefromAllIssues(_ employee: Employee) {
+        for i in issues.indices {
+            if issues[i].employee == employee {
+                issues[i].deleteEmployee()
+            }
         }
     }
 }

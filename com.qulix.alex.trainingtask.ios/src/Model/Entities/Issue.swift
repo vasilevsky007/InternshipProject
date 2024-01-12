@@ -1,5 +1,5 @@
 //
-//  Task.swift
+//  Issue.swift
 //  trainingtask
 //
 //  Created by Alex on 11.01.24.
@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Task: Equatable {
+struct Issue: Equatable {
     enum Status {
         case notStarted
         case inProgress
@@ -48,12 +48,16 @@ struct Task: Equatable {
     }
     
     mutating func changeProject(to newProject: Project, settings: Settings) throws {
-        try newProject.addTask(self, settings: settings)
-        project?.removeTask(self)
+        try newProject.addIssue(self, settings: settings)
+        project?.removeIssue(self)
         self.project = newProject
     }
     
-    mutating func changeEmployee (to newEmployee: Employee) {
+    mutating func changeEmployee(to newEmployee: Employee) {
         self.employee = newEmployee
+    }
+    
+    mutating func deleteEmployee() {
+        self.employee = nil
     }
 }
