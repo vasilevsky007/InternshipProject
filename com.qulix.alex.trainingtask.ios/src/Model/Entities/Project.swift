@@ -11,7 +11,7 @@ class Project: Equatable {
     let id: UUID
     var name: String
     var descriprion: String
-    private(set) var issues: [Issue]
+    var issues: [Issue]
     
     init() {
         id = UUID()
