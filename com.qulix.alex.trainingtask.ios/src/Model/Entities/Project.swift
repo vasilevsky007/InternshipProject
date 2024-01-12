@@ -8,11 +8,31 @@
 import Foundation
 
 class Project: Equatable {
-    let id = UUID()
-    var name = ""
-    var descriprion = ""
-    private(set) var issues: [Issue] = []
+    let id: UUID
+    var name: String
+    var descriprion: String
+    private(set) var issues: [Issue]
     
+    init() {
+        id = UUID()
+        name = ""
+        descriprion = ""
+        issues = []
+    }
+    
+    init(_ project: Project, newEmployees: [Employee]) {
+        self.id = project.id
+        self.name = project.name
+        self.descriprion = project.descriprion
+        self.issues = []
+        for issue in project.issues {
+            self.issues.append(Issue(issue, newEmployees: newEmployees))
+        }
+        for i in self.issues.indices {
+            issues[i].project = self
+        }
+        
+    }
     
     static func == (lhs: Project, rhs: Project) -> Bool {
         lhs.id == rhs.id
