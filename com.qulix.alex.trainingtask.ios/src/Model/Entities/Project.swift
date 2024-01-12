@@ -8,15 +8,14 @@
 import Foundation
 
 class Project: Equatable {
+    let id = UUID()
     var name = ""
     var descriprion = ""
     private(set) var issues: [Issue] = []
     
     
     static func == (lhs: Project, rhs: Project) -> Bool {
-        lhs.name == rhs.name &&
-        lhs.descriprion == rhs.descriprion &&
-        lhs.issues == rhs.issues
+        lhs.id == rhs.id
     }
     
     func addIssue(_ issue: Issue, settings: Settings) throws {
@@ -29,7 +28,7 @@ class Project: Equatable {
     
     func removeIssue(_ removingIssue: Issue) {
         issues.removeAll { issue in
-            issue.id == removingIssue.id
+            issue == removingIssue
         }
     }
     

@@ -8,6 +8,7 @@
 import Foundation
 
 class Employee: Equatable {
+    let id = UUID()
     var name = ""
     var surname = ""
     var middleName = ""
@@ -15,9 +16,6 @@ class Employee: Equatable {
     
     
     static func == (lhs: Employee, rhs: Employee) -> Bool {
-        lhs.name == rhs.name &&
-        lhs.surname == rhs.surname &&
-        lhs.middleName == rhs.middleName &&
-        lhs.position == rhs.position
+        lhs.id == rhs.id
     }
 }

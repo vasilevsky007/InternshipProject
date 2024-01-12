@@ -9,7 +9,7 @@ import Foundation
 
 actor EmployeeStore {
     private var projects: ProjectStore
-    private(set) var items: [Employee] = []
+    private(set) var items: [Employee]
     
     init(projects: ProjectStore) {
         self.projects = projects
@@ -25,7 +25,11 @@ actor EmployeeStore {
         }
     }
     
-    func add(employee: Employee) {
-        items.append(employee)
+    func add(employee: Employee, settings: Settings) throws {
+        if items.count < settings.maxEntries {
+            items.append(employee)
+        } else {
+            throw BusinessLogicErrors.MaxNumOfEtriesExceeded
+        }
     }
 }

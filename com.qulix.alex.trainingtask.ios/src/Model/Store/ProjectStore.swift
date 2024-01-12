@@ -17,8 +17,12 @@ actor ProjectStore {
         removingProject.removeAllIssues()
     }
     
-    func add(project: Project) {
-        items.append(project)
+    func add(project: Project, settings: Settings) throws {
+        if items.count < settings.maxEntries {
+            items.append(project)
+        } else {
+            throw BusinessLogicErrors.MaxNumOfEtriesExceeded
+        }
     }
     
     func removeEmployeeFromAllProjects(_ employee: Employee) {
