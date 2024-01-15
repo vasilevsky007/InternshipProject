@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="QYx-8n-8Xs">
+    <device id="ipad7_9" orientation="landscape" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Главное Меню-->
+        <scene sceneID="tne-QT-ifu">
+            <objects>
+                <viewController id="BYZ-38-t0r" customClass="MainMenuController" customModule="trainingtask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
+                        <rect key="frame" x="0.0" y="0.0" width="1133" height="744"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="aWp-Eo-PZ2">
+                                <rect key="frame" x="506.5" y="318" width="120" height="162"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="bXD-Ww-e30">
+                                        <rect key="frame" x="0.0" y="0.0" width="120" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Проекты"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="7s1-3a-hX9">
+                                        <rect key="frame" x="0.0" y="42.5" width="120" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Задачи"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uWS-l7-f2j">
+                                        <rect key="frame" x="0.0" y="85" width="120" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Сотрудники"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lbd-HV-avh">
+                                        <rect key="frame" x="0.0" y="127.5" width="120" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Настройки"/>
+                                        <connections>
+                                            <segue destination="iMy-zZ-Ggr" kind="show" identifier="OpenSettings" id="Uhz-CI-NeR"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="aWp-Eo-PZ2" firstAttribute="centerY" secondItem="6Tk-OE-BBY" secondAttribute="centerY" id="MlO-8d-EeV"/>
+                            <constraint firstItem="aWp-Eo-PZ2" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="wwg-eR-uJR"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Главное Меню" id="Jym-Pe-iSz"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1492" y="502"/>
+        </scene>
+        <!--Настройки-->
+        <scene sceneID="wC7-y1-kig">
+            <objects>
+                <viewController id="iMy-zZ-Ggr" customClass="SettingsController" customModule="trainingtask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="YXC-3z-jeO">
+                        <rect key="frame" x="0.0" y="0.0" width="1133" height="744"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="URL сервера" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M2I-Ns-bqY">
+                                <rect key="frame" x="16" y="90" width="1101" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="https://someurl.com" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="cpN-qN-Eey">
+                                <rect key="frame" x="16" y="112.5" width="1101" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Максимальное количество записей в списках" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Odz-4b-1aR">
+                                <rect key="frame" x="16" y="162.5" width="1101" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="12345" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="5Wq-np-Oz0">
+                                <rect key="frame" x="16" y="185" width="1101" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Количество дней по умолчанию между начальной и конечной датами в задаче" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="M1a-Tm-27y">
+                                <rect key="frame" x="16" y="235" width="1101" height="14.5"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="5" borderStyle="roundedRect" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="eeQ-Z3-i9e">
+                                <rect key="frame" x="16" y="257.5" width="1101" height="34"/>
+                                <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                                <textInputTraits key="textInputTraits"/>
+                            </textField>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Sbk-Vn-Pqt">
+                                <rect key="frame" x="16" y="673.5" width="1101" height="34.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-nb-Fcy">
+                                        <rect key="frame" x="0.0" y="0.0" width="113.5" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Сохранить"/>
+                                        <connections>
+                                            <action selector="saveTapped:" destination="iMy-zZ-Ggr" eventType="touchUpInside" id="dOd-qp-a58"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="cancel" translatesAutoresizingMaskIntoConstraints="NO" id="3E0-23-zPZ">
+                                        <rect key="frame" x="1015" y="0.0" width="86" height="34.5"/>
+                                        <color key="backgroundColor" systemColor="separatorColor"/>
+                                        <color key="tintColor" systemColor="systemRedColor"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" title="Отмена"/>
+                                        <connections>
+                                            <action selector="cancelTapped:" destination="iMy-zZ-Ggr" eventType="touchUpInside" id="gGP-9n-wio"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="sge-QU-5d5"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="Sbk-Vn-Pqt" firstAttribute="top" relation="greaterThanOrEqual" secondItem="eeQ-Z3-i9e" secondAttribute="bottom" constant="16" id="1kG-8p-Alg"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="5Wq-np-Oz0" secondAttribute="trailing" constant="16" id="8BT-WU-Fnw"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="bottom" secondItem="Sbk-Vn-Pqt" secondAttribute="bottom" constant="16" id="GTh-DG-Vt0"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="Sbk-Vn-Pqt" secondAttribute="trailing" constant="16" id="Gsa-Hg-Z1y"/>
+                            <constraint firstItem="M1a-Tm-27y" firstAttribute="top" secondItem="5Wq-np-Oz0" secondAttribute="bottom" constant="16" id="IWC-c8-ZRF"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="M2I-Ns-bqY" secondAttribute="trailing" constant="16" id="JPO-cf-5t3"/>
+                            <constraint firstItem="cpN-qN-Eey" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="Jwu-XJ-DNh"/>
+                            <constraint firstItem="Odz-4b-1aR" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="Muk-aR-hWY"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="eeQ-Z3-i9e" secondAttribute="trailing" constant="16" id="N76-R7-YCZ"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="M1a-Tm-27y" secondAttribute="trailing" constant="16" id="Qhn-2R-IXM"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="Odz-4b-1aR" secondAttribute="trailing" constant="16" id="WUb-dr-Flw"/>
+                            <constraint firstItem="M2I-Ns-bqY" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="YHz-nZ-sNd"/>
+                            <constraint firstItem="eeQ-Z3-i9e" firstAttribute="top" secondItem="M1a-Tm-27y" secondAttribute="bottom" constant="8" id="aZN-zO-zSo"/>
+                            <constraint firstItem="Odz-4b-1aR" firstAttribute="top" secondItem="cpN-qN-Eey" secondAttribute="bottom" constant="16" id="eHz-HN-hMR"/>
+                            <constraint firstItem="M1a-Tm-27y" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="gpY-N4-BSI"/>
+                            <constraint firstItem="5Wq-np-Oz0" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="l3b-8l-wMT"/>
+                            <constraint firstItem="Sbk-Vn-Pqt" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="oId-ge-ufG"/>
+                            <constraint firstItem="sge-QU-5d5" firstAttribute="trailing" secondItem="cpN-qN-Eey" secondAttribute="trailing" constant="16" id="puo-5Z-ORw"/>
+                            <constraint firstItem="eeQ-Z3-i9e" firstAttribute="leading" secondItem="sge-QU-5d5" secondAttribute="leading" constant="16" id="qsg-96-VvV"/>
+                            <constraint firstItem="M2I-Ns-bqY" firstAttribute="top" secondItem="sge-QU-5d5" secondAttribute="top" constant="16" id="sBh-tp-aDi"/>
+                            <constraint firstItem="cpN-qN-Eey" firstAttribute="top" secondItem="M2I-Ns-bqY" secondAttribute="bottom" constant="8" id="tie-S2-cjU"/>
+                            <constraint firstItem="5Wq-np-Oz0" firstAttribute="top" secondItem="Odz-4b-1aR" secondAttribute="bottom" constant="8" id="ukd-E5-tOm"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Настройки" id="f0F-og-7dR"/>
+                    <connections>
+                        <outlet property="maxEntriesField" destination="5Wq-np-Oz0" id="ql3-IV-Vve"/>
+                        <outlet property="numberOfDaysField" destination="eeQ-Z3-i9e" id="8hz-vT-Scn"/>
+                        <outlet property="serverUrlField" destination="cpN-qN-Eey" id="KCE-5j-nr1"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jpq-eQ-zg0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1492" y="1303"/>
+        </scene>
+        <!--Navigation Controller-->
+        <scene sceneID="MbU-FZ-Ebe">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="jaW-fD-VNN" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+                <navigationController id="QYx-8n-8Xs" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="c5a-hl-zIg">
+                        <rect key="frame" x="0.0" y="24" width="1133" height="50"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="rootViewController" id="hfy-Ux-NQq"/>
+                    </connections>
+                </navigationController>
+            </objects>
+            <point key="canvasLocation" x="796" y="503"/>
+        </scene>
+    </scenes>
+    <resources>
+        <systemColor name="separatorColor">
+            <color red="0.23529411759999999" green="0.23529411759999999" blue="0.26274509800000001" alpha="0.28999999999999998" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+        <systemColor name="systemRedColor">
+            <color red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+        </systemColor>
+    </resources>
+</document>

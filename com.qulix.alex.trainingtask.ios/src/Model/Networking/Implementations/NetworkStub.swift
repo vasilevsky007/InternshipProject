@@ -33,7 +33,7 @@ actor NetworkStub: NetworkManager {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
         if let index = projects.firstIndex(of: newValue) {
             projects[index].name = newValue.name
-            projects[index].descriprion = newValue.descriprion            
+            projects[index].descriprion = newValue.descriprion
         }
     }
     
@@ -69,10 +69,7 @@ actor NetworkStub: NetworkManager {
     func removeIssueRequest(_ removingIssue: Issue) async throws {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
         for project in projects {
-            if let index = project.issues.firstIndex(of: removingIssue) {
-                project.removeIssue(removingIssue)
-                break
-            }
+            project.removeIssue(removingIssue)
         }
     }
     
