@@ -7,7 +7,9 @@
 
 import Foundation
 
-actor ProjectStore {
+@MainActor
+class ProjectStore {
+    
     private(set) var items: [Project] = []
     
     func delete(project removingProject: Project) {
@@ -29,5 +31,9 @@ actor ProjectStore {
         for project in items {
             project.removeEmployeefromAllIssues(employee)
         }
+    }
+    
+    func deleteAll() {
+        self.items = []
     }
 }

@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.XIB" version="3.0" toolsVersion="22505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="22504"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="Stack View standard spacing" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <objects>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
+        <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="ProjectListCell" rowHeight="216" id="KGk-i7-Jjw" customClass="ProjectListCell" customModule="trainingtask" customModuleProvider="target">
+            <rect key="frame" x="0.0" y="0.0" width="341" height="216"/>
+            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
+            <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KGk-i7-Jjw" id="H2p-sc-9uM">
+                <rect key="frame" x="0.0" y="0.0" width="341" height="216"/>
+                <autoresizingMask key="autoresizingMask"/>
+                <subviews>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Название" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="znw-Ia-L9j">
+                        <rect key="frame" x="8" y="98" width="102.33333333333333" height="20.333333333333329"/>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleBody"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                    <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="3Ep-Vq-5Mf">
+                        <rect key="frame" x="277.66666666666669" y="69.666666666666657" width="55.333333333333314" height="76.666666666666657"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="j8U-qD-idZ">
+                                <rect key="frame" x="0.0" y="0.0" width="55.333333333333336" height="34.333333333333336"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="eye" catalog="system" title=" "/>
+                                <connections>
+                                    <action selector="showTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="DJj-hh-CBe"/>
+                                </connections>
+                            </button>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="sDI-TR-8t8">
+                                <rect key="frame" x="0.0" y="42.333333333333329" width="55.333333333333336" height="34.333333333333329"/>
+                                <state key="normal" title="Button"/>
+                                <buttonConfiguration key="configuration" style="plain" image="square.and.pencil" catalog="system" title=" "/>
+                                <connections>
+                                    <action selector="editTapped:" destination="KGk-i7-Jjw" eventType="touchUpInside" id="WEC-4A-qvQ"/>
+                                </connections>
+                            </button>
+                        </subviews>
+                    </stackView>
+                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="justified" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xez-uB-IFF">
+                        <rect key="frame" x="118.33333333333333" y="19" width="151.33333333333337" height="178"/>
+                        <string key="text">Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. Описание. </string>
+                        <fontDescription key="fontDescription" style="UICTFontTextStyleCaption1"/>
+                        <nil key="textColor"/>
+                        <nil key="highlightedColor"/>
+                    </label>
+                </subviews>
+                <constraints>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="znw-Ia-L9j" secondAttribute="bottom" constant="8" id="0IM-qP-Bqi"/>
+                    <constraint firstItem="3Ep-Vq-5Mf" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="9Fw-jd-Vdu"/>
+                    <constraint firstItem="xez-uB-IFF" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="topMargin" constant="8" id="EZP-bK-ig6"/>
+                    <constraint firstAttribute="bottom" relation="greaterThanOrEqual" secondItem="3Ep-Vq-5Mf" secondAttribute="bottom" constant="8" id="OMF-HS-kb4"/>
+                    <constraint firstItem="3Ep-Vq-5Mf" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="Tdq-HH-Jew"/>
+                    <constraint firstAttribute="trailing" secondItem="3Ep-Vq-5Mf" secondAttribute="trailing" constant="8" id="VfG-Kh-MZ3"/>
+                    <constraint firstItem="znw-Ia-L9j" firstAttribute="width" secondItem="H2p-sc-9uM" secondAttribute="width" multiplier="0.3" id="Xx1-1N-Dp5"/>
+                    <constraint firstItem="znw-Ia-L9j" firstAttribute="top" relation="greaterThanOrEqual" secondItem="H2p-sc-9uM" secondAttribute="top" constant="8" id="eVy-5G-cDM"/>
+                    <constraint firstItem="3Ep-Vq-5Mf" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="xez-uB-IFF" secondAttribute="trailing" constant="8" id="egB-Zp-JYd"/>
+                    <constraint firstItem="znw-Ia-L9j" firstAttribute="leading" secondItem="H2p-sc-9uM" secondAttribute="leading" constant="8" id="feq-QL-ybY"/>
+                    <constraint firstAttribute="bottomMargin" relation="greaterThanOrEqual" secondItem="xez-uB-IFF" secondAttribute="bottom" constant="8" id="gMx-el-IoQ"/>
+                    <constraint firstItem="xez-uB-IFF" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="gqh-Zr-78Y"/>
+                    <constraint firstItem="znw-Ia-L9j" firstAttribute="centerY" secondItem="H2p-sc-9uM" secondAttribute="centerY" id="tWD-Cl-SwX"/>
+                    <constraint firstItem="xez-uB-IFF" firstAttribute="leading" secondItem="znw-Ia-L9j" secondAttribute="trailing" constant="8" id="yit-Fz-g6V"/>
+                </constraints>
+            </tableViewCellContentView>
+            <viewLayoutGuide key="safeArea" id="njF-e1-oar"/>
+            <connections>
+                <outlet property="descriptionLabel" destination="xez-uB-IFF" id="8QC-Em-SvR"/>
+                <outlet property="nameLabel" destination="znw-Ia-L9j" id="6n9-8K-a5v"/>
+            </connections>
+            <point key="canvasLocation" x="127.48091603053435" y="77.464788732394368"/>
+        </tableViewCell>
+    </objects>
+    <resources>
+        <image name="eye" catalog="system" width="128" height="79"/>
+        <image name="square.and.pencil" catalog="system" width="128" height="121"/>
+    </resources>
+</document>

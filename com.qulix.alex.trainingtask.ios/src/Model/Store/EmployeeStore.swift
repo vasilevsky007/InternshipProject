@@ -7,21 +7,20 @@
 
 import Foundation
 
-actor EmployeeStore {
-    private var projects: ProjectStore
+@MainActor
+class EmployeeStore {
     private(set) var items: [Employee]
     
-    init(projects: ProjectStore) {
-        self.projects = projects
+    init() {
         self.items = []
     }
     
-    func delete(employee removingEmployee: Employee) {
+    func delete(employee removingEmployee: Employee, projects: ProjectStore) {
         items.removeAll { employee in
             removingEmployee == employee
         }
         Task {
-            await projects.removeEmployeeFromAllProjects(removingEmployee)
+            projects.removeEmployeeFromAllProjects(removingEmployee)
         }
     }
     
@@ -31,5 +30,9 @@ actor EmployeeStore {
         } else {
             throw BusinessLogicErrors.MaxNumOfEtriesExceeded
         }
+    }
+    
+    func deleteAll() {
+        self.items = []
     }
 }
