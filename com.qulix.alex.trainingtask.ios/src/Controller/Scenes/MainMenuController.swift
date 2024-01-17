@@ -40,6 +40,13 @@ class MainMenuController: UIViewController {
                     projectListController.employeeStore = self.employeeStore
                     projectListController.settings = self.settings
                 }
+            case "OpenEmployeeList":
+                if let projectListController = segue.destination as? EmployeeListController {
+                    projectListController.nm = self.nm
+                    projectListController.projectStore = self.projectStore
+                    projectListController.employeeStore = self.employeeStore
+                    projectListController.settings = self.settings
+                }
             default :
                 break
             }

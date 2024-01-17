@@ -41,6 +41,9 @@
                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Сотрудники"/>
+                                        <connections>
+                                            <segue destination="NWa-VB-7cn" kind="show" identifier="OpenEmployeeList" id="wpx-Ym-oQm"/>
+                                        </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Lbd-HV-avh">
                                         <rect key="frame" x="0.0" y="127.5" width="120" height="34.5"/>
@@ -169,7 +172,61 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jpq-eQ-zg0" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2288" y="1336"/>
+            <point key="canvasLocation" x="2329" y="1327"/>
+        </scene>
+        <!--Сотрудники-->
+        <scene sceneID="tzg-pG-S84">
+            <objects>
+                <viewController id="NWa-VB-7cn" customClass="EmployeeListController" customModule="trainingtask" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="2F5-zx-3ae">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="ieP-Yw-s6S">
+                                <rect key="frame" x="198" y="72" width="114" height="34.5"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pyg-lt-3e5">
+                                        <rect key="frame" x="0.0" y="0.0" width="51.5" height="34.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="arrow.clockwise" catalog="system" title=" "/>
+                                        <connections>
+                                            <action selector="reloadTapped:" destination="NWa-VB-7cn" eventType="touchUpInside" id="bD7-pR-SoD"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="puh-Sb-228">
+                                        <rect key="frame" x="59.5" y="0.0" width="54.5" height="34.5"/>
+                                        <state key="normal" title="Button"/>
+                                        <buttonConfiguration key="configuration" style="plain" image="plus.circle" catalog="system" title=" "/>
+                                        <connections>
+                                            <action selector="addTapped:" destination="NWa-VB-7cn" eventType="touchUpInside" id="HFs-sv-XFc"/>
+                                        </connections>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="-1" estimatedSectionHeaderHeight="-1" sectionFooterHeight="-1" estimatedSectionFooterHeight="-1" translatesAutoresizingMaskIntoConstraints="NO" id="EDe-Ny-MyY">
+                                <rect key="frame" x="8" y="114.5" width="304" height="445.5"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                            </tableView>
+                        </subviews>
+                        <viewLayoutGuide key="safeArea" id="iy7-zo-g9t"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="iy7-zo-g9t" firstAttribute="bottom" secondItem="EDe-Ny-MyY" secondAttribute="bottom" constant="8" id="CDb-QK-bJC"/>
+                            <constraint firstItem="ieP-Yw-s6S" firstAttribute="top" secondItem="iy7-zo-g9t" secondAttribute="top" constant="8" id="Gox-rs-cpC"/>
+                            <constraint firstItem="EDe-Ny-MyY" firstAttribute="top" secondItem="ieP-Yw-s6S" secondAttribute="bottom" constant="8" id="QhB-3a-Ht3"/>
+                            <constraint firstItem="iy7-zo-g9t" firstAttribute="trailing" secondItem="EDe-Ny-MyY" secondAttribute="trailing" constant="8" id="egL-Io-OyJ"/>
+                            <constraint firstItem="EDe-Ny-MyY" firstAttribute="leading" secondItem="iy7-zo-g9t" secondAttribute="leading" constant="8" id="o6j-G5-0n6"/>
+                            <constraint firstItem="iy7-zo-g9t" firstAttribute="trailing" secondItem="ieP-Yw-s6S" secondAttribute="trailing" constant="8" id="oPx-SX-MUV"/>
+                        </constraints>
+                    </view>
+                    <navigationItem key="navigationItem" title="Сотрудники" id="ukL-z1-gO8"/>
+                    <connections>
+                        <outlet property="table" destination="EDe-Ny-MyY" id="ngg-xN-CNo"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="5rI-Uf-tHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1491" y="1327"/>
         </scene>
         <!--Проекты-->
         <scene sceneID="8QC-qO-XZJ">
@@ -199,7 +256,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="plus.circle" catalog="system" title=" "/>
                                         <connections>
-                                            <action selector="addTapped:" destination="imq-aV-pfh" eventType="touchUpInside" id="TVT-WJ-KJ8"/>
+                                            <action selector="addTapped:" destination="imq-aV-pfh" eventType="touchUpInside" id="F0y-B4-cDU"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -223,7 +280,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="cis-Mq-gRX" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1491" y="1337"/>
+            <point key="canvasLocation" x="641" y="1327"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="MbU-FZ-Ebe">
