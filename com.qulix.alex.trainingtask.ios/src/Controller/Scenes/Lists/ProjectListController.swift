@@ -86,5 +86,18 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
-    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
+            let project = self.projectStore.items[indexPath.row]
+            self.projectStore.delete(project: project)
+            self.table.reloadData()
+            Task.detached {
+                try? await self.nm.deleteProjectRequest(project)//TODO: Error handling
+            }
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash")
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
+    }
 }

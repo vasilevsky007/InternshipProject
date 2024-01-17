@@ -86,4 +86,19 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
         }
         return cell
     }
+    
+    func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
+        let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
+            let employee = self.employeeStore.items[indexPath.row]
+            self.employeeStore.delete(employee: employee, projects: self.projectStore)
+            self.table.reloadData()
+            Task.detached {
+                try? await self.nm.deleteEmployeeRequest(employee) //TODO: Error handling
+            }
+            completionHandler(true)
+        }
+        deleteAction.image = UIImage(systemName: "trash")
+        let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
+        return swipeConfiguration
+    }
 }
