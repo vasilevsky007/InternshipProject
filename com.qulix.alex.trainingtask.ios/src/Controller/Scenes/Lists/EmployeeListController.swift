@@ -32,9 +32,18 @@ class EmployeeListController: UIViewController {
     }
     
     @IBAction func addTapped(_ sender: UIButton) {
-        
+        let newEmployee = Employee()
+        let editor = EmployeeEditController()
+        editor.nm = nm
+        editor.employeeStore = employeeStore
+        editor.settings = settings
+        editor.isNew = true
+        editor.employee = newEmployee
+        editor.updateTable = table.reloadData
+        editor.modalPresentationStyle = .pageSheet
+        present(editor, animated: true)
     }
-
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -44,17 +53,17 @@ class EmployeeListController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
+    
     /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+     // MARK: - Navigation
+     
+     // In a storyboard-based application, you will often want to do a little preparation before navigation
+     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+     // Get the new view controller using segue.destination.
+     // Pass the selected object to the new view controller.
+     }
+     */
+    
 }
 
 extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {

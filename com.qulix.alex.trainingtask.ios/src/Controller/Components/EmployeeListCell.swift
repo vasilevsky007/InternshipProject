@@ -24,7 +24,16 @@ class EmployeeListCell: UITableViewCell {
     @IBOutlet weak var positionLabel: UILabel!
     
     @IBAction func editTapped(_ sender: UIButton) {
-        
+        let employee = employeeStore.items[currentIndex]
+        let editor = EmployeeEditController()
+        editor.nm = nm
+        editor.employeeStore = employeeStore
+        editor.settings = settings
+        editor.isNew = false
+        editor.employee = employee
+        editor.updateTable = updateTable
+        editor.modalPresentationStyle = .pageSheet
+        present(editor) //Cannot find 'present' in scope
     }
     
     func setup(forEmployeeAtIndex index: Int) {
