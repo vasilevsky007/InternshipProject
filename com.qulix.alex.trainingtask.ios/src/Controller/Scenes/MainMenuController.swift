@@ -41,11 +41,19 @@ class MainMenuController: UIViewController {
                     projectListController.settings = self.settings
                 }
             case "OpenEmployeeList":
-                if let projectListController = segue.destination as? EmployeeListController {
-                    projectListController.nm = self.nm
-                    projectListController.projectStore = self.projectStore
-                    projectListController.employeeStore = self.employeeStore
-                    projectListController.settings = self.settings
+                if let employeeListController = segue.destination as? EmployeeListController {
+                    employeeListController.nm = self.nm
+                    employeeListController.projectStore = self.projectStore
+                    employeeListController.employeeStore = self.employeeStore
+                    employeeListController.settings = self.settings
+                }
+            case "OpenAllIssues":
+                if let issueListController = segue.destination as? IssueListController {
+                    issueListController.nm = self.nm
+                    issueListController.projectStore = self.projectStore
+                    issueListController.employeeStore = self.employeeStore
+                    issueListController.settings = self.settings
+                    issueListController.openedFromProject = false
                 }
             default :
                 break

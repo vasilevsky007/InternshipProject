@@ -30,6 +30,7 @@ class ProjectListController: UIViewController {
             }
             await self.table.reloadData()
         }
+        
     }
     
     @IBAction func addTapped(_ sender: UIButton) {
@@ -82,8 +83,29 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
                 self.present(view, animated: true)
             }
             projectListCell.setup(forProjectAtIndex: indexPath.row)
+            projectListCell.openIssues = { project in
+                self.performSegue(withIdentifier: "OpenProjectIssues", sender: self.projectStore.items[indexPath.row])
+            }
         }
         return cell
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let id = segue.identifier {
+            switch id {
+            case "OpenProjectIssues":
+                if let issueListController = segue.destination as? IssueListController {
+                    issueListController.nm = self.nm
+                    issueListController.projectStore = self.projectStore
+                    issueListController.employeeStore = self.employeeStore
+                    issueListController.settings = self.settings
+                    issueListController.openedFromProject = true
+                    issueListController.project = (sender as! Project)
+                }
+            default :
+                break
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {

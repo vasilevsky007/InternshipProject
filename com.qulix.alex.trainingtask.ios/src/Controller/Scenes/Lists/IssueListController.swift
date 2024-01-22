@@ -14,6 +14,7 @@ class IssueListController: UIViewController {
     var employeeStore: EmployeeStore!
     var settings: Settings!
     var openedFromProject: Bool!
+    var project: Project!
     
     @IBOutlet weak var table: UITableView!
     
@@ -33,13 +34,30 @@ class IssueListController: UIViewController {
     }
     
     @IBAction func addTapped(_ sender: UIButton) {
-        
+        var newIssue = Issue(settings: settings)
+        let editor = IssueEditController()
+        if (openedFromProject) {
+            newIssue.project = project
+            editor.project = project
+        }
+        editor.nm = nm
+        editor.employeeStore = employeeStore
+        editor.projectStore = projectStore
+        editor.settings = settings
+        editor.isNew = true
+        editor.issue = newIssue
+        editor.updateTable = table.reloadData
+        editor.openedFromProject = openedFromProject
+        editor.modalPresentationStyle = .pageSheet
+        present(editor, animated: true)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        table.dataSource = self
+        table.delegate = self
+        table.register(UINib(nibName: "IssueListCell", bundle: nil), forCellReuseIdentifier: "IssueListCell")
         // Do any additional setup after loading the view.
     }
     
@@ -58,21 +76,28 @@ class IssueListController: UIViewController {
 
 extension IssueListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        projectStore.allIssues.count
+        if openedFromProject {
+            return project.issues.count
+        } else {
+            return projectStore.allIssues.count
+        }
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "IssueListCell", for: indexPath)
-        if let projectListCell = cell as? IssueListCell {
-            projectListCell.nm = nm
-            projectListCell.projectStore = projectStore
-            projectListCell.employeeStore = employeeStore
-            projectListCell.settings = settings
-            projectListCell.updateTable = table.reloadData
-            projectListCell.present = { view in
+        if let issueListCell = cell as? IssueListCell {
+            issueListCell.nm = nm
+            issueListCell.projectStore = projectStore
+            issueListCell.employeeStore = employeeStore
+            issueListCell.settings = settings
+            issueListCell.updateTable = table.reloadData
+            issueListCell.present = { view in
                 self.present(view, animated: true)
             }
-            projectListCell.setup(forIssueAtIndex: indexPath.row, openedFromProject: openedFromProject)
+            if openedFromProject {
+                issueListCell.project = project
+            }
+            issueListCell.setup(forIssueAtIndex: indexPath.row, openedFromProject: openedFromProject)
         }
         return cell
     }

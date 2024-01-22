@@ -14,6 +14,10 @@ class Employee: Equatable {
     var middleName: String
     var position: String
     
+    var fio: String {
+        "\(surname) \(name.first!). \(middleName.first!)."
+    }
+    
     init() {
         id = UUID()
         name = ""

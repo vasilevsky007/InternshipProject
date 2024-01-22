@@ -8,11 +8,11 @@
 import Foundation
 
 struct Issue: Equatable {
-    enum Status {
-        case notStarted
-        case inProgress
-        case completed
-        case postponed
+    enum Status: String {
+        case notStarted = "Не начата"
+        case inProgress = "В процессе"
+        case completed = "Завершена"
+        case postponed = "Отложена"
     }
     
     let id:  UUID
@@ -47,6 +47,30 @@ struct Issue: Equatable {
         self.employee = nil
     }
     
+    init(settings: Settings, project: Project) throws {
+        self.id = UUID()
+        self.name = ""
+        self.project = project
+        self.job = 0
+        self.start = {
+            if #available(iOS 15, *) {
+                return Date.now
+            } else {
+                return Date()
+            }
+        }()
+        self.end = {
+            if #available(iOS 15, *) {
+                return Date.now.addingTimeInterval(settings.defaultBetweenStartAndEnd)
+            } else {
+                return Date().addingTimeInterval(settings.defaultBetweenStartAndEnd)
+            }
+        }()
+        self.status = .notStarted
+        self.employee = nil
+        try project.addIssue(self, settings: settings)
+    }
+    
     init(_ issue: Issue, newEmployees: [Employee]) {
         id = issue.id
         name = issue.name
@@ -61,6 +85,10 @@ struct Issue: Equatable {
             }) {
             employee = newEmployees[index]
         }
+    }
+    
+    static func == (lhs: Issue, rhs: Issue) -> Bool {
+        lhs.id == rhs.id
     }
     
     mutating func changeProject(to newProject: Project, settings: Settings) throws {
