@@ -140,12 +140,12 @@
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ГГГГ-ММ-ДД" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="53e-4f-pYz">
                                     <rect key="frame" x="16" y="256.5" width="140" height="34.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" spellCheckingType="no" keyboardType="numberPad" textContentType="date-time"/>
+                                    <textInputTraits key="textInputTraits" spellCheckingType="no" keyboardType="numberPad"/>
                                 </textField>
                                 <textField opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="248" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="ГГГГ-ММ-ДД" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="TO6-NV-MJH">
                                     <rect key="frame" x="16" y="183.5" width="140" height="34.5"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
-                                    <textInputTraits key="textInputTraits" spellCheckingType="no" keyboardType="numberPad" textContentType="date-time"/>
+                                    <textInputTraits key="textInputTraits" spellCheckingType="no" keyboardType="numberPad"/>
                                 </textField>
                             </subviews>
                             <viewLayoutGuide key="safeArea" id="owD-hv-TOr"/>

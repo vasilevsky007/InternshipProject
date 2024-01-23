@@ -117,8 +117,8 @@
                             <stackView opaque="NO" contentMode="scaleToFill" distribution="equalSpacing" alignment="center" spacingType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="Sbk-Vn-Pqt">
                                 <rect key="frame" x="16" y="517.5" width="288" height="34.5"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="primary" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-nb-Fcy">
-                                        <rect key="frame" x="0.0" y="0.0" width="113.5" height="34.5"/>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xDS-nb-Fcy">
+                                        <rect key="frame" x="0.0" y="0.0" width="109.5" height="34.5"/>
                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" title="Сохранить"/>
@@ -126,7 +126,7 @@
                                             <action selector="saveTapped:" destination="iMy-zZ-Ggr" eventType="touchUpInside" id="dOd-qp-a58"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" role="cancel" translatesAutoresizingMaskIntoConstraints="NO" id="3E0-23-zPZ">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3E0-23-zPZ">
                                         <rect key="frame" x="202" y="0.0" width="86" height="34.5"/>
                                         <color key="backgroundColor" systemColor="separatorColor"/>
                                         <color key="tintColor" systemColor="systemRedColor"/>

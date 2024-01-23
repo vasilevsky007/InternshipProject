@@ -49,21 +49,40 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
         issue.status = statusPickerController.selectedStatus
         issue.project = openedFromProject ? project : projectPickerController.selectedProject
         issue.employee = employeePickerController.selectedEmployee
+        MyProgressViewController.shared.startLoad(with: "Saving issue to server")
         if isNew {
-            try? issue.project?.addIssue(issue, settings: settings)//TODO: error handling
             Task.detached {
-                try? await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
+                do {
+                    try await self.issue.project?.addIssue(self.issue, settings: self.settings)
+                    try await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issue saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         } else {
             if let index = issue.project?.issues.firstIndex(of: issue) {
                 issue.project?.issues[index] = issue
             }
             Task.detached {
-                try? await self.nm.changeIssueRequest(self.issue)
+                do {
+                    try await self.nm.changeIssueRequest(self.issue)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issue saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         }
-        self.dismiss(animated: true)
         self.updateTable()
+        self.dismiss(animated: true)
     }
     
     @IBAction func cancelTapped(_ sender: Any) {

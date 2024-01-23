@@ -19,17 +19,23 @@ class IssueListController: UIViewController {
     @IBOutlet weak var table: UITableView!
     
     @IBAction func reloadTapped(_ sender: UIButton) {
+        MyProgressViewController.shared.startLoad(with: "Updating issues from server")
         Task.detached {
-            let (projects, employees) = try await self.nm.fetchAll()
-            await self.projectStore.deleteAll()
-            await self.employeeStore.deleteAll()
-            for project in projects {
-                try? await self.projectStore.add(project: project, settings: self.settings)
+            do {
+                let (projects, employees) = try await self.nm.fetchAll()
+                await self.projectStore.deleteAll()
+                await self.employeeStore.deleteAll()
+                for project in projects {
+                    try await self.projectStore.add(project: project, settings: self.settings)
+                }
+                for employee in employees {
+                    try await self.employeeStore.add(employee: employee, settings: self.settings)
+                }
+                await self.table.reloadData()
+                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issues updated from server")
+            } catch {
+                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
-            for employee in employees {
-                try? await self.employeeStore.add(employee: employee, settings: self.settings)
-            }
-            await self.table.reloadData()
         }
     }
     
@@ -106,9 +112,15 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let issue = self.projectStore.allIssues[indexPath.row]
             issue.project?.removeIssue(issue)
+            MyProgressViewController.shared.startLoad(with: "Deleting issue from server")
             self.table.reloadData()
             Task.detached {
-                try? await self.nm.removeIssueRequest(issue)//TODO: Error handling
+                do {
+                    try await self.nm.removeIssueRequest(issue)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issues deleted from server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
             }
             completionHandler(true)
         }

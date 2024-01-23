@@ -24,23 +24,40 @@ class ProjectEditController: UIViewController {
     @IBAction func saveTapped(_ sender: Any) {
         project.name = nameField.text ?? ""
         project.descriprion = descriptionField.text ?? ""
+        MyProgressViewController.shared.startLoad(with: "Saving project to server")
         if isNew {
-            try? projectStore.add(project: project, settings: settings)//TODO: error handling
             Task.detached {
-                try? await self.nm.addProjectRequest(project: self.project)
+                do {
+                    try await self.projectStore.add(project: self.project, settings: self.settings)
+                    try await self.nm.addProjectRequest(project: self.project)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         } else {
             Task.detached {
-                try? await self.nm.changeProjectRequest(newValue: self.project)
+                do {
+                    try await self.nm.changeProjectRequest(newValue: self.project)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         }
-        self.dismiss(animated: true)
-        self.updateTable()
     }
     
     @IBAction func cancelTapped(_ sender: Any) {
-        self.dismiss(animated: true)
         self.updateTable()
+        self.dismiss(animated: true)
     }
     
     override func viewDidLoad() {

@@ -17,17 +17,23 @@ class EmployeeListController: UIViewController {
     @IBOutlet weak var table: UITableView!
     
     @IBAction func reloadTapped(_ sender: UIButton) {
+        MyProgressViewController.shared.startLoad(with: "Updating employees from server")
         Task.detached {
-            let (projects, employees) = try await self.nm.fetchAll()
-            await self.projectStore.deleteAll()
-            await self.employeeStore.deleteAll()
-            for project in projects {
-                try? await self.projectStore.add(project: project, settings: self.settings)
+            do {
+                let (projects, employees) = try await self.nm.fetchAll()
+                await self.projectStore.deleteAll()
+                await self.employeeStore.deleteAll()
+                for project in projects {
+                    try await self.projectStore.add(project: project, settings: self.settings)
+                }
+                for employee in employees {
+                    try await self.employeeStore.add(employee: employee, settings: self.settings)
+                }
+                await self.table.reloadData()
+                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employees updated from server")
+            } catch {
+                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
-            for employee in employees {
-                try? await self.employeeStore.add(employee: employee, settings: self.settings)
-            }
-            await self.table.reloadData()
         }
     }
     
@@ -73,16 +79,16 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "EmployeeListCell", for: indexPath)
-        if let projectListCell = cell as? EmployeeListCell {
-            projectListCell.nm = nm
-            projectListCell.projectStore = projectStore
-            projectListCell.employeeStore = employeeStore
-            projectListCell.settings = settings
-            projectListCell.updateTable = table.reloadData
-            projectListCell.present = { view in
+        if let employeeListCell = cell as? EmployeeListCell {
+            employeeListCell.nm = nm
+            employeeListCell.projectStore = projectStore
+            employeeListCell.employeeStore = employeeStore
+            employeeListCell.settings = settings
+            employeeListCell.updateTable = table.reloadData
+            employeeListCell.present = { view in
                 self.present(view, animated: true)
             }
-            projectListCell.setup(forEmployeeAtIndex: indexPath.row)
+            employeeListCell.setup(forEmployeeAtIndex: indexPath.row)
         }
         return cell
     }
@@ -91,9 +97,15 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let employee = self.employeeStore.items[indexPath.row]
             self.employeeStore.delete(employee: employee, projects: self.projectStore)
+            MyProgressViewController.shared.startLoad(with: "Deleting employee from server")
             self.table.reloadData()
             Task.detached {
-                try? await self.nm.deleteEmployeeRequest(employee) //TODO: Error handling
+                do {
+                    try await self.nm.deleteEmployeeRequest(employee)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee deleted from server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
             }
             completionHandler(true)
         }

@@ -27,18 +27,35 @@ class EmployeeEditController: UIViewController {
         employee.surname = surnameField.text ?? ""
         employee.middleName = middleNameField.text ?? ""
         employee.position = positionField.text ?? ""
+        MyProgressViewController.shared.startLoad(with: "Saving employee to server")
         if isNew {
-            try? employeeStore.add(employee: employee, settings: settings)//TODO: error handling
             Task.detached {
-                try? await self.nm.addEmployeeRequest(employee: self.employee)
+                do {
+                    try await self.employeeStore.add(employee: self.employee, settings: self.settings)
+                    try await self.nm.addEmployeeRequest(employee: self.employee)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         } else {
             Task.detached {
-                try? await self.nm.changeEmployeeRequest(newValue: self.employee)
+                do {
+                    try await self.nm.changeEmployeeRequest(newValue: self.employee)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee saved to server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
+                DispatchQueue.main.async {
+                    self.updateTable()
+                    self.dismiss(animated: true)
+                }
             }
         }
-        self.dismiss(animated: true)
-        self.updateTable()
     }
     
     @IBAction func cancelTapped(_ sender: UIButton) {

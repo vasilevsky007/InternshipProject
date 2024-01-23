@@ -18,17 +18,23 @@ class ProjectListController: UIViewController {
     
 
     @IBAction func reloadTapped(_ sender: UIButton) {
+        MyProgressViewController.shared.startLoad(with: "Updating projects from server")
         Task.detached {
-            let (projects, employees) = try await self.nm.fetchAll()
-            await self.projectStore.deleteAll()
-            await self.employeeStore.deleteAll()
-            for project in projects {
-                try? await self.projectStore.add(project: project, settings: self.settings)
+            do {
+                let (projects, employees) = try await self.nm.fetchAll()
+                await self.projectStore.deleteAll()
+                await self.employeeStore.deleteAll()
+                for project in projects {
+                    try await self.projectStore.add(project: project, settings: self.settings)
+                }
+                for employee in employees {
+                    try await self.employeeStore.add(employee: employee, settings: self.settings)
+                }
+                await self.table.reloadData()
+                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Projects updated from server")
+            } catch {
+                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
-            for employee in employees {
-                try? await self.employeeStore.add(employee: employee, settings: self.settings)
-            }
-            await self.table.reloadData()
         }
         
     }
@@ -110,11 +116,17 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
+            MyProgressViewController.shared.startLoad(with: "Deleting project")
             let project = self.projectStore.items[indexPath.row]
             self.projectStore.delete(project: project)
             self.table.reloadData()
             Task.detached {
-                try? await self.nm.deleteProjectRequest(project)//TODO: Error handling
+                do {
+                    try await self.nm.deleteProjectRequest(project)
+                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project deleted from server")
+                } catch {
+                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                }
             }
             completionHandler(true)
         }

@@ -23,7 +23,6 @@ class ProjectListCell: UITableViewCell {
     @IBOutlet weak var descriptionLabel: UILabel!
     
     @IBAction func showTapped(_ sender: UIButton) {
-        //TODO: open issueList
         let project = projectStore.items[currentIndex]
         openIssues(project)
     }
