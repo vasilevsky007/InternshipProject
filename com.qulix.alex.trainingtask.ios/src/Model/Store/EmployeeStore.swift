@@ -28,7 +28,7 @@ class EmployeeStore {
         if items.count < settings.maxEntries {
             items.append(employee)
         } else {
-            throw BusinessLogicErrors.MaxNumOfEtriesExceeded
+            throw BusinessLogicErrors.maxNumOfEtriesExceeded
         }
     }
     

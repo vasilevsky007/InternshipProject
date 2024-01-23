@@ -8,5 +8,14 @@
 import Foundation
 
 enum BusinessLogicErrors: Error {
-    case MaxNumOfEtriesExceeded
+    case maxNumOfEtriesExceeded
+}
+
+extension BusinessLogicErrors: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .maxNumOfEtriesExceeded:
+            return "Exceeded the maximum number of items in a list from settings."
+        }
+    }
 }

@@ -42,7 +42,7 @@ class Project: Equatable {
         if issues.count < settings.maxEntries {
             issues.append(issue)
         } else {
-            throw BusinessLogicErrors.MaxNumOfEtriesExceeded
+            throw BusinessLogicErrors.maxNumOfEtriesExceeded
         }
     }
     
