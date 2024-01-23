@@ -48,9 +48,20 @@ class SettingsController: UIViewController {
         serverUrlField.text = settings.server?.absoluteString
         maxEntriesField.text = settings.maxEntries.description
         numberOfDaysField.text = settings.defaultIntervalBetweenStartAndEndInDays.description
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+        toolbar.items = [flexibleSpace, doneButton]
+        serverUrlField.inputAccessoryView = toolbar
+        maxEntriesField.inputAccessoryView = toolbar
+        numberOfDaysField.inputAccessoryView = toolbar
     }
     
-
+    @objc func doneButtonTapped() {
+        view.endEditing(true) // Закрывает клавиатуру
+    }
+    
     /*
     // MARK: - Navigation
 
