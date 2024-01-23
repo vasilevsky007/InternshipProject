@@ -34,10 +34,16 @@ class MyProgressViewController: UIViewController {
                                       width: overlayWidth,
                                       height: overlayHeight)
         
-        if let currentViewController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController {
+        if let currentViewController = UIApplication.shared.windows.last(where: { $0.isKeyWindow })?.rootViewController?.presentedViewController {
             currentViewController.view.addSubview(overlayVC.view)
             currentViewController.addChild(overlayVC)
             overlayVC.didMove(toParent: currentViewController)
+        } else {
+            if let currentViewController = UIApplication.shared.windows.last(where: { $0.isKeyWindow })?.rootViewController {
+                currentViewController.view.addSubview(overlayVC.view)
+                currentViewController.addChild(overlayVC)
+                overlayVC.didMove(toParent: currentViewController)
+            }
         }
     }
     
