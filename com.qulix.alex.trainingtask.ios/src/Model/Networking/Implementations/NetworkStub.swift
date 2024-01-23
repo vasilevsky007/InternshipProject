@@ -13,7 +13,15 @@ actor NetworkStub: NetworkManager {
     
     func fetchAll() async throws -> (projects: [Project], employees: [Employee]) {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
-        return (projects, employees)
+        var newProjects: [Project] = []
+        var newEmployees: [Employee] = []
+        for employee in employees {
+            newEmployees.append(Employee(employee))
+        }
+        for project in projects {
+            newProjects.append(Project(project, newEmployees: newEmployees))
+        }
+        return (newProjects, newEmployees)
     }
     
     func deleteProjectRequest(_ removingProject: Project) async throws {
