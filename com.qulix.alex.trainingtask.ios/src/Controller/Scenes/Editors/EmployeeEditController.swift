@@ -69,9 +69,21 @@ class EmployeeEditController: UIViewController {
         surnameField.text = employee.surname
         middleNameField.text = employee.middleName
         positionField.text = employee.position
+        let toolbar = UIToolbar()
+        toolbar.sizeToFit()
+        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
+        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
+        toolbar.items = [flexibleSpace, doneButton]
+        nameField.inputAccessoryView = toolbar
+        surnameField.inputAccessoryView = toolbar
+        middleNameField.inputAccessoryView = toolbar
+        positionField.inputAccessoryView = toolbar
         // Do any additional setup after loading the view.
     }
 
+    @objc func doneButtonTapped() {
+        view.endEditing(true) // Закрывает клавиатуру
+    }
 
     /*
     // MARK: - Navigation

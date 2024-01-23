@@ -27,7 +27,6 @@ class MyProgressViewController: UIViewController {
     private func showOverlay() {
         let overlayVC = MyProgressViewController.shared
         
-        // Установите нужные размеры и положение для вашего overlayVC
         let overlayWidth: CGFloat = 200
         let overlayHeight: CGFloat = 150
         overlayVC.view.frame = CGRect(x: (UIScreen.main.bounds.width - overlayWidth) / 2,
@@ -35,7 +34,6 @@ class MyProgressViewController: UIViewController {
                                       width: overlayWidth,
                                       height: overlayHeight)
         
-        // Добавьте overlayVC как child контроллер к текущему rootViewController
         if let currentViewController = UIApplication.shared.windows.first(where: { $0.isKeyWindow })?.rootViewController {
             currentViewController.view.addSubview(overlayVC.view)
             currentViewController.addChild(overlayVC)
