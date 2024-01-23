@@ -21,7 +21,8 @@ class ProjectEditController: UIViewController {
     @IBOutlet weak var nameField: UITextField!
     @IBOutlet weak var descriptionField: UITextView!
     
-    @IBAction func saveTapped(_ sender: Any) {
+    @IBAction func saveTapped(_ sender: UIButton) {
+        sender.isEnabled = false
         project.name = nameField.text ?? ""
         project.descriprion = descriptionField.text ?? ""
         MyProgressViewController.shared.startLoad(with: "Saving project to server")

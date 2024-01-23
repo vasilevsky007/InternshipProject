@@ -41,7 +41,8 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
     @IBOutlet weak var employeePicker: UIPickerView!
     @IBOutlet weak var projectPicker: UIPickerView!
     
-    @IBAction func saveTapped(_ sender: Any) {
+    @IBAction func saveTapped(_ sender: UIButton) {
+        sender.isEnabled = false
         issue.name = nameField.text ?? ""
         issue.job = Double(Int(workField.text!) ?? 0)*3600
         issue.start = dateFormatter.date(from: startField.text ?? "") ?? startDate.date

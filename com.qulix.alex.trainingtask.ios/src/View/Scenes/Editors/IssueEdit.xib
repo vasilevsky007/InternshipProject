@@ -38,7 +38,7 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Сохранить"/>
                             <connections>
-                                <action selector="saveTapped:" destination="-1" eventType="touchUpInside" id="v75-zX-MNQ"/>
+                                <action selector="saveTapped:" destination="-1" eventType="touchUpInside" id="fNP-mh-2Q1"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="RyM-rB-Oqh">

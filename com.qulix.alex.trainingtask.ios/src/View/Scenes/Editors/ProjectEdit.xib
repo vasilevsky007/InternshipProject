@@ -56,7 +56,7 @@
                             <state key="normal" title="Button"/>
                             <buttonConfiguration key="configuration" style="plain" title="Сохранить"/>
                             <connections>
-                                <action selector="saveTapped:" destination="-1" eventType="touchUpInside" id="Xio-Xz-Nqq"/>
+                                <action selector="saveTapped:" destination="-1" eventType="touchUpInside" id="g0a-wu-puI"/>
                             </connections>
                         </button>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Z6X-ET-Xyw">

@@ -23,6 +23,7 @@ class EmployeeEditController: UIViewController {
     @IBOutlet weak var positionField: UITextField!
     
     @IBAction func saveTapped(_ sender: UIButton) {
+        sender.isEnabled = false
         employee.name = nameField.text ?? ""
         employee.surname = surnameField.text ?? ""
         employee.middleName = middleNameField.text ?? ""
