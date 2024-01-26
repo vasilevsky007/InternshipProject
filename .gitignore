@@ -1,9 +1,31 @@
-# Created by https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager
-# Edit at https://www.toptal.com/developers/gitignore?templates=swift,swiftpackagemanager
+# Created by https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager,fastlane
+# Edit at https://www.toptal.com/developers/gitignore?templates=swift,swiftpackagemanager,fastlane
+
+### fastlane ###
+# fastlane - A streamlined workflow tool for Cocoa deployment
+#
+# It is recommended to not store the screenshots in the git repo. Instead, use fastlane to re-generate the
+# screenshots whenever they are needed.
+# For more information about the recommended setup visit:
+# https://docs.fastlane.tools/best-practices/source-control/#source-control
+
+# fastlane specific
+**/fastlane/report.xml
+
+# deliver temporary files
+**/fastlane/Preview.html
+
+# snapshot generated screenshots
+**/fastlane/screenshots
+
+# scan temporary files
+**/fastlane/test_output
+
+# Fastlane.swift runner binary
+**/fastlane/FastlaneRunner
 
 ### Swift ###
 # Xcode
-#
 # gitignore contributors: remember to update Global/Xcode.gitignore, Objective-C.gitignore & Swift.gitignore
 
 ## User settings
@@ -91,4 +113,4 @@ xcuserdata
 *.xcodeproj
 
 
-# End of https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager
+# End of https://www.toptal.com/developers/gitignore/api/swift,swiftpackagemanager,fastlane
