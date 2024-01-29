@@ -1,0 +1,58 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  lane :build_ipa do
+    your_keychain_name = "login.keychain"
+    your_keychain_password = "60541555"
+  
+    install_provisioning_profile(path: "./com.qulix.alex.trainingtask.ios/cert/comqulixavasilevskytrainingtask.mobileprovision")
+    
+    update_project_provisioning(
+      xcodeproj: "trainingtask.xcodeproj",
+      profile: "./com.qulix.alex.trainingtask.ios/cert/comqulixavasilevskytrainingtask.mobileprovision",
+      build_configuration: "Release",
+      code_signing_identity: "iPhone Distribution: Qulix UK LTD" #
+    )
+    
+    import_certificate(
+      certificate_path: "./com.qulix.alex.trainingtask.ios/cert/certificate.p12",
+      certificate_password: "WV3yY3sIF6Lt",
+      keychain_name: your_keychain_name,
+      keychain_password: your_keychain_password
+    )
+    
+    build_app(
+      configuration: "Release",
+      scheme: "trainingtask",
+      clean: true,
+      output_directory: "./com.qulix.alex.trainingtask.ios/build/",
+      build_path: "./com.qulix.alex.trainingtask.ios/build/",
+      output_name: "TrainingTask.ipa",
+      export_options: {
+        method: "enterprise",
+        signingStyle: "manual",
+        provisioningProfiles: {
+          "com.qulix.avasilevsky.trainingtask" => "com.qulix.avasilevsky.trainingtask"
+        }
+      },
+      codesigning_identity: "iPhone Distribution: Qulix UK LTD"
+    )
+    
+  end
+end
+
