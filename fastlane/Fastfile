@@ -19,6 +19,7 @@ platform :ios do
   lane :build_ipa do
     your_keychain_name = "login.keychain"
     your_keychain_password = "60541555"
+    path_to_xcodeproj = "./trainingtask.xcodeproj"
   
     install_provisioning_profile(path: "./com.qulix.alex.trainingtask.ios/cert/comqulixavasilevskytrainingtask.mobileprovision")
     
@@ -37,6 +38,7 @@ platform :ios do
     )
     
     build_app(
+      project: path_to_xcodeproj
       configuration: "Release",
       scheme: "trainingtask",
       clean: true,
