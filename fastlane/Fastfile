@@ -38,7 +38,7 @@ platform :ios do
     )
     
     build_app(
-      project: path_to_xcodeproj
+      project: path_to_xcodeproj,
       configuration: "Release",
       scheme: "trainingtask",
       clean: true,

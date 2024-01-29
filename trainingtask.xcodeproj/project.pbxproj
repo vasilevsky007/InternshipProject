@@ -581,7 +581,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Qulix UK LTD";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Qulix UK LTD";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = QUGY3G28TX;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -595,7 +595,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "20240129-1";
+				MARKETING_VERSION = "20240129-2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qulix.avasilevsky.trainingtask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = com.qulix.avasilevsky.trainingtask;
@@ -614,7 +614,7 @@
 				CODE_SIGN_IDENTITY = "iPhone Distribution: Qulix UK LTD";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Qulix UK LTD";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 15;
+				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = QUGY3G28TX;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -628,7 +628,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = "20240129-1";
+				MARKETING_VERSION = "20240129-2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qulix.avasilevsky.trainingtask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d0b85cb8-ca87-4704-9148-0ae2fa13f3a8";
