@@ -16,10 +16,11 @@ class IssueListController: UIViewController {
     var openedFromProject: Bool!
     var project: Project!
     
-    @IBOutlet weak var table: UITableView!
+    private var table: UITableView!
     
-    @IBAction func reloadTapped(_ sender: UIButton) {
-        MyProgressViewController.shared.startLoad(with: "Updating issues from server")
+    @objc private func reloadTable() {
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Updating issues from server")
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -32,14 +33,14 @@ class IssueListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issues updated from server")
+                await progress.stopLoad(successfully: true, with: "Issues updated from server")
             } catch {
-                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
         }
     }
     
-    @IBAction func addTapped(_ sender: UIButton) {
+    @objc private func addIssue() {
         var newIssue = Issue(settings: settings)
         let editor = IssueEditController()
         if (openedFromProject) {
@@ -61,9 +62,15 @@ class IssueListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let view = ListView()
+        self.table = view.table
+        view.controls.reloadAction = reloadTable
+        view.controls.addAction = addIssue
+        self.navigationItem.title = Strings.issues
+        self.view = view
         table.dataSource = self
         table.delegate = self
-        table.register(UINib(nibName: "IssueListCell", bundle: nil), forCellReuseIdentifier: "IssueListCell")
+        table.register(IssueListCell.self, forCellReuseIdentifier: Strings.issueCellId)
         // Do any additional setup after loading the view.
     }
     
@@ -90,7 +97,7 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "IssueListCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.issueCellId, for: indexPath)
         if let issueListCell = cell as? IssueListCell {
             issueListCell.nm = nm
             issueListCell.projectStore = projectStore
@@ -112,14 +119,15 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let issue = self.projectStore.allIssues[indexPath.row]
             issue.project?.removeIssue(issue)
-            MyProgressViewController.shared.startLoad(with: "Deleting issue from server")
+            let progress = MyProgressViewController()
+            progress.startLoad(with: "Deleting issue from server")
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.removeIssueRequest(issue)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issues deleted from server")
+                    await progress.stopLoad(successfully: true, with: "Issues deleted from server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
             }
             completionHandler(true)

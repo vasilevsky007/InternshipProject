@@ -14,11 +14,12 @@ class ProjectListController: UIViewController {
     var employeeStore: EmployeeStore!
     var settings: Settings!
     
-    @IBOutlet weak var table: UITableView!
+    private var table: UITableView!
     
 
-    @IBAction func reloadTapped(_ sender: UIButton) {
-        MyProgressViewController.shared.startLoad(with: "Updating projects from server")
+    @objc private func reloadTable() {
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Updating projects from server")
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -31,15 +32,14 @@ class ProjectListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Projects updated from server")
+                await progress.stopLoad(successfully: true, with: "Projects updated from server")
             } catch {
-                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
         }
-        
     }
     
-    @IBAction func addTapped(_ sender: UIButton) {
+    @objc private func addProject() {
         let newProject = Project()
         let editor = ProjectEditController()
         editor.nm = nm
@@ -54,22 +54,17 @@ class ProjectListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let view = ListView()
+        self.table = view.table
+        view.controls.reloadAction = reloadTable
+        view.controls.addAction = addProject
+        self.navigationItem.title = Strings.projets
+        self.view = view
         table.dataSource = self
         table.delegate = self
-        table.register(UINib(nibName: "ProjectListCell", bundle: nil), forCellReuseIdentifier: "ProjectListCell")
+        table.register(ProjectListCell.self, forCellReuseIdentifier: Strings.projectCellId)
         // Do any additional setup after loading the view.
     }
-    
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 }
 
 extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
@@ -78,7 +73,7 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "ProjectListCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.projectCellId, for: indexPath)
         if let projectListCell = cell as? ProjectListCell {
             projectListCell.nm = nm
             projectListCell.projectStore = projectStore
@@ -89,13 +84,14 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
                 self.present(view, animated: true)
             }
             projectListCell.setup(forProjectAtIndex: indexPath.row)
-            projectListCell.openIssues = { project in
+            projectListCell.openIssues = { project in//TODO: no segue.
                 self.performSegue(withIdentifier: "OpenProjectIssues", sender: self.projectStore.items[indexPath.row])
             }
         }
         return cell
     }
     
+    //TODO: refactor this. probably move to cell???
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if let id = segue.identifier {
             switch id {
@@ -116,16 +112,17 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
-            MyProgressViewController.shared.startLoad(with: "Deleting project")
+            let progress = MyProgressViewController()
+            progress.startLoad(with: "Deleting project")
             let project = self.projectStore.items[indexPath.row]
             self.projectStore.delete(project: project)
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.deleteProjectRequest(project)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project deleted from server")
+                    await progress.stopLoad(successfully: true, with: "Project deleted from server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
             }
             completionHandler(true)

@@ -7,7 +7,7 @@
 
 import UIKit
 
-class IssueEditController: UIViewController, UITextFieldDelegate {
+class IssueEditController: UIViewController {
     
     var isNew: Bool = true
     var openedFromProject: Bool!
@@ -19,46 +19,30 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
     var projectStore: ProjectStore!
     var employeeStore: EmployeeStore!
     var settings: Settings!
+    
     private var statusPickerController = StatusPickerController()
     private var employeePickerController = EmployeePickerController()
     private var projectPickerController = ProjectPickerController()
     
-    let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-    
-    @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var workField: UITextField!
-    @IBOutlet weak var startField: UITextField!
-    @IBOutlet weak var endField: UITextField!
-    
-    @IBOutlet weak var startDate: UIDatePicker!
-    @IBOutlet weak var endDate: UIDatePicker!
-    
-    @IBOutlet weak var statusPicker: UIPickerView!
-    @IBOutlet weak var employeePicker: UIPickerView!
-    @IBOutlet weak var projectPicker: UIPickerView!
-    
-    @IBAction func saveTapped(_ sender: UIButton) {
-        sender.isEnabled = false
-        issue.name = nameField.text ?? ""
-        issue.job = Double(Int(workField.text!) ?? 0)*3600
-        issue.start = dateFormatter.date(from: startField.text ?? "") ?? startDate.date
-        issue.end = dateFormatter.date(from: startField.text ?? "") ?? endDate.date
+    private func saveIssue() {
+        let issueEditView = self.view as! IssueEditView
+        issue.name = issueEditView.nameField.enteredText ?? ""
+        issue.job = Double(Int(issueEditView.workField.enteredText!) ?? 0)*3600
+        issue.start = issueEditView.start.enteredDate
+        issue.end = issueEditView.end.enteredDate
         issue.status = statusPickerController.selectedStatus
         issue.project = openedFromProject ? project : projectPickerController.selectedProject
         issue.employee = employeePickerController.selectedEmployee
-        MyProgressViewController.shared.startLoad(with: "Saving issue to server")
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Saving issue to server")
         if isNew {
             Task.detached {
                 do {
                     try await self.issue.project?.addIssue(self.issue, settings: self.settings)
                     try await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issue saved to server")
+                    await progress.stopLoad(successfully: true, with: "Issue saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -72,9 +56,9 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
             Task.detached {
                 do {
                     try await self.nm.changeIssueRequest(self.issue)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Issue saved to server")
+                    await progress.stopLoad(successfully: true, with: "Issue saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -86,120 +70,48 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
         self.dismiss(animated: true)
     }
     
-    @IBAction func cancelTapped(_ sender: Any) {
+    private func close() {
         self.dismiss(animated: true)
         self.updateTable()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
-        toolbar.items = [flexibleSpace, doneButton]
-        startField.inputAccessoryView = toolbar
-        endField.inputAccessoryView = toolbar
-        nameField.inputAccessoryView = toolbar
-        workField.inputAccessoryView = toolbar
+        let view = IssueEditView()
+        self.view = view
         
-        statusPicker.delegate = statusPickerController
-        statusPicker.dataSource = statusPickerController
-        employeePicker.delegate = employeePickerController
-        employeePicker.dataSource = employeePickerController
-        projectPicker.delegate = projectPickerController
-        projectPicker.dataSource = projectPickerController
+        view.dialogBox.cancelAction = close
+        view.dialogBox.saveAction = saveIssue
         
-        nameField.text = issue.name
-        workField.text = (Int(issue.job) / 3600).description
+        view.statusPicker.setupPicker(delegate: statusPickerController, dataSource: statusPickerController)
+        view.employeePicker.setupPicker(delegate: employeePickerController, dataSource: employeePickerController)
+        view.projectPicker.setupPicker(delegate: projectPickerController, dataSource: projectPickerController)
         
-        startField.delegate = self
-        startField.text = dateFormatter.string(from: issue.start)
-        startField.addTarget(self, action: #selector(startFieldChanged(_:)), for: .editingDidEnd)
         
-        endField.delegate = self
-        endField.text = dateFormatter.string(from: issue.end)
-        endField.addTarget(self, action: #selector(endFieldChanged(_:)), for: .editingDidEnd)
+        view.nameField.enteredText = issue.name
+        view.workField.enteredText = (Int(issue.job) / 3600).description
         
-        startDate.date = issue.start
-        startDate.addTarget(self, action: #selector(startDateChanged(_:)), for: .valueChanged)
-        endDate.date = issue.end
-        endDate.addTarget(self, action: #selector(endDateChanged(_:)), for: .valueChanged)
-        
+        view.start.enteredDate = issue.start
+        view.end.enteredDate = issue.end
+    
         employeePickerController.employees.append(contentsOf: employeeStore.items)
         employeePickerController.selectedEmployee = issue.employee
         if let initialEmployeeRow = employeePickerController.employees.firstIndex(of: issue.employee) {
-            employeePicker.selectRow(initialEmployeeRow, inComponent: 0, animated: false)
+            view.employeePicker.selectRow(initialEmployeeRow, animated: false)
         }
         projectPickerController.projects.append(contentsOf: projectStore.items)
         projectPickerController.selectedProject = issue.project
         if let initialProjectRow = projectPickerController.projects.firstIndex(of: issue.project) {
-            projectPicker.selectRow(initialProjectRow, inComponent: 0, animated: false)
+            view.projectPicker.selectRow(initialProjectRow, animated: false)
         }
         
         statusPickerController.selectedStatus = issue.status
         if let initialStatusRow = statusPickerController.statuses.firstIndex(of: issue.status) {
-            statusPicker.selectRow(initialStatusRow, inComponent: 0, animated: false)
+            view.statusPicker.selectRow(initialStatusRow, animated: false)
         }
         
         if openedFromProject {
-            projectPicker.isUserInteractionEnabled = false
-        }
-    }
-    
-    @objc func doneButtonTapped() {
-        view.endEditing(true) // Закрывает клавиатуру
-    }
-    
-    @objc func startDateChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        startField.text = dateFormatter.string(from: selectedDate)
-    }
-    @objc func startFieldChanged(_ sender: UITextField) {
-        if let enteredDate = dateFormatter.date(from: sender.text!) {
-            startDate.date = enteredDate
-        }
-    }
-    @objc func endDateChanged(_ sender: UIDatePicker) {
-        let selectedDate = sender.date
-        endField.text = dateFormatter.string(from: selectedDate)
-    }
-    @objc func endFieldChanged(_ sender: UITextField) {
-        if let enteredDate = dateFormatter.date(from: sender.text!) {
-            endDate.date = enteredDate
-        }
-    }
-    
-    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
-        // Обрабатываем добавление цифр и форматируем текст
-        if let currentText = textField.text,
-           let range = Range(range, in: currentText) {
-            
-            let updatedText = currentText.replacingCharacters(in: range, with: string)
-            if let formattedText = formatDateString(updatedText) {
-                textField.text = formattedText
-            }
-            
-            return false // Мы управляем обновлением текста
-        }
-        
-        return true
-    }
-    
-    private func formatDateString(_ dateString: String) -> String? {
-        let cleanedString = dateString.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
-        
-        switch cleanedString.count {
-        case 0...4:
-            return cleanedString
-        case 5...6:
-            return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.endIndex])"
-        case 7...Int.max:
-            return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.index(cleanedString.startIndex, offsetBy: 6)])-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 6)..<cleanedString.endIndex])"
-        default:
-            return cleanedString
+            view.projectPicker.isUserInteractionEnabled = false
         }
     }
     
@@ -264,15 +176,4 @@ class IssueEditController: UIViewController, UITextFieldDelegate {
             selectedProject = projects[row]
         }
     }
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }

@@ -17,23 +17,20 @@ class ProjectEditController: UIViewController {
     var projectStore: ProjectStore!
     var settings: Settings!
     
-    
-    @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var descriptionField: UITextView!
-    
-    @IBAction func saveTapped(_ sender: UIButton) {
-        sender.isEnabled = false
-        project.name = nameField.text ?? ""
-        project.descriprion = descriptionField.text ?? ""
-        MyProgressViewController.shared.startLoad(with: "Saving project to server")
+    private func saveProject() {
+        let projectEditView = self.view as! ProjectEditView
+        project.name = projectEditView.nameField.enteredText ?? ""
+        project.descriprion = projectEditView.descriptionField.enteredText ?? ""
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Saving project to server")
         if isNew {
             Task.detached {
                 do {
                     try await self.projectStore.add(project: self.project, settings: self.settings)
                     try await self.nm.addProjectRequest(project: self.project)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project saved to server")
+                    await progress.stopLoad(successfully: true, with: "Project saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -44,9 +41,9 @@ class ProjectEditController: UIViewController {
             Task.detached {
                 do {
                     try await self.nm.changeProjectRequest(newValue: self.project)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Project saved to server")
+                    await progress.stopLoad(successfully: true, with: "Project saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -56,27 +53,19 @@ class ProjectEditController: UIViewController {
         }
     }
     
-    @IBAction func cancelTapped(_ sender: Any) {
+    private func close() {
         self.updateTable()
         self.dismiss(animated: true)
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameField.text = project.name
-        descriptionField.text = project.descriprion
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
-        toolbar.items = [flexibleSpace, doneButton]
-        nameField.inputAccessoryView = toolbar
-        descriptionField.inputAccessoryView = toolbar
-        // Do any additional setup after loading the view.
-    }
-
-    @objc func doneButtonTapped() {
-        view.endEditing(true) // Закрывает клавиатуру
+        let view = ProjectEditView()
+        view.nameField.enteredText = project.name
+        view.descriptionField.enteredText = project.descriprion
+        view.dialogBox.cancelAction = close
+        view.dialogBox.saveAction = saveProject
+        self.view = view
     }
 
     /*

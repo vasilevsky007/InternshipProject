@@ -11,65 +11,43 @@ class SettingsController: UIViewController {
     
     var settings: Settings!
     
-    @IBOutlet weak var serverUrlField: UITextField!
-    @IBOutlet weak var maxEntriesField: UITextField!
-    @IBOutlet weak var numberOfDaysField: UITextField!
-    
-    @IBAction func saveTapped(_ sender: Any) {
-        if let textUrl = serverUrlField.text {
-            if let serverUrl = URL(string: textUrl) {
-                settings.server = serverUrl
+    private func saveAction() {
+        if let settingsView = self.view as? SettingsView {
+            if let textUrl = settingsView.urlField.enteredText {
+                if let serverUrl = URL(string: textUrl) {
+                    settings.server = serverUrl
+                }
             }
-        }
-        if let textMaxEntries = maxEntriesField.text {
-            if let maxEntries = Int(textMaxEntries) {
-                settings.maxEntries = maxEntries
+            if let textMaxEntries = settingsView.entriesField.enteredText {
+                if let maxEntries = Int(textMaxEntries) {
+                    settings.maxEntries = maxEntries
+                }
             }
-        }
-        if let textNumberOfDays = numberOfDaysField.text {
-            if let numberOfDays = Int(textNumberOfDays) {
-                settings.defaultIntervalBetweenStartAndEndInDays = numberOfDays
+            if let textNumberOfDays = settingsView.daysField.enteredText {
+                if let numberOfDays = Int(textNumberOfDays) {
+                    settings.defaultIntervalBetweenStartAndEndInDays = numberOfDays
+                }
             }
-        }
-        
-        if let encodedSettings = try? JSONEncoder().encode(settings) {
             
-            UserDefaults.standard.set(encodedSettings, forKey: "settings")
+            if let encodedSettings = try? JSONEncoder().encode(settings) {
+                UserDefaults.standard.set(encodedSettings, forKey: "settings")
+            }
         }
     }
     
-    @IBAction func cancelTapped(_ sender: Any) {
+    private func cancelAction() {
         self.navigationController?.popViewController(animated: true)
     }
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        serverUrlField.text = settings.server?.absoluteString
-        maxEntriesField.text = settings.maxEntries.description
-        numberOfDaysField.text = settings.defaultIntervalBetweenStartAndEndInDays.description
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
-        toolbar.items = [flexibleSpace, doneButton]
-        serverUrlField.inputAccessoryView = toolbar
-        maxEntriesField.inputAccessoryView = toolbar
-        numberOfDaysField.inputAccessoryView = toolbar
+        let view = SettingsView()
+        view.dialogBox.saveAction = saveAction
+        view.dialogBox.cancelAction = cancelAction
+        view.urlField.enteredText = settings.server?.absoluteString
+        view.entriesField.enteredText = settings.maxEntries.description
+        view.daysField.enteredText = settings.defaultIntervalBetweenStartAndEndInDays.description
+        self.view = view
     }
-    
-    @objc func doneButtonTapped() {
-        view.endEditing(true) // Закрывает клавиатуру
-    }
-    
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

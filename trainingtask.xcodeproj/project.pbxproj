@@ -7,25 +7,34 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		FA2095DC2B6A7F4F0046EEA1 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095DB2B6A7F4F0046EEA1 /* MainMenuView.swift */; };
+		FA2095DE2B6AA5B70046EEA1 /* Strings.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095DD2B6AA5B70046EEA1 /* Strings.swift */; };
+		FA2095E02B6BE2E10046EEA1 /* DrawingConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095DF2B6BE2E10046EEA1 /* DrawingConstants.swift */; };
+		FA2095E22B6BE3610046EEA1 /* ListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095E12B6BE3610046EEA1 /* ListView.swift */; };
+		FA2095E62B6D293B0046EEA1 /* NamedTextField.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095E52B6D293B0046EEA1 /* NamedTextField.swift */; };
+		FA2095E82B6D2D9F0046EEA1 /* SettingsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095E72B6D2D9F0046EEA1 /* SettingsView.swift */; };
+		FA2095EA2B6D35CE0046EEA1 /* DialogButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095E92B6D35CE0046EEA1 /* DialogButtons.swift */; };
+		FA2095EC2B710AB60046EEA1 /* TableControlButtons.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095EB2B710AB60046EEA1 /* TableControlButtons.swift */; };
+		FA2095EE2B710EB20046EEA1 /* ProjectEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095ED2B710EB20046EEA1 /* ProjectEditView.swift */; };
+		FA2095F02B710FAC0046EEA1 /* NamedTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095EF2B710FAC0046EEA1 /* NamedTextView.swift */; };
+		FA2095F22B7123C50046EEA1 /* EmployeeEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095F12B7123C50046EEA1 /* EmployeeEditView.swift */; };
+		FA2095F42B7127B90046EEA1 /* DateChooser.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095F32B7127B90046EEA1 /* DateChooser.swift */; };
+		FA2095F62B7137630046EEA1 /* IssueEditView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095F52B7137630046EEA1 /* IssueEditView.swift */; };
+		FA2095F82B7139F80046EEA1 /* NamedPicker.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095F72B7139F80046EEA1 /* NamedPicker.swift */; };
+		FA2095FA2B7254970046EEA1 /* MyProgressView.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2095F92B7254970046EEA1 /* MyProgressView.swift */; };
 		FA2818D62B500B5F006E8329 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2818D52B500B5F006E8329 /* AppDelegate.swift */; };
 		FA2818D82B500B5F006E8329 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2818D72B500B5F006E8329 /* SceneDelegate.swift */; };
 		FA2818DA2B500B5F006E8329 /* MainMenuController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA2818D92B500B5F006E8329 /* MainMenuController.swift */; };
-		FA2818DD2B500B5F006E8329 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2818DB2B500B5F006E8329 /* Main.storyboard */; };
 		FA2818DF2B500B61006E8329 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = FA2818DE2B500B61006E8329 /* Assets.xcassets */; };
 		FA2818E22B500B61006E8329 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = FA2818E02B500B61006E8329 /* LaunchScreen.storyboard */; };
 		FA30D9842B553F1800706411 /* SettingsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA30D9832B553F1800706411 /* SettingsController.swift */; };
 		FA30D9862B56B07100706411 /* ProjectListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA30D9852B56B07100706411 /* ProjectListController.swift */; };
 		FA30D9892B56C09300706411 /* ProjectListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA30D9872B56C09300706411 /* ProjectListCell.swift */; };
-		FA30D98A2B56C09300706411 /* ProjectListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA30D9882B56C09300706411 /* ProjectListCell.xib */; };
 		FA885E3D2B57FEA8008D1544 /* EmployeeEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA885E3B2B57FEA8008D1544 /* EmployeeEditController.swift */; };
-		FA885E3E2B57FEA8008D1544 /* EmployeeEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA885E3C2B57FEA8008D1544 /* EmployeeEdit.xib */; };
 		FA885E402B59684E008D1544 /* IssueListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA885E3F2B59684E008D1544 /* IssueListController.swift */; };
 		FA885E432B596BEF008D1544 /* IssueListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA885E412B596BEF008D1544 /* IssueListCell.swift */; };
-		FA885E442B596BEF008D1544 /* IssueListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA885E422B596BEF008D1544 /* IssueListCell.xib */; };
 		FA885E472B597A76008D1544 /* IssueEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA885E452B597A76008D1544 /* IssueEditController.swift */; };
-		FA885E482B597A76008D1544 /* IssueEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA885E462B597A76008D1544 /* IssueEdit.xib */; };
 		FA885E532B5FFBFF008D1544 /* MyProgressViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA885E512B5FFBFF008D1544 /* MyProgressViewController.swift */; };
-		FA885E542B5FFBFF008D1544 /* MyProgressViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA885E522B5FFBFF008D1544 /* MyProgressViewController.xib */; };
 		FA9807D52B5010F700A9E323 /* Project.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9807D42B5010F700A9E323 /* Project.swift */; };
 		FA9807D72B50116000A9E323 /* Issue.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9807D62B50116000A9E323 /* Issue.swift */; };
 		FA9807D92B5013F100A9E323 /* Employee.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9807D82B5013F100A9E323 /* Employee.swift */; };
@@ -36,34 +45,41 @@
 		FA9807E72B5137CE00A9E323 /* NetworkStub.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9807E62B5137CE00A9E323 /* NetworkStub.swift */; };
 		FA9807E92B519ACB00A9E323 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9807E82B519ACB00A9E323 /* NetworkManager.swift */; };
 		FA9D2B362B56D62E00595871 /* ProjectEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B342B56D62E00595871 /* ProjectEditController.swift */; };
-		FA9D2B372B56D62E00595871 /* ProjectEdit.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9D2B352B56D62E00595871 /* ProjectEdit.xib */; };
 		FA9D2B392B57E9E600595871 /* EmployeeListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B382B57E9E600595871 /* EmployeeListController.swift */; };
 		FA9D2B3C2B57EDFE00595871 /* EmployeeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B3A2B57EDFE00595871 /* EmployeeListCell.swift */; };
-		FA9D2B3D2B57EDFE00595871 /* EmployeeListCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = FA9D2B3B2B57EDFE00595871 /* EmployeeListCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		FA2095DB2B6A7F4F0046EEA1 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		FA2095DD2B6AA5B70046EEA1 /* Strings.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Strings.swift; sourceTree = "<group>"; };
+		FA2095DF2B6BE2E10046EEA1 /* DrawingConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DrawingConstants.swift; sourceTree = "<group>"; };
+		FA2095E12B6BE3610046EEA1 /* ListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ListView.swift; sourceTree = "<group>"; };
+		FA2095E52B6D293B0046EEA1 /* NamedTextField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedTextField.swift; sourceTree = "<group>"; };
+		FA2095E72B6D2D9F0046EEA1 /* SettingsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsView.swift; sourceTree = "<group>"; };
+		FA2095E92B6D35CE0046EEA1 /* DialogButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DialogButtons.swift; sourceTree = "<group>"; };
+		FA2095EB2B710AB60046EEA1 /* TableControlButtons.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TableControlButtons.swift; sourceTree = "<group>"; };
+		FA2095ED2B710EB20046EEA1 /* ProjectEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditView.swift; sourceTree = "<group>"; };
+		FA2095EF2B710FAC0046EEA1 /* NamedTextView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedTextView.swift; sourceTree = "<group>"; };
+		FA2095F12B7123C50046EEA1 /* EmployeeEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeEditView.swift; sourceTree = "<group>"; };
+		FA2095F32B7127B90046EEA1 /* DateChooser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DateChooser.swift; sourceTree = "<group>"; };
+		FA2095F52B7137630046EEA1 /* IssueEditView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueEditView.swift; sourceTree = "<group>"; };
+		FA2095F72B7139F80046EEA1 /* NamedPicker.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NamedPicker.swift; sourceTree = "<group>"; };
+		FA2095F92B7254970046EEA1 /* MyProgressView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgressView.swift; sourceTree = "<group>"; };
 		FA2818D22B500B5F006E8329 /* trainingtask.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = trainingtask.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		FA2818D52B500B5F006E8329 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		FA2818D72B500B5F006E8329 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		FA2818D92B500B5F006E8329 /* MainMenuController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuController.swift; sourceTree = "<group>"; };
-		FA2818DC2B500B5F006E8329 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		FA2818DE2B500B61006E8329 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		FA2818E12B500B61006E8329 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		FA2818E32B500B61006E8329 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		FA30D9832B553F1800706411 /* SettingsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsController.swift; sourceTree = "<group>"; };
 		FA30D9852B56B07100706411 /* ProjectListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListController.swift; sourceTree = "<group>"; };
 		FA30D9872B56C09300706411 /* ProjectListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectListCell.swift; sourceTree = "<group>"; };
-		FA30D9882B56C09300706411 /* ProjectListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectListCell.xib; sourceTree = "<group>"; };
 		FA885E3B2B57FEA8008D1544 /* EmployeeEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeEditController.swift; sourceTree = "<group>"; };
-		FA885E3C2B57FEA8008D1544 /* EmployeeEdit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmployeeEdit.xib; sourceTree = "<group>"; };
 		FA885E3F2B59684E008D1544 /* IssueListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListController.swift; sourceTree = "<group>"; };
 		FA885E412B596BEF008D1544 /* IssueListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueListCell.swift; sourceTree = "<group>"; };
-		FA885E422B596BEF008D1544 /* IssueListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IssueListCell.xib; sourceTree = "<group>"; };
 		FA885E452B597A76008D1544 /* IssueEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IssueEditController.swift; sourceTree = "<group>"; };
-		FA885E462B597A76008D1544 /* IssueEdit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = IssueEdit.xib; sourceTree = "<group>"; };
 		FA885E512B5FFBFF008D1544 /* MyProgressViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyProgressViewController.swift; sourceTree = "<group>"; };
-		FA885E522B5FFBFF008D1544 /* MyProgressViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MyProgressViewController.xib; sourceTree = "<group>"; };
 		FA9807CA2B500BEC00A9E323 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		FA9807CC2B500C1400A9E323 /* version.txt */ = {isa = PBXFileReference; lastKnownFileType = text; path = version.txt; sourceTree = "<group>"; };
 		FA9807D42B5010F700A9E323 /* Project.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Project.swift; sourceTree = "<group>"; };
@@ -76,10 +92,8 @@
 		FA9807E62B5137CE00A9E323 /* NetworkStub.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkStub.swift; sourceTree = "<group>"; };
 		FA9807E82B519ACB00A9E323 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		FA9D2B342B56D62E00595871 /* ProjectEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditController.swift; sourceTree = "<group>"; };
-		FA9D2B352B56D62E00595871 /* ProjectEdit.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ProjectEdit.xib; sourceTree = "<group>"; };
 		FA9D2B382B57E9E600595871 /* EmployeeListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListController.swift; sourceTree = "<group>"; };
 		FA9D2B3A2B57EDFE00595871 /* EmployeeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListCell.swift; sourceTree = "<group>"; };
-		FA9D2B3B2B57EDFE00595871 /* EmployeeListCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EmployeeListCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -143,16 +157,6 @@
 		FA885E4B2B5FFBA1008D1544 /* Cells */ = {
 			isa = PBXGroup;
 			children = (
-				FA30D9882B56C09300706411 /* ProjectListCell.xib */,
-				FA9D2B3B2B57EDFE00595871 /* EmployeeListCell.xib */,
-				FA885E422B596BEF008D1544 /* IssueListCell.xib */,
-			);
-			path = Cells;
-			sourceTree = "<group>";
-		};
-		FA885E502B5FFBCE008D1544 /* Cells */ = {
-			isa = PBXGroup;
-			children = (
 				FA30D9872B56C09300706411 /* ProjectListCell.swift */,
 				FA9D2B3A2B57EDFE00595871 /* EmployeeListCell.swift */,
 				FA885E412B596BEF008D1544 /* IssueListCell.swift */,
@@ -163,9 +167,9 @@
 		FA885E552B602D31008D1544 /* Editors */ = {
 			isa = PBXGroup;
 			children = (
-				FA9D2B352B56D62E00595871 /* ProjectEdit.xib */,
-				FA885E3C2B57FEA8008D1544 /* EmployeeEdit.xib */,
-				FA885E462B597A76008D1544 /* IssueEdit.xib */,
+				FA2095ED2B710EB20046EEA1 /* ProjectEditView.swift */,
+				FA2095F12B7123C50046EEA1 /* EmployeeEditView.swift */,
+				FA2095F52B7137630046EEA1 /* IssueEditView.swift */,
 			);
 			path = Editors;
 			sourceTree = "<group>";
@@ -185,8 +189,10 @@
 				FA9807CE2B500CF000A9E323 /* View */,
 				FA2818D52B500B5F006E8329 /* AppDelegate.swift */,
 				FA2818D72B500B5F006E8329 /* SceneDelegate.swift */,
-				FA2818DE2B500B61006E8329 /* Assets.xcassets */,
 				FA9807DC2B501D0800A9E323 /* Errors.swift */,
+				FA2095DF2B6BE2E10046EEA1 /* DrawingConstants.swift */,
+				FA2095DD2B6AA5B70046EEA1 /* Strings.swift */,
+				FA2818DE2B500B61006E8329 /* Assets.xcassets */,
 				FA2818E32B500B61006E8329 /* Info.plist */,
 			);
 			path = src;
@@ -196,7 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				FA9807D22B500D4C00A9E323 /* Components */,
-				FA9807D12B500D3200A9E323 /* Scenes */,
+				FA9807D12B500D3200A9E323 /* Screens */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -220,21 +226,29 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		FA9807D12B500D3200A9E323 /* Scenes */ = {
+		FA9807D12B500D3200A9E323 /* Screens */ = {
 			isa = PBXGroup;
 			children = (
 				FA885E552B602D31008D1544 /* Editors */,
 				FA2818E02B500B61006E8329 /* LaunchScreen.storyboard */,
-				FA2818DB2B500B5F006E8329 /* Main.storyboard */,
+				FA2095DB2B6A7F4F0046EEA1 /* MainMenuView.swift */,
+				FA2095E72B6D2D9F0046EEA1 /* SettingsView.swift */,
+				FA2095E12B6BE3610046EEA1 /* ListView.swift */,
 			);
-			path = Scenes;
+			path = Screens;
 			sourceTree = "<group>";
 		};
 		FA9807D22B500D4C00A9E323 /* Components */ = {
 			isa = PBXGroup;
 			children = (
 				FA885E4B2B5FFBA1008D1544 /* Cells */,
-				FA885E522B5FFBFF008D1544 /* MyProgressViewController.xib */,
+				FA2095E52B6D293B0046EEA1 /* NamedTextField.swift */,
+				FA2095EF2B710FAC0046EEA1 /* NamedTextView.swift */,
+				FA2095F72B7139F80046EEA1 /* NamedPicker.swift */,
+				FA2095E92B6D35CE0046EEA1 /* DialogButtons.swift */,
+				FA2095EB2B710AB60046EEA1 /* TableControlButtons.swift */,
+				FA2095F32B7127B90046EEA1 /* DateChooser.swift */,
+				FA2095F92B7254970046EEA1 /* MyProgressView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -287,7 +301,6 @@
 		FA9807EA2B552F5400A9E323 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				FA885E502B5FFBCE008D1544 /* Cells */,
 				FA885E512B5FFBFF008D1544 /* MyProgressViewController.swift */,
 			);
 			path = Components;
@@ -363,16 +376,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				FA885E3E2B57FEA8008D1544 /* EmployeeEdit.xib in Resources */,
 				FA2818E22B500B61006E8329 /* LaunchScreen.storyboard in Resources */,
-				FA9D2B3D2B57EDFE00595871 /* EmployeeListCell.xib in Resources */,
-				FA885E542B5FFBFF008D1544 /* MyProgressViewController.xib in Resources */,
 				FA2818DF2B500B61006E8329 /* Assets.xcassets in Resources */,
-				FA885E482B597A76008D1544 /* IssueEdit.xib in Resources */,
-				FA9D2B372B56D62E00595871 /* ProjectEdit.xib in Resources */,
-				FA2818DD2B500B5F006E8329 /* Main.storyboard in Resources */,
-				FA30D98A2B56C09300706411 /* ProjectListCell.xib in Resources */,
-				FA885E442B596BEF008D1544 /* IssueListCell.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -396,7 +401,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "#   ON/OFF Script Toggle (script ON with #, script OFF without #)\n#exit 0\n\n#   App vesion / Build version constants\nsourceFilePath=\"$PROJECT_DIR/com.qulix.alex.trainingtask.ios/src/View/Scenes/Base.lproj/LaunchScreen.storyboard\"\nversionNumber=\"$MARKETING_VERSION\"\nbuildNumber=\"$CURRENT_PROJECT_VERSION\"\n\n#   Output version & build numbers into a label on LaunchScreen.storyboard\nsed -i .bak -e \"/userLabel=\\\"APP_VERSION\\\"/s/text=\\\"[^\\\"]*\\\"/text=\\\"$versionNumber($buildNumber)\\\"/\" \"$sourceFilePath\"\n";
+			shellScript = "#   ON/OFF Script Toggle (script ON with #, script OFF without #)\n#exit 0\n\n#   App vesion / Build version constants\nsourceFilePath=\"$PROJECT_DIR/com.qulix.alex.trainingtask.ios/src/View/Screens/Base.lproj/LaunchScreen.storyboard\"\nversionNumber=\"$MARKETING_VERSION\"\nbuildNumber=\"$CURRENT_PROJECT_VERSION\"\n\n#   Output version & build numbers into a label on LaunchScreen.storyboard\nsed -i .bak -e \"/userLabel=\\\"APP_VERSION\\\"/s/text=\\\"[^\\\"]*\\\"/text=\\\"$versionNumber($buildNumber)\\\"/\" \"$sourceFilePath\"\n";
 			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
@@ -409,24 +414,39 @@
 				FA885E532B5FFBFF008D1544 /* MyProgressViewController.swift in Sources */,
 				FA885E432B596BEF008D1544 /* IssueListCell.swift in Sources */,
 				FA9807E92B519ACB00A9E323 /* NetworkManager.swift in Sources */,
+				FA2095EA2B6D35CE0046EEA1 /* DialogButtons.swift in Sources */,
 				FA30D9842B553F1800706411 /* SettingsController.swift in Sources */,
 				FA2818DA2B500B5F006E8329 /* MainMenuController.swift in Sources */,
 				FA9807D92B5013F100A9E323 /* Employee.swift in Sources */,
 				FA2818D62B500B5F006E8329 /* AppDelegate.swift in Sources */,
+				FA2095EE2B710EB20046EEA1 /* ProjectEditView.swift in Sources */,
+				FA2095DE2B6AA5B70046EEA1 /* Strings.swift in Sources */,
 				FA30D9862B56B07100706411 /* ProjectListController.swift in Sources */,
 				FA885E472B597A76008D1544 /* IssueEditController.swift in Sources */,
 				FA9807D72B50116000A9E323 /* Issue.swift in Sources */,
 				FA9D2B362B56D62E00595871 /* ProjectEditController.swift in Sources */,
 				FA30D9892B56C09300706411 /* ProjectListCell.swift in Sources */,
+				FA2095FA2B7254970046EEA1 /* MyProgressView.swift in Sources */,
 				FA885E402B59684E008D1544 /* IssueListController.swift in Sources */,
 				FA9807DD2B501D0800A9E323 /* Errors.swift in Sources */,
 				FA9807E22B512B4600A9E323 /* EmployeeStore.swift in Sources */,
+				FA2095F22B7123C50046EEA1 /* EmployeeEditView.swift in Sources */,
 				FA9807DB2B50170A00A9E323 /* Settings.swift in Sources */,
+				FA2095E62B6D293B0046EEA1 /* NamedTextField.swift in Sources */,
+				FA2095E82B6D2D9F0046EEA1 /* SettingsView.swift in Sources */,
+				FA2095E22B6BE3610046EEA1 /* ListView.swift in Sources */,
+				FA2095F02B710FAC0046EEA1 /* NamedTextView.swift in Sources */,
 				FA9807E72B5137CE00A9E323 /* NetworkStub.swift in Sources */,
+				FA2095EC2B710AB60046EEA1 /* TableControlButtons.swift in Sources */,
+				FA2095F82B7139F80046EEA1 /* NamedPicker.swift in Sources */,
 				FA9D2B3C2B57EDFE00595871 /* EmployeeListCell.swift in Sources */,
+				FA2095DC2B6A7F4F0046EEA1 /* MainMenuView.swift in Sources */,
+				FA2095F62B7137630046EEA1 /* IssueEditView.swift in Sources */,
 				FA2818D82B500B5F006E8329 /* SceneDelegate.swift in Sources */,
 				FA885E3D2B57FEA8008D1544 /* EmployeeEditController.swift in Sources */,
+				FA2095E02B6BE2E10046EEA1 /* DrawingConstants.swift in Sources */,
 				FA9D2B392B57E9E600595871 /* EmployeeListController.swift in Sources */,
+				FA2095F42B7127B90046EEA1 /* DateChooser.swift in Sources */,
 				FA9807E02B5126A500A9E323 /* ProjectStore.swift in Sources */,
 				FA9807D52B5010F700A9E323 /* Project.swift in Sources */,
 			);
@@ -435,14 +455,6 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXVariantGroup section */
-		FA2818DB2B500B5F006E8329 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				FA2818DC2B500B5F006E8329 /* Base */,
-			);
-			name = Main.storyboard;
-			sourceTree = "<group>";
-		};
 		FA2818E02B500B61006E8329 /* LaunchScreen.storyboard */ = {
 			isa = PBXVariantGroup;
 			children = (
@@ -578,8 +590,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Qulix UK LTD";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Qulix UK LTD";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
@@ -588,9 +600,8 @@
 				INFOPLIST_FILE = com.qulix.alex.trainingtask.ios/src/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -598,7 +609,7 @@
 				MARKETING_VERSION = "20240129-2";
 				PRODUCT_BUNDLE_IDENTIFIER = com.qulix.avasilevsky.trainingtask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = com.qulix.avasilevsky.trainingtask;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = com.qulix.avasilevsky.trainingtask;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
@@ -611,8 +622,8 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "iPhone Distribution: Qulix UK LTD";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Qulix UK LTD";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 16;
 				DEVELOPMENT_TEAM = "";
@@ -621,9 +632,8 @@
 				INFOPLIST_FILE = com.qulix.alex.trainingtask.ios/src/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
-				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -632,7 +642,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.qulix.avasilevsky.trainingtask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d0b85cb8-ca87-4704-9148-0ae2fa13f3a8";
-				PROVISIONING_PROFILE_SPECIFIER = com.qulix.avasilevsky.trainingtask;
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = com.qulix.avasilevsky.trainingtask;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;

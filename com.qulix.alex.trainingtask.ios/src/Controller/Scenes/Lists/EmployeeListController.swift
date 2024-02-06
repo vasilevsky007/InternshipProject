@@ -14,10 +14,11 @@ class EmployeeListController: UIViewController {
     var employeeStore: EmployeeStore!
     var settings: Settings!
     
-    @IBOutlet weak var table: UITableView!
+    private var table: UITableView!
     
-    @IBAction func reloadTapped(_ sender: UIButton) {
-        MyProgressViewController.shared.startLoad(with: "Updating employees from server")
+    private func reloadTable() {
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Updating employees from server")
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -30,14 +31,14 @@ class EmployeeListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employees updated from server")
+                await progress.stopLoad(successfully: true, with: "Employees updated from server")
             } catch {
-                await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
             }
         }
     }
     
-    @IBAction func addTapped(_ sender: UIButton) {
+    private func addEmployee() {
         let newEmployee = Employee()
         let editor = EmployeeEditController()
         editor.nm = nm
@@ -53,23 +54,17 @@ class EmployeeListController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        let view = ListView()
+        self.table = view.table
+        view.controls.reloadAction = reloadTable
+        view.controls.addAction = addEmployee
+        self.navigationItem.title = Strings.employees
+        self.view = view
         table.dataSource = self
         table.delegate = self
-        table.register(UINib(nibName: "EmployeeListCell", bundle: nil), forCellReuseIdentifier: "EmployeeListCell")
+        table.register(EmployeeListCell.self, forCellReuseIdentifier: Strings.employeeCellId)
         // Do any additional setup after loading the view.
     }
-    
-    
-    /*
-     // MARK: - Navigation
-     
-     // In a storyboard-based application, you will often want to do a little preparation before navigation
-     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-     // Get the new view controller using segue.destination.
-     // Pass the selected object to the new view controller.
-     }
-     */
-    
 }
 
 extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
@@ -78,7 +73,7 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "EmployeeListCell", for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: Strings.employeeCellId, for: indexPath)
         if let employeeListCell = cell as? EmployeeListCell {
             employeeListCell.nm = nm
             employeeListCell.projectStore = projectStore
@@ -97,14 +92,15 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let employee = self.employeeStore.items[indexPath.row]
             self.employeeStore.delete(employee: employee, projects: self.projectStore)
-            MyProgressViewController.shared.startLoad(with: "Deleting employee from server")
+            let progress = MyProgressViewController()
+            progress.startLoad(with: "Deleting employee from server")
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.deleteEmployeeRequest(employee)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee deleted from server")
+                    await progress.stopLoad(successfully: true, with: "Employee deleted from server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
             }
             completionHandler(true)

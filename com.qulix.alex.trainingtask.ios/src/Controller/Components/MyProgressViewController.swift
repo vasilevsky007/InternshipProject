@@ -9,10 +9,6 @@ import UIKit
 
 class MyProgressViewController: UIViewController {
 
-    @IBOutlet weak var statusLabel: UILabel!
-    @IBOutlet weak var spinner: UIActivityIndicatorView!
-    @IBOutlet weak var statusImage: UIImageView!
-    
     enum Progress {
         case loading
         case ok
@@ -22,53 +18,43 @@ class MyProgressViewController: UIViewController {
     private var status = Progress.loading
     private var message = "Loading..."
     private var overlayWindow: UIWindow?
-    static let shared = MyProgressViewController()
     
     private func showOverlay() {
-        let overlayVC = MyProgressViewController.shared
-        
-        let overlayWidth: CGFloat = 200
-        let overlayHeight: CGFloat = 150
-        overlayVC.view.frame = CGRect(x: (UIScreen.main.bounds.width - overlayWidth) / 2,
-                                      y: (UIScreen.main.bounds.height - overlayHeight) / 2,
-                                      width: overlayWidth,
-                                      height: overlayHeight)
-        
-        if let currentViewController = UIApplication.shared.windows.last(where: { $0.isKeyWindow })?.rootViewController?.presentedViewController {
-            currentViewController.view.addSubview(overlayVC.view)
-            currentViewController.addChild(overlayVC)
-            overlayVC.didMove(toParent: currentViewController)
-        } else {
-            if let currentViewController = UIApplication.shared.windows.last(where: { $0.isKeyWindow })?.rootViewController {
-                currentViewController.view.addSubview(overlayVC.view)
-                currentViewController.addChild(overlayVC)
-                overlayVC.didMove(toParent: currentViewController)
-            }
+        guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
+            return
         }
+        
+        overlayWindow = UIWindow(windowScene: windowScene)
+        overlayWindow?.windowLevel = .alert
+        overlayWindow?.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        overlayWindow?.windowScene = windowScene
+        overlayWindow?.rootViewController = self
+        overlayWindow?.backgroundColor = .clear
+        
+        overlayWindow?.makeKeyAndVisible()
     }
     
     private func hideOverlay() {
-        MyProgressViewController.shared.view.removeFromSuperview()
-        MyProgressViewController.shared.removeFromParent()
+        overlayWindow?.isHidden = true
+        overlayWindow = nil
     }
     
     private func updateView() {
+        let progressView = self.view as! MyProgressView
         switch status {
         case .loading:
-            statusImage.isHidden = true
-            spinner.startAnimating()
+            progressView.statusImage.isHidden = true
+            progressView.spinner.startAnimating()
         case .ok:
-            spinner.hidesWhenStopped = true
-            spinner.stopAnimating()
-            statusImage.isHidden = false
-            statusImage.image = UIImage(systemName: "checkmark")
+            progressView.spinner.stopAnimating()
+            progressView.statusImage.isHidden = false
+            progressView.statusImage.image = UIImage(systemName: Strings.okImage)
         case .error:
-            spinner.hidesWhenStopped = true
-            spinner.stopAnimating()
-            statusImage.isHidden = false
-            statusImage.image = UIImage(systemName: "xmark")
+            progressView.spinner.stopAnimating()
+            progressView.statusImage.isHidden = false
+            progressView.statusImage.image = UIImage(systemName: Strings.errorImage)
         }
-        statusLabel.text = message
+        progressView.message.text = message
     }
     
     func startLoad(with message: String) {
@@ -94,20 +80,6 @@ class MyProgressViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        // Do any additional setup after loading the view.
-        self.view.layer.cornerRadius = 8
+        self.view = MyProgressView()
     }
-
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

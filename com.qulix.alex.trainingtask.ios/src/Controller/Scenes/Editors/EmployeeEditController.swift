@@ -17,26 +17,22 @@ class EmployeeEditController: UIViewController {
     var employeeStore: EmployeeStore!
     var settings: Settings!
     
-    @IBOutlet weak var nameField: UITextField!
-    @IBOutlet weak var surnameField: UITextField!
-    @IBOutlet weak var middleNameField: UITextField!
-    @IBOutlet weak var positionField: UITextField!
-    
-    @IBAction func saveTapped(_ sender: UIButton) {
-        sender.isEnabled = false
-        employee.name = nameField.text ?? ""
-        employee.surname = surnameField.text ?? ""
-        employee.middleName = middleNameField.text ?? ""
-        employee.position = positionField.text ?? ""
-        MyProgressViewController.shared.startLoad(with: "Saving employee to server")
+    private func saveEmployee() {
+        let employeeEditView = self.view as! EmployeeEditView
+        employee.name = employeeEditView.nameField.enteredText ?? ""
+        employee.surname = employeeEditView.surnameField.enteredText ?? ""
+        employee.middleName = employeeEditView.middleNameField.enteredText ?? ""
+        employee.position = employeeEditView.positionField.enteredText ?? ""
+        let progress = MyProgressViewController()
+        progress.startLoad(with: "Saving employee to server")
         if isNew {
             Task.detached {
                 do {
                     try await self.employeeStore.add(employee: self.employee, settings: self.settings)
                     try await self.nm.addEmployeeRequest(employee: self.employee)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee saved to server")
+                    await progress.stopLoad(successfully: true, with: "Employee saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -47,9 +43,9 @@ class EmployeeEditController: UIViewController {
             Task.detached {
                 do {
                     try await self.nm.changeEmployeeRequest(newValue: self.employee)
-                    await MyProgressViewController.shared.stopLoad(successfully: true, with: "Employee saved to server")
+                    await progress.stopLoad(successfully: true, with: "Employee saved to server")
                 } catch {
-                    await MyProgressViewController.shared.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
                 DispatchQueue.main.async {
                     self.updateTable()
@@ -59,41 +55,20 @@ class EmployeeEditController: UIViewController {
         }
     }
     
-    @IBAction func cancelTapped(_ sender: UIButton) {
+    private func close() {
         self.dismiss(animated: true)
         self.updateTable()
     }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        nameField.text = employee.name
-        surnameField.text = employee.surname
-        middleNameField.text = employee.middleName
-        positionField.text = employee.position
-        let toolbar = UIToolbar()
-        toolbar.sizeToFit()
-        let flexibleSpace = UIBarButtonItem(barButtonSystemItem: .flexibleSpace, target: nil, action: nil)
-        let doneButton = UIBarButtonItem(barButtonSystemItem: .done, target: self, action: #selector(doneButtonTapped))
-        toolbar.items = [flexibleSpace, doneButton]
-        nameField.inputAccessoryView = toolbar
-        surnameField.inputAccessoryView = toolbar
-        middleNameField.inputAccessoryView = toolbar
-        positionField.inputAccessoryView = toolbar
-        // Do any additional setup after loading the view.
+        let view = EmployeeEditView()
+        self.view = view
+        view.nameField.enteredText = employee.name
+        view.surnameField.enteredText = employee.surname
+        view.middleNameField.enteredText = employee.middleName
+        view.positionField.enteredText = employee.position
+        view.dialogBox.cancelAction = close
+        view.dialogBox.saveAction = saveEmployee
     }
-
-    @objc func doneButtonTapped() {
-        view.endEditing(true) // Закрывает клавиатуру
-    }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

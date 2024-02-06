@@ -20,7 +20,11 @@ platform :ios do
     your_keychain_name = "login.keychain"
     your_keychain_password = "60541555"
     path_to_xcodeproj = "./trainingtask.xcodeproj"
-  
+    
+    increment_build_number(
+      xcodeproj: path_to_xcodeproj
+    )
+    
     install_provisioning_profile(path: "./com.qulix.alex.trainingtask.ios/cert/comqulixavasilevskytrainingtask.mobileprovision")
     
     update_project_provisioning(
