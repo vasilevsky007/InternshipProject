@@ -18,7 +18,7 @@ class EmployeeListController: UIViewController {
     
     private func reloadTable() {
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Updating employees from server")
+        progress.startLoad(with: Strings.updateMessage)
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -31,9 +31,9 @@ class EmployeeListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await progress.stopLoad(successfully: true, with: "Employees updated from server")
+                await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
             } catch {
-                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }
@@ -93,19 +93,19 @@ extension EmployeeListController: UITableViewDataSource, UITableViewDelegate {
             let employee = self.employeeStore.items[indexPath.row]
             self.employeeStore.delete(employee: employee, projects: self.projectStore)
             let progress = MyProgressViewController()
-            progress.startLoad(with: "Deleting employee from server")
+            progress.startLoad(with: Strings.deleteMessage)
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.deleteEmployeeRequest(employee)
-                    await progress.stopLoad(successfully: true, with: "Employee deleted from server")
+                    await progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.image = UIImage(systemName: Strings.deleteImage)
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
     }

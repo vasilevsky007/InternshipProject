@@ -33,6 +33,13 @@ struct Strings {
     static let issueEnd = "Дата окончания"
     static let status = "Статус"
     static let issueEmployee = "Исполнитель"
+    static let updateMessage = "Загрузка данных с сервера"
+    static let updateDoneMessage = "Данные успешно загружены с сервера"
+    static let error = "Ошибка "
+    static let deleteMessage = "Удаление с сервера"
+    static let deleteDoneMessage = "Данные успешно удалены с сервера"
+    static let saveMessage = "Сохранение данных на сервере"
+    static let saveDoneMessage = "Данные успешно сохранены на сервере"
     
     
     //MARK: Sources names
@@ -42,6 +49,7 @@ struct Strings {
     static let editImage = "square.and.pencil"
     static let okImage = "checkmark"
     static let errorImage = "xmark"
+    static let deleteImage = "trash"
     
     
     //MARK: Identifers

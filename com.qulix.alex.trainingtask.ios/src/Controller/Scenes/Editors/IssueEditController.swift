@@ -31,7 +31,7 @@ class IssueEditController: UIViewController {
         issue.status = statusPickerController.selectedStatus
         issue.employee = employeePickerController.selectedEmployee
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Saving issue to server")
+        progress.startLoad(with: Strings.saveMessage)
         do {
             if let startDate = issueEditView.start.enteredDate {
                 issue.start = startDate
@@ -47,7 +47,7 @@ class IssueEditController: UIViewController {
             guard let projectUnwrapped = project else { throw BusinessLogicErrors.noProjectInIssue }
             try issue.changeProject(to: projectUnwrapped, settings: self.settings)
         } catch {
-            progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+            progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             return
         }
         Task.detached {
@@ -57,13 +57,13 @@ class IssueEditController: UIViewController {
                 } else {
                     try await self.nm.changeIssueRequest(self.issue)
                 }
-                await progress.stopLoad(successfully: true, with: "Issue saved to server")
+                await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
                 DispatchQueue.main.async {
                     self.updateTable()
                     self.dismiss(animated: true)
                 }
             } catch {
-                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }

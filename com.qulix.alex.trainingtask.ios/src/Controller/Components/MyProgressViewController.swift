@@ -16,7 +16,7 @@ class MyProgressViewController: UIViewController {
     }
     
     private var status = Progress.loading
-    private var message = "Loading..."
+    private var message = ""
     private var overlayWindow: UIWindow?
     private var isShown = false
     

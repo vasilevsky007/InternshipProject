@@ -20,7 +20,7 @@ class IssueListController: UIViewController {
     
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Updating issues from server")
+        progress.startLoad(with: Strings.updateMessage)
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -33,9 +33,9 @@ class IssueListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await progress.stopLoad(successfully: true, with: "Issues updated from server")
+                await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
             } catch {
-                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }
@@ -60,7 +60,7 @@ class IssueListController: UIViewController {
             present(editor, animated: true)
         } catch {
             let progress = MyProgressViewController()
-            progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+            progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
         }
     }
     
@@ -79,17 +79,6 @@ class IssueListController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
 
 extension IssueListController: UITableViewDataSource, UITableViewDelegate {
@@ -125,19 +114,19 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
             let issue = self.projectStore.allIssues[indexPath.row]
             issue.project?.removeIssue(issue)
             let progress = MyProgressViewController()
-            progress.startLoad(with: "Deleting issue from server")
+            progress.startLoad(with: Strings.deleteMessage)
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.removeIssueRequest(issue)
-                    await progress.stopLoad(successfully: true, with: "Issues deleted from server")
+                    await progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.image = UIImage(systemName: Strings.deleteImage)
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
     }

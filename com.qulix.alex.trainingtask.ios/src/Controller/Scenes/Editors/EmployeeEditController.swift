@@ -24,32 +24,32 @@ class EmployeeEditController: UIViewController {
         employee.middleName = employeeEditView.middleNameField.enteredText ?? ""
         employee.position = employeeEditView.positionField.enteredText ?? ""
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Saving employee to server")
+        progress.startLoad(with: Strings.saveMessage)
         if isNew {
             Task.detached {
                 do {
                     try await self.employeeStore.add(employee: self.employee, settings: self.settings)
                     try await self.nm.addEmployeeRequest(employee: self.employee)
-                    await progress.stopLoad(successfully: true, with: "Employee saved to server")
+                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
                     DispatchQueue.main.async {
                         self.updateTable()
                         self.dismiss(animated: true)
                     }
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
         } else {
             Task.detached {
                 do {
                     try await self.nm.changeEmployeeRequest(newValue: self.employee)
-                    await progress.stopLoad(successfully: true, with: "Employee saved to server")
+                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
                     DispatchQueue.main.async {
                         self.updateTable()
                         self.dismiss(animated: true)
                     }
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
         }

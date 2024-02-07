@@ -15,7 +15,7 @@ class ProjectListCell: UITableViewCell {
     var settings: Settings!
     var updateTable: () -> Void = {}
     var present: (UIViewController) -> Void = {_ in}
-    var openIssues: (Project) -> Void = {_ in}
+    var openIssues: () -> Void = {}
     
     private var currentIndex: Int = -1
     
@@ -96,8 +96,7 @@ class ProjectListCell: UITableViewCell {
     }
     
     @objc private func showTapped() {
-        let project = projectStore.items[currentIndex]
-        openIssues(project)
+        openIssues()
     }
     
     @objc private func editTapped() {

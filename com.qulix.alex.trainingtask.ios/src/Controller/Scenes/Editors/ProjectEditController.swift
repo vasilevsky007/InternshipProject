@@ -22,32 +22,32 @@ class ProjectEditController: UIViewController {
         project.name = projectEditView.nameField.enteredText ?? ""
         project.descriprion = projectEditView.descriptionField.enteredText ?? ""
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Saving project to server")
+        progress.startLoad(with: Strings.saveMessage)
         if isNew {
             Task.detached {
                 do {
                     try await self.projectStore.add(project: self.project, settings: self.settings)
                     try await self.nm.addProjectRequest(project: self.project)
-                    await progress.stopLoad(successfully: true, with: "Project saved to server")
+                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
                     DispatchQueue.main.async {
                         self.updateTable()
                         self.dismiss(animated: true)
                     }
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
         } else {
             Task.detached {
                 do {
                     try await self.nm.changeProjectRequest(newValue: self.project)
-                    await progress.stopLoad(successfully: true, with: "Project saved to server")
+                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
                     DispatchQueue.main.async {
                         self.updateTable()
                         self.dismiss(animated: true)
                     }
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
         }
@@ -67,15 +67,4 @@ class ProjectEditController: UIViewController {
         view.dialogBox.saveAction = saveProject
         self.view = view
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }

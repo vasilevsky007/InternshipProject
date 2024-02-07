@@ -30,7 +30,7 @@ class SettingsController: UIViewController {
             }
             
             if let encodedSettings = try? JSONEncoder().encode(settings) {
-                UserDefaults.standard.set(encodedSettings, forKey: "settings")
+                UserDefaults.standard.set(encodedSettings, forKey: Strings.userdefaultsSettingsKey)
             }
             self.navigationController?.popViewController(animated: true)
         }

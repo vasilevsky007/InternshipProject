@@ -19,7 +19,7 @@ class ProjectListController: UIViewController {
 
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
-        progress.startLoad(with: "Updating projects from server")
+        progress.startLoad(with: Strings.updateMessage)
         Task.detached {
             do {
                 let (projects, employees) = try await self.nm.fetchAll()
@@ -32,9 +32,9 @@ class ProjectListController: UIViewController {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
                 await self.table.reloadData()
-                await progress.stopLoad(successfully: true, with: "Projects updated from server")
+                await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
             } catch {
-                await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }
@@ -84,50 +84,38 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
                 self.present(view, animated: true)
             }
             projectListCell.setup(forProjectAtIndex: indexPath.row)
-            projectListCell.openIssues = { project in//TODO: no segue.
-                self.performSegue(withIdentifier: "OpenProjectIssues", sender: self.projectStore.items[indexPath.row])
+            projectListCell.openIssues = {
+                let issueListController = IssueListController()
+                issueListController.nm = self.nm
+                issueListController.projectStore = self.projectStore
+                issueListController.employeeStore = self.employeeStore
+                issueListController.settings = self.settings
+                issueListController.openedFromProject = true
+                issueListController.project = self.projectStore.items[indexPath.row]
+                self.navigationController?.show(issueListController, sender: self)
             }
         }
         return cell
     }
     
-    //TODO: refactor this. probably move to cell???
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let id = segue.identifier {
-            switch id {
-            case "OpenProjectIssues":
-                if let issueListController = segue.destination as? IssueListController {
-                    issueListController.nm = self.nm
-                    issueListController.projectStore = self.projectStore
-                    issueListController.employeeStore = self.employeeStore
-                    issueListController.settings = self.settings
-                    issueListController.openedFromProject = true
-                    issueListController.project = (sender as! Project)
-                }
-            default :
-                break
-            }
-        }
-    }
-    
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let progress = MyProgressViewController()
-            progress.startLoad(with: "Deleting project")
+            progress.startLoad(with: Strings.deleteMessage)
             let project = self.projectStore.items[indexPath.row]
             self.projectStore.delete(project: project)
             self.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.deleteProjectRequest(project)
-                    await progress.stopLoad(successfully: true, with: "Project deleted from server")
+                    await progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
                 } catch {
-                    await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
+                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
                 }
             }
             completionHandler(true)
         }
-        deleteAction.image = UIImage(systemName: "trash")
+        deleteAction.image = UIImage(systemName: Strings.deleteImage)
         let swipeConfiguration = UISwipeActionsConfiguration(actions: [deleteAction])
         return swipeConfiguration
     }
