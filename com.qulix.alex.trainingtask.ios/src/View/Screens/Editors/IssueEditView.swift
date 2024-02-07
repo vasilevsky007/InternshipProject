@@ -33,10 +33,10 @@ class IssueEditView: UIView {
         let scrollView = UIScrollView()
         let stack = UIStackView()
         
-        nameField.labelText = Strings.urlSettingsLabel
+        nameField.labelText = Strings.issueName
         stack.addArrangedSubview(nameField)
         
-        workField.labelText = Strings.entriesSettingsLabel
+        workField.labelText = Strings.issueWork
         stack.addArrangedSubview(workField)
         
         start.labelText = Strings.issueStart

@@ -128,9 +128,9 @@ class DateChooser: UIView, UITextFieldDelegate {
         case 5...6:
             return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.endIndex])"
         case 7...Int.max:
-            return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.index(cleanedString.startIndex, offsetBy: 6)])-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 6)..<cleanedString.index(cleanedString.startIndex, offsetBy: 8)])"//MARK: chek if this ok
+            return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.index(cleanedString.startIndex, offsetBy: 6)])-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 6)..<cleanedString.endIndex])"
         default:
-            return cleanedString
+            return "\(cleanedString.prefix(4))-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 4)..<cleanedString.index(cleanedString.startIndex, offsetBy: 6)])-\(cleanedString[cleanedString.index(cleanedString.startIndex, offsetBy: 6)..<cleanedString.index(cleanedString.startIndex, offsetBy: 8)])"//MARK: chek if this ok
         }
     }
     
