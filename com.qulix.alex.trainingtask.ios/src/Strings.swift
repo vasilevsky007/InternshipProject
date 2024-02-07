@@ -32,6 +32,7 @@ struct Strings {
     static let issueStart = "Дата начала"
     static let issueEnd = "Дата окончания"
     static let status = "Статус"
+    static let notSelected = "Не выбран"
     static let issueEmployee = "Исполнитель"
     static let updateMessage = "Загрузка данных с сервера"
     static let updateDoneMessage = "Данные успешно загружены с сервера"

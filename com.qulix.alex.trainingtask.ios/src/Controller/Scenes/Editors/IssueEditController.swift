@@ -147,7 +147,7 @@ class IssueEditController: UIViewController {
             return employees.count
         }
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-            return employees[row]?.fio ?? "Не выбран"
+            return employees[row]?.fio ?? Strings.notSelected
         }
         
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
@@ -167,7 +167,7 @@ class IssueEditController: UIViewController {
             return projects.count
         }
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
-            return projects[row]?.name ?? "Не выбран"
+            return projects[row]?.name ?? Strings.notSelected
         }
         
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
