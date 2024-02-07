@@ -30,13 +30,13 @@ class DateChooser: UIView, UITextFieldDelegate {
             label.text = newValue
         }
     }
-    var enteredDate: Date {
+    var enteredDate: Date? {
         get {
-            dateFormatter.date(from: textField.text ?? "") ?? datePicker.date
+            dateFormatter.date(from: textField.text ?? "")
         }
         set {
-            datePicker.date = newValue
-            textField.text = dateFormatter.string(from: newValue)
+            datePicker.date = newValue ?? Date()
+            textField.text = dateFormatter.string(from: newValue ?? Date())
         }
     }
     

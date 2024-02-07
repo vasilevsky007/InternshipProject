@@ -28,13 +28,21 @@ class IssueEditController: UIViewController {
         let issueEditView = self.view as! IssueEditView
         issue.name = issueEditView.nameField.enteredText ?? ""
         issue.job = Double(Int(issueEditView.workField.enteredText!) ?? 0)*3600
-        issue.start = issueEditView.start.enteredDate
-        issue.end = issueEditView.end.enteredDate
         issue.status = statusPickerController.selectedStatus
         issue.employee = employeePickerController.selectedEmployee
         let progress = MyProgressViewController()
         progress.startLoad(with: "Saving issue to server")
         do {
+            if let startDate = issueEditView.start.enteredDate {
+                issue.start = startDate
+            } else {
+                throw InputValidationErrors.invalidDateInTextField
+            }
+            if let endDate = issueEditView.end.enteredDate {
+                issue.end = endDate
+            } else {
+                throw InputValidationErrors.invalidDateInTextField
+            }
             let project = openedFromProject ? self.project : projectPickerController.selectedProject
             guard let projectUnwrapped = project else { throw BusinessLogicErrors.noProjectInIssue }
             try issue.changeProject(to: projectUnwrapped, settings: self.settings)

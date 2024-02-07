@@ -12,6 +12,10 @@ enum BusinessLogicErrors: Error {
     case noProjectInIssue
 }
 
+enum InputValidationErrors: Error {
+    case invalidDateInTextField
+}
+
 extension BusinessLogicErrors: LocalizedError {
     var errorDescription: String? {
         switch self {
@@ -20,6 +24,14 @@ extension BusinessLogicErrors: LocalizedError {
         case .noProjectInIssue:
             return "Невозможно сохранить задачу без проекта. Пожалуйста, выберите проект."
         }
-        
+    }
+}
+
+extension InputValidationErrors: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .invalidDateInTextField:
+            return "Введена некорректная дата. Формат даты: \(Strings.datePattern)"
+        }
     }
 }
