@@ -9,13 +9,17 @@ import Foundation
 
 enum BusinessLogicErrors: Error {
     case maxNumOfEtriesExceeded
+    case noProjectInIssue
 }
 
 extension BusinessLogicErrors: LocalizedError {
     var errorDescription: String? {
         switch self {
         case .maxNumOfEtriesExceeded:
-            return "Exceeded the maximum number of items in a list from settings."
+            return "Превышено максимально количество сущностей в списке, заданное в настройках."
+        case .noProjectInIssue:
+            return "Невозможно сохранить задачу без проекта. Пожалуйста, выберите проект."
         }
+        
     }
 }

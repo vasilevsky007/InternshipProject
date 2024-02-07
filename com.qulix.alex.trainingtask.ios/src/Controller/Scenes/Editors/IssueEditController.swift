@@ -31,6 +31,7 @@ class IssueEditController: UIViewController {
         issue.start = issueEditView.start.enteredDate
         issue.end = issueEditView.end.enteredDate
         issue.status = statusPickerController.selectedStatus
+        let oldProject = issue.project
         issue.project = openedFromProject ? project : projectPickerController.selectedProject
         issue.employee = employeePickerController.selectedEmployee
         let progress = MyProgressViewController()
@@ -38,36 +39,44 @@ class IssueEditController: UIViewController {
         if isNew {
             Task.detached {
                 do {
+                    guard await self.issue.project != nil else { throw BusinessLogicErrors.noProjectInIssue }
                     try await self.issue.project?.addIssue(self.issue, settings: self.settings)
                     try await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
                     await progress.stopLoad(successfully: true, with: "Issue saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
                 }
             }
         } else {
-            if let index = issue.project?.issues.firstIndex(of: issue) {
-                issue.project?.issues[index] = issue
-            }
             Task.detached {
                 do {
+                    if await oldProject != self.issue.project {
+                        if let oldProject = oldProject {
+                            if let index = await self.issue.project?.issues.firstIndex(of: self.issue) {
+                                oldProject.issues.remove(at: index)
+                            }
+                        }
+                        await self.issue.project?.issues.append(self.issue)
+                    } else {
+                        if let index = await self.issue.project?.issues.firstIndex(of: self.issue) {
+                            await self.issue.project?.issues[index] = self.issue
+                        }
+                    }
                     try await self.nm.changeIssueRequest(self.issue)
                     await progress.stopLoad(successfully: true, with: "Issue saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
                 }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
-                }
             }
         }
-        self.updateTable()
-        self.dismiss(animated: true)
     }
     
     private func close() {

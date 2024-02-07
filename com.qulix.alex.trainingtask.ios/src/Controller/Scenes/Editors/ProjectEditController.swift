@@ -29,12 +29,12 @@ class ProjectEditController: UIViewController {
                     try await self.projectStore.add(project: self.project, settings: self.settings)
                     try await self.nm.addProjectRequest(project: self.project)
                     await progress.stopLoad(successfully: true, with: "Project saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
                 }
             }
         } else {
@@ -42,12 +42,12 @@ class ProjectEditController: UIViewController {
                 do {
                     try await self.nm.changeProjectRequest(newValue: self.project)
                     await progress.stopLoad(successfully: true, with: "Project saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
                 }
             }
         }

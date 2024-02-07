@@ -31,12 +31,12 @@ class EmployeeEditController: UIViewController {
                     try await self.employeeStore.add(employee: self.employee, settings: self.settings)
                     try await self.nm.addEmployeeRequest(employee: self.employee)
                     await progress.stopLoad(successfully: true, with: "Employee saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
                 }
             }
         } else {
@@ -44,12 +44,12 @@ class EmployeeEditController: UIViewController {
                 do {
                     try await self.nm.changeEmployeeRequest(newValue: self.employee)
                     await progress.stopLoad(successfully: true, with: "Employee saved to server")
+                    DispatchQueue.main.async {
+                        self.updateTable()
+                        self.dismiss(animated: true)
+                    }
                 } catch {
                     await progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
-                }
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
                 }
             }
         }
