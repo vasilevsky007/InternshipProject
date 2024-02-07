@@ -92,9 +92,9 @@ struct Issue: Equatable {
     }
     
     mutating func changeProject(to newProject: Project, settings: Settings) throws {
-        try newProject.addIssue(self, settings: settings)
         project?.removeIssue(self)
-        self.project = newProject
+        project = newProject
+        try newProject.addIssue(self, settings: settings)
     }
     
     mutating func changeEmployee(to newEmployee: Employee) {

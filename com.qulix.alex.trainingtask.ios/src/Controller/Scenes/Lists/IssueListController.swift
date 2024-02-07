@@ -41,22 +41,27 @@ class IssueListController: UIViewController {
     }
     
     @objc private func addIssue() {
-        var newIssue = Issue(settings: settings)
-        let editor = IssueEditController()
-        if (openedFromProject) {
-            newIssue.project = project
-            editor.project = project
+        do {
+            var newIssue = Issue(settings: settings)
+            let editor = IssueEditController()
+            if (openedFromProject) {
+                newIssue = try Issue(settings: settings, project: project)
+                editor.project = project
+            }
+            editor.nm = nm
+            editor.employeeStore = employeeStore
+            editor.projectStore = projectStore
+            editor.settings = settings
+            editor.isNew = true
+            editor.issue = newIssue
+            editor.updateTable = table.reloadData
+            editor.openedFromProject = openedFromProject
+            editor.modalPresentationStyle = .pageSheet
+            present(editor, animated: true)
+        } catch {
+            let progress = MyProgressViewController()
+            progress.stopLoad(successfully: false, with: "Error: \(error.localizedDescription)")
         }
-        editor.nm = nm
-        editor.employeeStore = employeeStore
-        editor.projectStore = projectStore
-        editor.settings = settings
-        editor.isNew = true
-        editor.issue = newIssue
-        editor.updateTable = table.reloadData
-        editor.openedFromProject = openedFromProject
-        editor.modalPresentationStyle = .pageSheet
-        present(editor, animated: true)
     }
     
     

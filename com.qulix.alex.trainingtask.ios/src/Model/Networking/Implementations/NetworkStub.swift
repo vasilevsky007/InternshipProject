@@ -83,32 +83,19 @@ actor NetworkStub: NetworkManager {
     
     func changeIssueRequest(_ changedIssue: Issue) async throws {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
+        //delete old
         for project in projects {
             if let index = project.issues.firstIndex(of: changedIssue) {
-                project.issues[index].end = changedIssue.end
-                project.issues[index].start = changedIssue.start
-                project.issues[index].job = changedIssue.job
-                project.issues[index].name = changedIssue.name
-                project.issues[index].status = changedIssue.status
-                if changedIssue.project != nil {
-                    if let projectIndex = projects.firstIndex(of: changedIssue.project!) {
-                        project.issues[index].project = projects[projectIndex]
-                    } else {
-                        project.issues[index].project = nil
-                    }
-                } else {
-                    project.issues[index].project = nil
-                }
-                if changedIssue.employee != nil {
-                    if let employeeIndex = employees.firstIndex(of: changedIssue.employee!) {
-                        project.issues[index].employee = employees[employeeIndex]
-                    } else {
-                        project.issues[index].employee = nil
-                    }
-                } else {
-                    project.issues[index].employee = nil
-                }
+                project.issues.remove(at: index)
                 break
+            }
+        }
+        //add new
+        if changedIssue.project != nil {
+            if let projectIndex = projects.firstIndex(of: changedIssue.project!) {
+                var newIssue = Issue(changedIssue, newEmployees: employees)
+                newIssue.project = projects[projectIndex]
+                projects[projectIndex].issues.append(newIssue)
             }
         }
     }

@@ -18,6 +18,7 @@ class MyProgressViewController: UIViewController {
     private var status = Progress.loading
     private var message = "Loading..."
     private var overlayWindow: UIWindow?
+    private var isShown = false
     
     private func showOverlay() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
@@ -32,11 +33,13 @@ class MyProgressViewController: UIViewController {
         overlayWindow?.backgroundColor = .clear
         
         overlayWindow?.makeKeyAndVisible()
+        isShown = true
     }
     
     private func hideOverlay() {
         overlayWindow?.isHidden = true
         overlayWindow = nil
+        isShown = false
     }
     
     private func updateView() {
@@ -65,6 +68,9 @@ class MyProgressViewController: UIViewController {
     }
     
     func stopLoad(successfully: Bool, with message: String) {
+        if !isShown {
+            showOverlay()
+        }
         if successfully {
             status = .ok
         } else {
