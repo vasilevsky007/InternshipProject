@@ -54,8 +54,8 @@ class DateChooser: UIView, UITextFieldDelegate {
         let selectedDate = sender.date
         textField.text = dateFormatter.string(from: selectedDate)
     }
-    @objc private func textChanged(_ sender: UITextField) {
-        if let enteredDate = dateFormatter.date(from: sender.text!) {
+    func textChanged(_ newValue: String) {
+        if let enteredDate = dateFormatter.date(from: newValue) {
             datePicker.date = enteredDate
         }
     }
@@ -83,17 +83,17 @@ class DateChooser: UIView, UITextFieldDelegate {
         textField.inputAccessoryView = toolbar
         textField.placeholder = Strings.datePattern
         textField.delegate = self
-        textField.addTarget(self, action: #selector(textChanged(_:)), for: .editingDidEnd) //MARK: try .valueChanged
         hstack.addArrangedSubview(textField)
         
         datePicker.translatesAutoresizingMaskIntoConstraints = false
+        datePicker.datePickerMode = .date
         datePicker.addTarget(self, action: #selector(pickerChanged(_:)), for: .valueChanged)
         if #available(iOS 13.4, *) {
             datePicker.preferredDatePickerStyle = .compact
         } else {
             // MARK: idk how to change it in other way, datePicker.datePickerStyle is get-only
         }
-        hstack.addArrangedSubview(textField)
+        hstack.addArrangedSubview(datePicker)
         
         hstack.translatesAutoresizingMaskIntoConstraints = false
         hstack.axis = .horizontal
@@ -119,7 +119,7 @@ class DateChooser: UIView, UITextFieldDelegate {
         ])
     }
     
-    private func formatDateString(_ dateString: String) -> String? {
+    private func formatDateString(_ dateString: String) -> String {
         let cleanedString = dateString.components(separatedBy: CharacterSet.decimalDigits.inverted).joined()
         
         switch cleanedString.count {
@@ -141,13 +141,11 @@ class DateChooser: UIView, UITextFieldDelegate {
            let range = Range(range, in: currentText) {
             
             let updatedText = currentText.replacingCharacters(in: range, with: string)
-            if let formattedText = formatDateString(updatedText) {
-                textField.text = formattedText
-            }
-            
+            let formatted = formatDateString(updatedText)
+            textField.text = formatted
+            textChanged(formatted)
             return false // Мы управляем обновлением текста
         }
-        
         return true
     }
 }
