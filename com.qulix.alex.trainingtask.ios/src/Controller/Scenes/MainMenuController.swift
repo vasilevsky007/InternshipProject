@@ -19,7 +19,7 @@ class MainMenuController: UIViewController {
                 return savedSettings
             }
         }
-        return Settings() //TODO: load from file
+        return Settings.loadFromPlist() ?? Settings()
     }()
     
     @objc private func openProjects() {

@@ -47,6 +47,7 @@
 		FA9D2B362B56D62E00595871 /* ProjectEditController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B342B56D62E00595871 /* ProjectEditController.swift */; };
 		FA9D2B392B57E9E600595871 /* EmployeeListController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B382B57E9E600595871 /* EmployeeListController.swift */; };
 		FA9D2B3C2B57EDFE00595871 /* EmployeeListCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA9D2B3A2B57EDFE00595871 /* EmployeeListCell.swift */; };
+		FAC4932D2B7519B20072CDAD /* Settings.plist in Resources */ = {isa = PBXBuildFile; fileRef = FAC4932C2B7519B20072CDAD /* Settings.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -94,6 +95,7 @@
 		FA9D2B342B56D62E00595871 /* ProjectEditController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectEditController.swift; sourceTree = "<group>"; };
 		FA9D2B382B57E9E600595871 /* EmployeeListController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListController.swift; sourceTree = "<group>"; };
 		FA9D2B3A2B57EDFE00595871 /* EmployeeListCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmployeeListCell.swift; sourceTree = "<group>"; };
+		FAC4932C2B7519B20072CDAD /* Settings.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Settings.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -194,6 +196,7 @@
 				FA2095DD2B6AA5B70046EEA1 /* Strings.swift */,
 				FA2818DE2B500B61006E8329 /* Assets.xcassets */,
 				FA2818E32B500B61006E8329 /* Info.plist */,
+				FAC4932C2B7519B20072CDAD /* Settings.plist */,
 			);
 			path = src;
 			sourceTree = "<group>";
@@ -378,6 +381,7 @@
 			files = (
 				FA2818E22B500B61006E8329 /* LaunchScreen.storyboard in Resources */,
 				FA2818DF2B500B61006E8329 /* Assets.xcassets in Resources */,
+				FAC4932D2B7519B20072CDAD /* Settings.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -93,14 +93,13 @@ class EmployeeListCell: UITableViewCell {
     }
     
     @objc private func editTapped(_ sender: UIButton) {
-        let employee = employeeStore.items[currentIndex]
-        let editor = EmployeeEditController()
-        editor.nm = nm
-        editor.employeeStore = employeeStore
-        editor.settings = settings
-        editor.isNew = false
-        editor.employee = employee
-        editor.updateTable = updateTable
+        let editor = EmployeeEditController(
+            isNew: false,
+            employee: employeeStore.items[currentIndex],
+            updateTable: updateTable,
+            nm: nm,
+            employeeStore: employeeStore,
+            settings: settings)
         editor.modalPresentationStyle = .pageSheet
         present(editor) //Cannot find 'present' in scope
     }
