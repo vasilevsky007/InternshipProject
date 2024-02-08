@@ -91,8 +91,8 @@ actor NetworkStub: NetworkManager {
             }
         }
         //add new
-        if changedIssue.project != nil {
-            if let projectIndex = projects.firstIndex(of: changedIssue.project!) {
+        if let project = changedIssue.project {
+            if let projectIndex = projects.firstIndex(of: project) {
                 var newIssue = Issue(changedIssue, newEmployees: employees)
                 newIssue.project = projects[projectIndex]
                 projects[projectIndex].issues.append(newIssue)

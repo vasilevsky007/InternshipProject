@@ -8,6 +8,7 @@
 import UIKit
 
 class EmployeeListCell: UITableViewCell {
+    //здесь пришлось оставить опционалы  так как нужно использовать именно инициализатор с reuseIdentifier
 
     var nm: NetworkManager!
     var projectStore: ProjectStore!

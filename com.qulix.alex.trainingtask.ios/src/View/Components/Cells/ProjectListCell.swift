@@ -8,6 +8,7 @@
 import UIKit
 
 class ProjectListCell: UITableViewCell {
+    //здесь пришлось оставить опционалы  так как нужно использовать именно инициализатор с reuseIdentifier
     
     var nm: NetworkManager!
     var projectStore: ProjectStore!
@@ -101,13 +102,14 @@ class ProjectListCell: UITableViewCell {
     
     @objc private func editTapped() {
         let project = projectStore.items[currentIndex]
-        let editor = ProjectEditController()
-        editor.nm = nm
-        editor.projectStore = projectStore
-        editor.settings = settings
-        editor.isNew = false
-        editor.project = project
-        editor.updateTable = updateTable
+        let editor = ProjectEditController(
+            isNew: false,
+            project: project,
+            updateTable: updateTable,
+            nm: nm,
+            projectStore: projectStore,
+            settings: settings)
+        
         editor.modalPresentationStyle = .pageSheet
         present(editor) //Cannot find 'present' in scope
     }

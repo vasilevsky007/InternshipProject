@@ -9,16 +9,31 @@ import UIKit
 
 class EmployeeEditController: UIViewController {
     
-    var isNew: Bool = true
-    var employee: Employee!
-    var updateTable: () -> Void = {}
+    private let employeeEditView = EmployeeEditView()
     
-    var nm: NetworkManager!
-    var employeeStore: EmployeeStore!
-    var settings: Settings!
+    private var isNew: Bool = true
+    private var employee: Employee
+    private var updateTable: () -> Void
+    
+    private var nm: NetworkManager
+    private var employeeStore: EmployeeStore
+    private var settings: Settings
+    
+    init(isNew: Bool, employee: Employee, updateTable: @escaping () -> Void, nm: NetworkManager, employeeStore: EmployeeStore, settings: Settings) {
+        self.isNew = isNew
+        self.employee = employee
+        self.updateTable = updateTable
+        self.nm = nm
+        self.employeeStore = employeeStore
+        self.settings = settings
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private func saveEmployee() {
-        let employeeEditView = self.view as! EmployeeEditView
         employee.name = employeeEditView.nameField.enteredText ?? ""
         employee.surname = employeeEditView.surnameField.enteredText ?? ""
         employee.middleName = employeeEditView.middleNameField.enteredText ?? ""
@@ -60,15 +75,18 @@ class EmployeeEditController: UIViewController {
         self.updateTable()
     }
     
+    override func loadView() {
+        super.loadView()
+        self.view = employeeEditView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let view = EmployeeEditView()
-        self.view = view
-        view.nameField.enteredText = employee.name
-        view.surnameField.enteredText = employee.surname
-        view.middleNameField.enteredText = employee.middleName
-        view.positionField.enteredText = employee.position
-        view.dialogBox.cancelAction = close
-        view.dialogBox.saveAction = saveEmployee
+        employeeEditView.nameField.enteredText = employee.name
+        employeeEditView.surnameField.enteredText = employee.surname
+        employeeEditView.middleNameField.enteredText = employee.middleName
+        employeeEditView.positionField.enteredText = employee.position
+        employeeEditView.dialogBox.cancelAction = close
+        employeeEditView.dialogBox.saveAction = saveEmployee
     }
 }

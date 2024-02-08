@@ -16,6 +16,10 @@ enum InputValidationErrors: Error {
     case invalidDateInTextField
 }
 
+enum vcErrors: Error {
+    case nilProjectWhenOpenedFromProject
+}
+
 extension BusinessLogicErrors: LocalizedError {
     var errorDescription: String? {
         switch self {
@@ -32,6 +36,15 @@ extension InputValidationErrors: LocalizedError {
         switch self {
         case .invalidDateInTextField:
             return "Введена некорректная дата. Формат даты: \(Strings.datePattern)"
+        }
+    }
+}
+
+extension vcErrors: LocalizedError {
+    var errorDescription: String? {
+        switch self {
+        case .nilProjectWhenOpenedFromProject:
+            return "Не передан проект при открытии из проекта"
         }
     }
 }

@@ -8,6 +8,8 @@
 import UIKit
 
 class MyProgressViewController: UIViewController {
+    
+    private let progressView = MyProgressView()
 
     enum Progress {
         case loading
@@ -43,7 +45,6 @@ class MyProgressViewController: UIViewController {
     }
     
     private func updateView() {
-        let progressView = self.view as! MyProgressView
         switch status {
         case .loading:
             progressView.statusImage.isHidden = true
@@ -83,9 +84,12 @@ class MyProgressViewController: UIViewController {
             hideOverlay()
         }
     }
+    override func loadView() {
+        super.loadView()
+        self.view = progressView
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        self.view = MyProgressView()
     }
 }

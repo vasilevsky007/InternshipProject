@@ -15,7 +15,7 @@ class Employee: Equatable {
     var position: String
     
     var fio: String {
-        "\(surname) \(name.first ?? " ".first!). \(middleName.first ?? " ".first!)."
+        "\(surname) \(name.first ?? Character(" ")). \(middleName.first ?? Character(" "))."
     }
     
     init() {

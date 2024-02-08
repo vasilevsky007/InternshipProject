@@ -9,7 +9,23 @@ import UIKit
 
 class SettingsController: UIViewController {
     
-    var settings: Settings!
+    private var settingsView = SettingsView()
+    
+    private var settings: Settings
+    
+    init(settings: Settings) {
+        self.settings = settings
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.view = settingsView
+    }
     
     private func saveAction() {
         if let settingsView = self.view as? SettingsView {
@@ -43,12 +59,10 @@ class SettingsController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let view = SettingsView()
-        view.dialogBox.saveAction = saveAction
-        view.dialogBox.cancelAction = cancelAction
-        view.urlField.enteredText = settings.server?.absoluteString
-        view.entriesField.enteredText = settings.maxEntries.description
-        view.daysField.enteredText = settings.defaultIntervalBetweenStartAndEndInDays.description
-        self.view = view
+        settingsView.dialogBox.saveAction = saveAction
+        settingsView.dialogBox.cancelAction = cancelAction
+        settingsView.urlField.enteredText = settings.server?.absoluteString
+        settingsView.entriesField.enteredText = settings.maxEntries.description
+        settingsView.daysField.enteredText = settings.defaultIntervalBetweenStartAndEndInDays.description
     }
 }

@@ -8,15 +8,48 @@
 import UIKit
 
 class IssueListController: UIViewController {
-
-    var nm: NetworkManager!
-    var projectStore: ProjectStore!
-    var employeeStore: EmployeeStore!
-    var settings: Settings!
-    var openedFromProject: Bool!
-    var project: Project!
     
-    private var table: UITableView!
+    private var listView = ListView()
+
+    private var nm: NetworkManager
+    private var projectStore: ProjectStore
+    private var employeeStore: EmployeeStore
+    private var settings: Settings
+    private var openedFromProject: Bool
+    private var project: Project?
+    
+    init(nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings, openedFromProject: Bool, openedFrom project: Project? = nil) {
+        self.nm = nm
+        self.projectStore = projectStore
+        self.employeeStore = employeeStore
+        self.settings = settings
+        self.openedFromProject = openedFromProject
+        self.project = project
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func loadView() {
+        super.loadView()
+        self.view = listView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        listView.controls.reloadAction = reloadTable
+        listView.controls.addAction = addIssue
+        self.navigationItem.title = Strings.issues
+        self.view = view
+        listView.table.dataSource = self
+        listView.table.delegate = self
+        listView.table.register(IssueListCell.self, forCellReuseIdentifier: Strings.issueCellId)
+        // Do any additional setup after loading the view.
+    }
+    
+    
     
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
@@ -32,7 +65,7 @@ class IssueListController: UIViewController {
                 for employee in employees {
                     try await self.employeeStore.add(employee: employee, settings: self.settings)
                 }
-                await self.table.reloadData()
+                await self.listView.table.reloadData()
                 await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
             } catch {
                 await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
@@ -42,20 +75,17 @@ class IssueListController: UIViewController {
     
     @objc private func addIssue() {
         do {
-            var newIssue = Issue(settings: settings)
-            let editor = IssueEditController()
-            if (openedFromProject) {
-                newIssue = try Issue(settings: settings, project: project)
-                editor.project = project
-            }
-            editor.nm = nm
-            editor.employeeStore = employeeStore
-            editor.projectStore = projectStore
-            editor.settings = settings
-            editor.isNew = true
-            editor.issue = newIssue
-            editor.updateTable = table.reloadData
-            editor.openedFromProject = openedFromProject
+            guard let project = project else { throw vcErrors.nilProjectWhenOpenedFromProject }
+            let editor = IssueEditController(
+                isNew: true,
+                openedFromProject: openedFromProject,
+                project: project,
+                issue: openedFromProject ? try Issue(settings: settings, project: project) : Issue(settings: settings),
+                updateTable: listView.table.reloadData,
+                nm: nm,
+                projectStore: projectStore,
+                employeeStore: employeeStore,
+                settings: settings)
             editor.modalPresentationStyle = .pageSheet
             present(editor, animated: true)
         } catch {
@@ -63,28 +93,13 @@ class IssueListController: UIViewController {
             progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
         }
     }
-    
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        let view = ListView()
-        self.table = view.table
-        view.controls.reloadAction = reloadTable
-        view.controls.addAction = addIssue
-        self.navigationItem.title = Strings.issues
-        self.view = view
-        table.dataSource = self
-        table.delegate = self
-        table.register(IssueListCell.self, forCellReuseIdentifier: Strings.issueCellId)
-        // Do any additional setup after loading the view.
-    }
-    
+
 }
 
 extension IssueListController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if openedFromProject {
-            return project.issues.count
+            return project?.issues.count ?? 0
         } else {
             return projectStore.allIssues.count
         }
@@ -97,7 +112,7 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
             issueListCell.projectStore = projectStore
             issueListCell.employeeStore = employeeStore
             issueListCell.settings = settings
-            issueListCell.updateTable = table.reloadData
+            issueListCell.updateTable = listView.table.reloadData
             issueListCell.present = { view in
                 self.present(view, animated: true)
             }
@@ -115,7 +130,7 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
             issue.project?.removeIssue(issue)
             let progress = MyProgressViewController()
             progress.startLoad(with: Strings.deleteMessage)
-            self.table.reloadData()
+            self.listView.table.reloadData()
             Task.detached {
                 do {
                     try await self.nm.removeIssueRequest(issue)

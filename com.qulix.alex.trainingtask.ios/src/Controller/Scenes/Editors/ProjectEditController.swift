@@ -9,16 +9,31 @@ import UIKit
 
 class ProjectEditController: UIViewController {
     
-    var isNew: Bool = true
-    var project: Project!
-    var updateTable: () -> Void = {}
+    private let projectEditView = ProjectEditView()
     
-    var nm: NetworkManager!
-    var projectStore: ProjectStore!
-    var settings: Settings!
+    private var isNew: Bool
+    private var project: Project
+    private var updateTable: () -> Void
+    
+    private var nm: NetworkManager
+    private var projectStore: ProjectStore
+    private var settings: Settings
+    
+    init(isNew: Bool, project: Project, updateTable: @escaping () -> Void, nm: NetworkManager, projectStore: ProjectStore, settings: Settings) {
+        self.isNew = isNew
+        self.project = project
+        self.updateTable = updateTable
+        self.nm = nm
+        self.projectStore = projectStore
+        self.settings = settings
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private func saveProject() {
-        let projectEditView = self.view as! ProjectEditView
         project.name = projectEditView.nameField.enteredText ?? ""
         project.descriprion = projectEditView.descriptionField.enteredText ?? ""
         let progress = MyProgressViewController()
@@ -58,13 +73,16 @@ class ProjectEditController: UIViewController {
         self.dismiss(animated: true)
     }
     
+    override func loadView() {
+        super.loadView()
+        self.view = projectEditView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let view = ProjectEditView()
-        view.nameField.enteredText = project.name
-        view.descriptionField.enteredText = project.descriprion
-        view.dialogBox.cancelAction = close
-        view.dialogBox.saveAction = saveProject
-        self.view = view
+        projectEditView.nameField.enteredText = project.name
+        projectEditView.descriptionField.enteredText = project.descriprion
+        projectEditView.dialogBox.cancelAction = close
+        projectEditView.dialogBox.saveAction = saveProject
     }
 }

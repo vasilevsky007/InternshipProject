@@ -8,6 +8,7 @@
 import UIKit
 
 class IssueListCell: UITableViewCell {
+    //здесь пришлось оставить опционалы  так как нужно использовать именно инициализатор с reuseIdentifier
     
     var nm: NetworkManager!
     var projectStore: ProjectStore!
@@ -95,20 +96,16 @@ class IssueListCell: UITableViewCell {
     }
     
     @objc private func editTapped(_ sender: Any) {
-        let editor = IssueEditController()
-        var issue = projectStore.allIssues[currentIndex]
-        if openedFromProject {
-            issue = project.issues[currentIndex]
-            editor.project = project
-        }
-        editor.nm = nm
-        editor.employeeStore = employeeStore
-        editor.projectStore = projectStore
-        editor.settings = settings
-        editor.isNew = false
-        editor.issue = issue
-        editor.updateTable = updateTable
-        editor.openedFromProject = openedFromProject
+        let editor = IssueEditController(
+            isNew: false,
+            openedFromProject: openedFromProject,
+            project: project,
+            issue: openedFromProject ? project.issues[currentIndex] : projectStore.allIssues[currentIndex],
+            updateTable: updateTable,
+            nm: nm,
+            projectStore: projectStore,
+            employeeStore: employeeStore,
+            settings: settings)
         editor.modalPresentationStyle = .pageSheet
         present(editor)
     }

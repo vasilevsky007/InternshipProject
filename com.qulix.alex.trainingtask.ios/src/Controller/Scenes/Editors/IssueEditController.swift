@@ -9,25 +9,43 @@ import UIKit
 
 class IssueEditController: UIViewController {
     
-    var isNew: Bool = true
-    var openedFromProject: Bool!
-    var project: Project!
-    var issue: Issue!
-    var updateTable: () -> Void = {}
+    private let issueEditView = IssueEditView()
     
-    var nm: NetworkManager!
-    var projectStore: ProjectStore!
-    var employeeStore: EmployeeStore!
-    var settings: Settings!
+    private var isNew: Bool = true
+    private var openedFromProject: Bool
+    private var project: Project?
+    private var issue: Issue
+    private var updateTable: () -> Void
+    
+    private var nm: NetworkManager
+    private var projectStore: ProjectStore
+    private var employeeStore: EmployeeStore
+    private var settings: Settings
     
     private var statusPickerController = StatusPickerController()
     private var employeePickerController = EmployeePickerController()
     private var projectPickerController = ProjectPickerController()
     
+    init(isNew: Bool, openedFromProject: Bool, project: Project? = nil, issue: Issue, updateTable: @escaping () -> Void, nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings) {
+        self.isNew = isNew
+        self.openedFromProject = openedFromProject
+        self.project = project
+        self.issue = issue
+        self.updateTable = updateTable
+        self.nm = nm
+        self.projectStore = projectStore
+        self.employeeStore = employeeStore
+        self.settings = settings
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     private func saveIssue() {
-        let issueEditView = self.view as! IssueEditView
         issue.name = issueEditView.nameField.enteredText ?? ""
-        issue.job = Double(Int(issueEditView.workField.enteredText!) ?? 0)*3600
+        issue.job = Double(Int(issueEditView.workField.enteredText ?? "") ?? 0)*3600
         issue.status = statusPickerController.selectedStatus
         issue.employee = employeePickerController.selectedEmployee
         let progress = MyProgressViewController()
@@ -53,6 +71,7 @@ class IssueEditController: UIViewController {
         Task.detached {
             do {
                 if await self.isNew {
+                    //здесь используется force unwrap так как ранее (guard let projectUnwrapped = project else { throw BusinessLogicErrors.noProjectInIssue }) было проверено что это значение не является nil
                     try await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
                 } else {
                     try await self.nm.changeIssueRequest(self.issue)
@@ -73,43 +92,45 @@ class IssueEditController: UIViewController {
         self.updateTable()
     }
     
+    override func loadView() {
+        super.loadView()
+        self.view = issueEditView
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        let view = IssueEditView()
-        self.view = view
+        issueEditView.dialogBox.cancelAction = close
+        issueEditView.dialogBox.saveAction = saveIssue
         
-        view.dialogBox.cancelAction = close
-        view.dialogBox.saveAction = saveIssue
-        
-        view.statusPicker.setupPicker(delegate: statusPickerController, dataSource: statusPickerController)
-        view.employeePicker.setupPicker(delegate: employeePickerController, dataSource: employeePickerController)
-        view.projectPicker.setupPicker(delegate: projectPickerController, dataSource: projectPickerController)
+        issueEditView.statusPicker.setupPicker(delegate: statusPickerController, dataSource: statusPickerController)
+        issueEditView.employeePicker.setupPicker(delegate: employeePickerController, dataSource: employeePickerController)
+        issueEditView.projectPicker.setupPicker(delegate: projectPickerController, dataSource: projectPickerController)
         
         
-        view.nameField.enteredText = issue.name
-        view.workField.enteredText = (Int(issue.job) / 3600).description
+        issueEditView.nameField.enteredText = issue.name
+        issueEditView.workField.enteredText = (Int(issue.job) / 3600).description
         
-        view.start.enteredDate = issue.start
-        view.end.enteredDate = issue.end
+        issueEditView.start.enteredDate = issue.start
+        issueEditView.end.enteredDate = issue.end
     
         employeePickerController.employees.append(contentsOf: employeeStore.items)
         employeePickerController.selectedEmployee = issue.employee
         if let initialEmployeeRow = employeePickerController.employees.firstIndex(of: issue.employee) {
-            view.employeePicker.selectRow(initialEmployeeRow, animated: false)
+            issueEditView.employeePicker.selectRow(initialEmployeeRow, animated: false)
         }
         projectPickerController.projects.append(contentsOf: projectStore.items)
         projectPickerController.selectedProject = issue.project
         if let initialProjectRow = projectPickerController.projects.firstIndex(of: issue.project) {
-            view.projectPicker.selectRow(initialProjectRow, animated: false)
+            issueEditView.projectPicker.selectRow(initialProjectRow, animated: false)
         }
         
         statusPickerController.selectedStatus = issue.status
         if let initialStatusRow = statusPickerController.statuses.firstIndex(of: issue.status) {
-            view.statusPicker.selectRow(initialStatusRow, animated: false)
+            issueEditView.statusPicker.selectRow(initialStatusRow, animated: false)
         }
         
         if openedFromProject {
-            view.projectPicker.isUserInteractionEnabled = false
+            issueEditView.projectPicker.isUserInteractionEnabled = false
         }
     }
     
