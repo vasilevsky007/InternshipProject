@@ -7,10 +7,34 @@
 
 import UIKit
 
+/// элемент интерфейса, включающий в себя стилизованные `UILabel` и `UITextView`.
+/// использует констрейнты.
 class NamedTextView: UIView {
+    // MARK: - Properties
     private let label = UILabel()
     private let texView = UITextView()
     
+    // MARK: - Computed Properties
+    /// текст, который  отображен в `UILabel` над `UITextView`
+    var labelText: String {
+        get {
+            label.text ?? ""
+        }
+        set {
+            label.text = newValue
+        }
+    }
+    /// текст, введенный в `UITextView`
+    var enteredText: String? {
+        get {
+            texView.text
+        }
+        set {
+            texView.text = newValue
+        }
+    }
+    
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -21,23 +45,7 @@ class NamedTextView: UIView {
         setupUI()
     }
     
-    var labelText: String {
-        get {
-            label.text ?? ""
-        }
-        set {
-            label.text = newValue
-        }
-    }
-    var enteredText: String? {
-        get {
-            texView.text
-        }
-        set {
-            texView.text = newValue
-        }
-    }
-    
+    // MARK: - Methods
     @objc private func doneButtonTapped() {
         self.endEditing(true) // Закрывает клавиатуру
     }

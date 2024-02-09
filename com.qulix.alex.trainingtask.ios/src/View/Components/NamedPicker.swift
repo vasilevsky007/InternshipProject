@@ -7,10 +7,36 @@
 
 import UIKit
 
+/// элемент интерфейса, включающий в себя стилизованные `UILabel` и `UIPickerView`.
+/// использует констрейнты.
+/// - Important: обязательно вызвать ``setupPicker(delegate:dataSource:)`` в методе `viewDidLoad` контроллера для корректной работы
 class NamedPicker: UIView {
+    // MARK: - Properties
     private let label = UILabel()
     private let picker = UIPickerView()
     
+    // MARK: - Computed Properties
+    /// текст, который  отображен в `UILabel` над `UIPickerView`
+    var labelText: String {
+        get {
+            label.text ?? ""
+        }
+        set {
+            label.text = newValue
+        }
+    }
+    
+    /// интерактивность `UIPickerView`
+    override var isUserInteractionEnabled: Bool {
+        get {
+            picker.isUserInteractionEnabled
+        }
+        set {
+            picker.isUserInteractionEnabled = newValue
+        }
+    }
+    
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -21,29 +47,17 @@ class NamedPicker: UIView {
         setupUI()
     }
     
-    var labelText: String {
-        get {
-            label.text ?? ""
-        }
-        set {
-            label.text = newValue
-        }
-    }
-    
-    override var isUserInteractionEnabled: Bool {
-        get {
-            picker.isUserInteractionEnabled
-        }
-        set {
-            picker.isUserInteractionEnabled = newValue
-        }
-    }
-    
+    // MARK: - Methods
+    /// задание `UIPickerViewDelegate` и `UIPickerViewDataSource` для `UIPickerView`
     func setupPicker(delegate: UIPickerViewDelegate, dataSource: UIPickerViewDataSource) {
         picker.delegate = delegate
         picker.dataSource = dataSource
     }
     
+    /// выбор определенного элемента
+    /// - Parameters:
+    ///   - row: индекс выбираемого элемента
+    ///   - animated: нужно ли анимировать этот выбор
     func selectRow(_ row: Int, animated: Bool = false) {
         picker.selectRow(row, inComponent: 0, animated: animated)
     }

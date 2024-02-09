@@ -7,13 +7,13 @@
 
 import Foundation
 
-@MainActor
-class ProjectStore {
+/// сущность для хранения проектов
+@MainActor class ProjectStore {
     
     private(set) var items: [Project] = []
     
-    //MARK: may be not the best decision in terms of performance
-    var allIssues: [Issue] {
+    // MARK: - Computed Properties
+    var allIssues: [Issue] {//may be not the best decision in terms of performance
         var issues: [Issue] = []
         for project in items {
             issues.append(contentsOf: project.issues)
@@ -21,6 +21,7 @@ class ProjectStore {
         return issues
     }
     
+    // MARK: - Methods
     func delete(project removingProject: Project) {
         items.removeAll { project in
             removingProject == project

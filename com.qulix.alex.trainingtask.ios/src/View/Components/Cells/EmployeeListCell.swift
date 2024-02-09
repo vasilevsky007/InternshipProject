@@ -7,15 +7,18 @@
 
 import UIKit
 
+/// клетка  таблицы,  для отображения работника.
+/// использует констрейнты.
+///  - Important: используйте ``setup(forEmployeeAtIndex:nm:projectStore:employeeStore:settings:updateTable:present:)``
+///  сразу посне получения с помощью `.dequeueReusableCell(withIdentifier: Strings.projectCellId, for: indexPath)`
 class EmployeeListCell: UITableViewCell {
-    //здесь пришлось оставить опционалы  так как нужно использовать именно инициализатор с reuseIdentifier
-
-    var nm: NetworkManager!
-    var projectStore: ProjectStore!
-    var employeeStore: EmployeeStore!
-    var settings: Settings!
-    var updateTable: () -> Void = {}
-    var present: (UIViewController) -> Void = {_ in}
+    // MARK: - Properties
+    private var nm: NetworkManager!
+    private var projectStore: ProjectStore!
+    private var employeeStore: EmployeeStore!
+    private var settings: Settings!
+    private var updateTable: () -> Void = {}
+    private var present: (UIViewController) -> Void = {_ in}
     
     private var currentIndex: Int = -1
     
@@ -25,6 +28,7 @@ class EmployeeListCell: UITableViewCell {
     private let positionLabel = UILabel()
     private let editButton = UIButton()
     
+    // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -33,6 +37,42 @@ class EmployeeListCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
+    }
+    
+    // MARK: - Methods
+    func setup(
+        forEmployeeAtIndex index: Int,
+        nm: NetworkManager,
+        projectStore: ProjectStore,
+        employeeStore: EmployeeStore,
+        settings: Settings,
+        updateTable: @escaping () -> Void,
+        present: @escaping (UIViewController) -> Void
+    ) {
+        self.nm = nm
+        self.projectStore = projectStore
+        self.employeeStore = employeeStore
+        self.settings = settings
+        self.updateTable = updateTable
+        self.present = present
+        currentIndex = index
+        let employee = employeeStore.items[index]
+        nameLabel.text = employee.name
+        surnameLabel.text = employee.surname
+        middleNameLabel.text = employee.middleName
+        positionLabel.text = employee.position
+    }
+    
+    @objc private func editTapped(_ sender: UIButton) {
+        let editor = EmployeeEditController(
+            isNew: false,
+            employee: employeeStore.items[currentIndex],
+            updateTable: updateTable,
+            nm: nm,
+            employeeStore: employeeStore,
+            settings: settings)
+        editor.modalPresentationStyle = .pageSheet
+        present(editor) //Cannot find 'present' in scope
     }
     
     private func setupUI() {
@@ -90,27 +130,6 @@ class EmployeeListCell: UITableViewCell {
             editButton.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,  constant: DrawingConstants.standardSpacing),
             editButton.leadingAnchor.constraint(equalTo: stack.trailingAnchor, constant: DrawingConstants.standardSpacing)
         ])
-    }
-    
-    @objc private func editTapped(_ sender: UIButton) {
-        let editor = EmployeeEditController(
-            isNew: false,
-            employee: employeeStore.items[currentIndex],
-            updateTable: updateTable,
-            nm: nm,
-            employeeStore: employeeStore,
-            settings: settings)
-        editor.modalPresentationStyle = .pageSheet
-        present(editor) //Cannot find 'present' in scope
-    }
-    
-    func setup(forEmployeeAtIndex index: Int) {
-        currentIndex = index
-        let employee = employeeStore.items[index]
-        nameLabel.text = employee.name
-        surnameLabel.text = employee.surname
-        middleNameLabel.text = employee.middleName
-        positionLabel.text = employee.position
     }
     
     override func awakeFromNib() {

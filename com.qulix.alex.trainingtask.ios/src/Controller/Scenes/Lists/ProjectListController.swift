@@ -7,15 +7,19 @@
 
 import UIKit
 
+/// контроллер списка проектов
 class ProjectListController: UIViewController {
-    
+    // MARK: - Root View
     private var listView = ListView()
     
+    // MARK: - Properties
     private var nm: NetworkManager
     private var projectStore: ProjectStore
     private var employeeStore: EmployeeStore
     private var settings: Settings
     
+    // MARK: - Initializers
+    /// стандартный инициализатор
     init(nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings) {
         self.nm = nm
         self.projectStore = projectStore
@@ -23,11 +27,33 @@ class ProjectListController: UIViewController {
         self.settings = settings
         super.init(nibName: nil, bundle: nil)
     }
-    
+    /// не использовать
+    /// - Warning: не использовать!!!!
+    @available(*, deprecated, message: "Use init(nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings) instead.")
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        super.loadView()
+        self.view = listView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        self.navigationItem.title = Strings.projets
+        
+        listView.controls.reloadAction = reloadTable
+        listView.controls.addAction = addProject
+        
+        listView.table.dataSource = self
+        listView.table.delegate = self
+        listView.table.register(ProjectListCell.self, forCellReuseIdentifier: Strings.projectCellId)
+        // Do any additional setup after loading the view.
+    }
+    
+    // MARK: - Methods
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.updateMessage)
@@ -62,44 +88,29 @@ class ProjectListController: UIViewController {
         editor.modalPresentationStyle = .pageSheet
         present(editor, animated: true)
     }
-    
-    override func loadView() {
-        super.loadView()
-        self.view = listView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        self.navigationItem.title = Strings.projets
-        
-        listView.controls.reloadAction = reloadTable
-        listView.controls.addAction = addProject
-        
-        listView.table.dataSource = self
-        listView.table.delegate = self
-        listView.table.register(ProjectListCell.self, forCellReuseIdentifier: Strings.projectCellId)
-        // Do any additional setup after loading the view.
-    }
 }
 
+// MARK: - UITableView Delegation
 extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
+    /// количество элементов в таблице
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         projectStore.items.count
     }
     
+    /// ячейка в таблице по индеку
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.projectCellId, for: indexPath)
         if let projectListCell = cell as? ProjectListCell {
-            projectListCell.nm = nm
-            projectListCell.projectStore = projectStore
-            projectListCell.employeeStore = employeeStore
-            projectListCell.settings = settings
-            projectListCell.updateTable = listView.table.reloadData
-            projectListCell.present = { view in
-                self.present(view, animated: true)
-            }
-            projectListCell.setup(forProjectAtIndex: indexPath.row)
-            projectListCell.openIssues = {
+            projectListCell.setup(
+                forProjectAtIndex: indexPath.row,
+                nm: nm,
+                projectStore: projectStore,
+                employeeStore: employeeStore,
+                settings: settings,
+                updateTable: listView.table.reloadData
+            ) { vc in
+                self.present(vc, animated: true)
+            } openIssues: {
                 let issueListController = IssueListController(
                     nm: self.nm,
                     projectStore: self.projectStore,
@@ -113,6 +124,7 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
         return cell
     }
     
+    /// свайпменю ячейки в таблице по индексу
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let progress = MyProgressViewController()

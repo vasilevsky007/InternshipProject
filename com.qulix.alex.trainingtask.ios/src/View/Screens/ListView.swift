@@ -7,11 +7,16 @@
 
 import UIKit
 
+/// экран списка.
+/// использует констрейнты.
 class ListView: UIView {
-
-    var controls = TableControlButtons()
-    var table = UITableView()
+    // MARK: - Properties
+    /// кнопки управления таблицой
+    let controls = TableControlButtons()
+    /// таблица в которой будет отображаться список
+    let table = UITableView()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -22,6 +27,7 @@ class ListView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.backgroundColor = .systemBackground
 

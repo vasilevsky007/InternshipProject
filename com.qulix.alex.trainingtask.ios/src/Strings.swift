@@ -7,8 +7,9 @@
 
 import Foundation
 
+/// структура содержащая в себе все строковые константы
 struct Strings {
-    //MARK: Localization
+    //MARK: - Localization
     static let projets = "Проекты"
     static let project = "Проект"
     static let issues = "Задачи"
@@ -43,7 +44,7 @@ struct Strings {
     static let saveDoneMessage = "Данные успешно сохранены на сервере"
     
     
-    //MARK: Sources names
+    //MARK: - Sources names
     static let reloadImage = "arrow.clockwise"
     static let addImage = "plus.circle"
     static let showImage = "eye"
@@ -51,9 +52,13 @@ struct Strings {
     static let okImage = "checkmark"
     static let errorImage = "xmark"
     static let deleteImage = "trash"
+    static let notStartedImage = "circle"
+    static let inProgressImage = "scope"
+    static let completedImage = "checkmark.circle"
+    static let postponedImage = "arrow.uturn.down.circle"
     
     
-    //MARK: Identifers
+    //MARK: - Identifers
     static let userdefaultsSettingsKey = "settings"
     static let projectCellId = "ProjectListCell"
     static let employeeCellId = "EmployeeListCell"

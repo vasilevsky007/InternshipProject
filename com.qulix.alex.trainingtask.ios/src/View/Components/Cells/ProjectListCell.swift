@@ -7,16 +7,19 @@
 
 import UIKit
 
+/// клетка  таблицы,  для отображения проекта.
+/// использует констрейнты.
+///  - Important: используйте ``setup(forProjectAtIndex:nm:projectStore:employeeStore:settings:updateTable:present:openIssues:)``
+///  сразу посне получения с помощью `.dequeueReusableCell(withIdentifier: Strings.projectCellId, for: indexPath)`
 class ProjectListCell: UITableViewCell {
-    //здесь пришлось оставить опционалы  так как нужно использовать именно инициализатор с reuseIdentifier
-    
-    var nm: NetworkManager!
-    var projectStore: ProjectStore!
-    var employeeStore: EmployeeStore!
-    var settings: Settings!
-    var updateTable: () -> Void = {}
-    var present: (UIViewController) -> Void = {_ in}
-    var openIssues: () -> Void = {}
+    // MARK: - Properties
+    private var nm: NetworkManager!
+    private var projectStore: ProjectStore!
+    private var employeeStore: EmployeeStore!
+    private var settings: Settings!
+    private var updateTable: () -> Void = {}
+    private var present: (UIViewController) -> Void = {_ in}
+    private var openIssues: () -> Void = {}
     
     private var currentIndex: Int = -1
     
@@ -25,6 +28,7 @@ class ProjectListCell: UITableViewCell {
     private let showButton = UIButton()
     private let editButton = UIButton()
     
+    // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         setupUI()
@@ -33,6 +37,47 @@ class ProjectListCell: UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
         setupUI()
+    }
+    // MARK: - Methods
+    func setup(
+        forProjectAtIndex index: Int,
+        nm: NetworkManager,
+        projectStore: ProjectStore,
+        employeeStore: EmployeeStore,
+        settings: Settings,
+        updateTable: @escaping () -> Void,
+        present: @escaping (UIViewController) -> Void,
+        openIssues: @escaping () -> Void
+    ) {
+        self.nm = nm
+        self.projectStore = projectStore
+        self.employeeStore = employeeStore
+        self.settings = settings
+        self.updateTable = updateTable
+        self.present = present
+        self.openIssues = openIssues
+        currentIndex = index
+        let project = projectStore.items[index]
+        nameLabel.text = project.name
+        descriptionLabel.text = project.descriprion
+    }
+    
+    @objc private func showTapped() {
+        openIssues()
+    }
+    
+    @objc private func editTapped() {
+        let project = projectStore.items[currentIndex]
+        let editor = ProjectEditController(
+            isNew: false,
+            project: project,
+            updateTable: updateTable,
+            nm: nm,
+            projectStore: projectStore,
+            settings: settings)
+        
+        editor.modalPresentationStyle = .pageSheet
+        present(editor) //Cannot find 'present' in scope
     }
     
     private func setupUI() {
@@ -94,31 +139,6 @@ class ProjectListCell: UITableViewCell {
             descriptionLabel.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             contentView.trailingAnchor.constraint(equalTo: stack.trailingAnchor, constant: DrawingConstants.standardSpacing),
         ])
-    }
-    
-    @objc private func showTapped() {
-        openIssues()
-    }
-    
-    @objc private func editTapped() {
-        let project = projectStore.items[currentIndex]
-        let editor = ProjectEditController(
-            isNew: false,
-            project: project,
-            updateTable: updateTable,
-            nm: nm,
-            projectStore: projectStore,
-            settings: settings)
-        
-        editor.modalPresentationStyle = .pageSheet
-        present(editor) //Cannot find 'present' in scope
-    }
-    
-    func setup(forProjectAtIndex index: Int) {
-        currentIndex = index
-        let project = projectStore.items[index]
-        nameLabel.text = project.name
-        descriptionLabel.text = project.descriprion
     }
     
     override func awakeFromNib() {

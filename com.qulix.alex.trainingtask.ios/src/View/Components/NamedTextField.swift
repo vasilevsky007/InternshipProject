@@ -7,10 +7,34 @@
 
 import UIKit
 
+/// элемент интерфейса, включающий в себя стилизованные `UILabel` и `UITextField`.
+/// использует констрейнты.
 class NamedTextField: UIView {
+    // MARK: - Properties
     private let label = UILabel()
     private let textField = UITextField()
     
+    // MARK: - Computed Properties
+    /// текст, который  отображен в `UILabel` над `UITextField`
+    var labelText: String {
+        get {
+            label.text ?? ""
+        }
+        set {
+            label.text = newValue
+        }
+    }
+    /// текст, введенный в `UITextField`
+    var enteredText: String? {
+        get {
+            textField.text
+        }
+        set {
+            textField.text = newValue
+        }
+    }
+    
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -21,23 +45,7 @@ class NamedTextField: UIView {
         setupUI()
     }
     
-    var labelText: String {
-        get {
-            label.text ?? ""
-        }
-        set {
-            label.text = newValue
-        }
-    }
-    var enteredText: String? {
-        get {
-            textField.text
-        }
-        set {
-            textField.text = newValue
-        }
-    }
-    
+    // MARK: - Methods
     @objc private func doneButtonTapped() {
         self.endEditing(true) // Закрывает клавиатуру
     }

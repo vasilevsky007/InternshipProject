@@ -7,17 +7,23 @@
 
 import Foundation
 
+/// сущность работника
 class Employee: Equatable {
+    // MARK: - Properties
+    /// идентификатор задачи. сравнение проводится именно по нему
     let id: UUID
     var name: String
     var surname: String
     var middleName: String
     var position: String
     
+    // MARK: - Computed Properties
     var fio: String {
         "\(surname) \(name.first ?? Character(" ")). \(middleName.first ?? Character(" "))."
     }
     
+    // MARK: - Initializers
+    /// станддартный инициализатор
     init() {
         id = UUID()
         name = ""
@@ -26,6 +32,8 @@ class Employee: Equatable {
         position = ""
     }
     
+    /// инициализатор копирования
+    /// - Parameter employee: исходный, старый объект
     init(_ employee: Employee) {
         id = employee.id
         name = employee.name
@@ -34,6 +42,7 @@ class Employee: Equatable {
         position = employee.position
     }
     
+    // MARK: - Methods
     static func == (lhs: Employee, rhs: Employee) -> Bool {
         lhs.id == rhs.id
     }

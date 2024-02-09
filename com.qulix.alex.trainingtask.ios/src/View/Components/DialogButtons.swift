@@ -6,12 +6,20 @@
 //
 
 import UIKit
-
+/// элемент интерфейса, включающий в себя кнопки сохранения и отмены.
+/// использует констрейнты.
+/// - Important: задайте   ``saveAction`` и ``cancelAction`` для  работы кнопок
 class DialogButtons: UIView {
-
+    // MARK: - Properties
+    /// действие, которое происходит при нажатии на кнопку сохранения
+    var saveAction: () -> Void = {}
+    /// действие, которое происходит при нажатии на кнопку отмены
+    var cancelAction: () -> Void = {}
+    
     private let cancelButton = UIButton()
     private let saveButton = UIButton()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -22,9 +30,7 @@ class DialogButtons: UIView {
         setupUI()
     }
     
-    var saveAction: () -> Void = {}
-    var cancelAction: () -> Void = {}
-    
+    // MARK: - Methods
     @objc private func saveTapped() {
         saveAction()
     }
@@ -73,5 +79,4 @@ class DialogButtons: UIView {
             stack.centerYAnchor.constraint(equalTo: self.centerYAnchor),
         ])
     }
-
 }

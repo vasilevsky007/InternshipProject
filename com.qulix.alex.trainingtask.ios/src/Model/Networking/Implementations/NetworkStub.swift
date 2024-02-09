@@ -7,10 +7,12 @@
 
 import Foundation
 
+/// объект, эмулирующий работу с сервером. хранит отдельные маасивы объектов сущностей, не связанные с основной программой
 actor NetworkStub: NetworkManager {
     private var projects: [Project] = []
     private var employees: [Employee] = []
     
+    // MARK: - Methods
     func fetchAll() async throws -> (projects: [Project], employees: [Employee]) {
         try? await Task.sleep(nanoseconds: 1_000_000_000)
         var newProjects: [Project] = []

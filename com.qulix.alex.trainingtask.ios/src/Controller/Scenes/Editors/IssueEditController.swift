@@ -7,10 +7,12 @@
 
 import UIKit
 
+/// контроллер редакотра задачи
 class IssueEditController: UIViewController {
-    
+    // MARK: - Root View
     private let issueEditView = IssueEditView()
     
+    // MARK: - Properties
     private var isNew: Bool = true
     private var openedFromProject: Bool
     private var project: Project?
@@ -26,6 +28,8 @@ class IssueEditController: UIViewController {
     private var employeePickerController = EmployeePickerController()
     private var projectPickerController = ProjectPickerController()
     
+    // MARK: - Initializers
+    /// стандартный инициализатор
     init(isNew: Bool, openedFromProject: Bool, project: Project? = nil, issue: Issue, updateTable: @escaping () -> Void, nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings) {
         self.isNew = isNew
         self.openedFromProject = openedFromProject
@@ -43,6 +47,50 @@ class IssueEditController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        super.loadView()
+        self.view = issueEditView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        issueEditView.dialogBox.cancelAction = close
+        issueEditView.dialogBox.saveAction = saveIssue
+        
+        issueEditView.statusPicker.setupPicker(delegate: statusPickerController, dataSource: statusPickerController)
+        issueEditView.employeePicker.setupPicker(delegate: employeePickerController, dataSource: employeePickerController)
+        issueEditView.projectPicker.setupPicker(delegate: projectPickerController, dataSource: projectPickerController)
+        
+        
+        issueEditView.nameField.enteredText = issue.name
+        issueEditView.workField.enteredText = (Int(issue.job) / 3600).description
+        
+        issueEditView.start.enteredDate = issue.start
+        issueEditView.end.enteredDate = issue.end
+        
+        employeePickerController.employees.append(contentsOf: employeeStore.items)
+        employeePickerController.selectedEmployee = issue.employee
+        if let initialEmployeeRow = employeePickerController.employees.firstIndex(of: issue.employee) {
+            issueEditView.employeePicker.selectRow(initialEmployeeRow, animated: false)
+        }
+        projectPickerController.projects.append(contentsOf: projectStore.items)
+        projectPickerController.selectedProject = issue.project
+        if let initialProjectRow = projectPickerController.projects.firstIndex(of: issue.project) {
+            issueEditView.projectPicker.selectRow(initialProjectRow, animated: false)
+        }
+        
+        statusPickerController.selectedStatus = issue.status
+        if let initialStatusRow = statusPickerController.statuses.firstIndex(of: issue.status) {
+            issueEditView.statusPicker.selectRow(initialStatusRow, animated: false)
+        }
+        
+        if openedFromProject {
+            issueEditView.projectPicker.isUserInteractionEnabled = false
+        }
+    }
+    
+    // MARK: - Methods
     private func saveIssue() {
         issue.name = issueEditView.nameField.enteredText ?? ""
         issue.job = Double(Int(issueEditView.workField.enteredText ?? "") ?? 0)*3600
@@ -92,105 +140,84 @@ class IssueEditController: UIViewController {
         self.updateTable()
     }
     
-    override func loadView() {
-        super.loadView()
-        self.view = issueEditView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        issueEditView.dialogBox.cancelAction = close
-        issueEditView.dialogBox.saveAction = saveIssue
-        
-        issueEditView.statusPicker.setupPicker(delegate: statusPickerController, dataSource: statusPickerController)
-        issueEditView.employeePicker.setupPicker(delegate: employeePickerController, dataSource: employeePickerController)
-        issueEditView.projectPicker.setupPicker(delegate: projectPickerController, dataSource: projectPickerController)
-        
-        
-        issueEditView.nameField.enteredText = issue.name
-        issueEditView.workField.enteredText = (Int(issue.job) / 3600).description
-        
-        issueEditView.start.enteredDate = issue.start
-        issueEditView.end.enteredDate = issue.end
-    
-        employeePickerController.employees.append(contentsOf: employeeStore.items)
-        employeePickerController.selectedEmployee = issue.employee
-        if let initialEmployeeRow = employeePickerController.employees.firstIndex(of: issue.employee) {
-            issueEditView.employeePicker.selectRow(initialEmployeeRow, animated: false)
-        }
-        projectPickerController.projects.append(contentsOf: projectStore.items)
-        projectPickerController.selectedProject = issue.project
-        if let initialProjectRow = projectPickerController.projects.firstIndex(of: issue.project) {
-            issueEditView.projectPicker.selectRow(initialProjectRow, animated: false)
-        }
-        
-        statusPickerController.selectedStatus = issue.status
-        if let initialStatusRow = statusPickerController.statuses.firstIndex(of: issue.status) {
-            issueEditView.statusPicker.selectRow(initialStatusRow, animated: false)
-        }
-        
-        if openedFromProject {
-            issueEditView.projectPicker.isUserInteractionEnabled = false
-        }
-    }
-    
-    //MARK: classes for pickers delegation
+    //MARK: - Сlasses for pickers delegation
+    /// класс для уравления UIPickerView для выбора статуса задачи
     class StatusPickerController: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
-        let statuses: [Issue.Status] = [.notStarted, .inProgress, .completed, .postponed]
+        //MARK: Properties
+        /// список всех возможных статусов
+        let statuses: [Issue.Status] = Issue.Status.allCases
+        /// выбранный в данный момент статус
         var selectedStatus: Issue.Status = .notStarted
         
+        //MARK: Delegate methods
+        ///количество сегментов
         func numberOfComponents(in pickerView: UIPickerView) -> Int {
             return 1
         }
-        
+        ///количество элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
             return statuses.count
         }
+        ///названия элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
             return statuses[row].rawValue
         }
-        
+        ///дейсвие при выборе определённого  элемента в сегменте
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
             selectedStatus = statuses[row]
-            // Здесь можно выполнить какие-то действия при выборе определенного статуса
         }
     }
     
+    /// класс для уравления UIPickerView для выбора работника выполняющего задачу
     class EmployeePickerController: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+        //MARK: Properties
+        /// список всех  работников
         var employees: [Employee?] = [nil]
+        /// выбранный в данный момент работник
         var selectedEmployee: Employee? = nil
         
+        //MARK: Delegate methods
+        ///количество сегментов
         func numberOfComponents(in pickerView: UIPickerView) -> Int {
             return 1
         }
-        
+        ///количество элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
             return employees.count
         }
+        ///названия элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
             return employees[row]?.fio ?? Strings.notSelected
         }
-        
+        ///дейсвие при выборе определённого  элемента в сегменте
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
             selectedEmployee = employees[row]
         }
     }
     
+    
+    /// класс для уравления UIPickerView для выбора проекта к которому относится задача
     class ProjectPickerController: NSObject, UIPickerViewDelegate, UIPickerViewDataSource {
+        //MARK: Properties
+        /// список всех  проектов
         var projects: [Project?] = [nil]
+        /// выбранный в данный момент проект
         var selectedProject: Project? = nil
         
+        //MARK: Delegate methods
+        ///количество сегментов
         func numberOfComponents(in pickerView: UIPickerView) -> Int {
             return 1
         }
-        
+        ///количество элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
             return projects.count
         }
+        ///названия элементов в сегменте
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
             return projects[row]?.name ?? Strings.notSelected
         }
-        
+        ///дейсвие при выборе определённого  элемента в сегменте
         func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
             selectedProject = projects[row]
         }

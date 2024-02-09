@@ -7,21 +7,22 @@
 
 import UIKit
 
+/// элемент интерфейса, включающий в себя стилизованные `UILabel` а также  `UITextField` и `UIDatePicker` для ввода даты.
+/// использует констрейнты.
 class DateChooser: UIView, UITextFieldDelegate {
+    // MARK: - Properties
     private let label = UILabel()
     private let textField = UITextField()
     private let datePicker = UIDatePicker()
     
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        setupUI()
-    }
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "yyyy-MM-dd"
+        return formatter
+    }()
     
-    required init?(coder aDecoder: NSCoder) {
-        super.init(coder: aDecoder)
-        setupUI()
-    }
-    
+    // MARK: - Computed Properties
+    /// текст, который  отображен в `UILabel` над полями ввода даты
     var labelText: String {
         get {
             label.text ?? ""
@@ -30,6 +31,7 @@ class DateChooser: UIView, UITextFieldDelegate {
             label.text = newValue
         }
     }
+    /// введенная дата
     var enteredDate: Date? {
         get {
             dateFormatter.date(from: textField.text ?? "")
@@ -40,21 +42,27 @@ class DateChooser: UIView, UITextFieldDelegate {
         }
     }
     
+    // MARK: - Initializers
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        setupUI()
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        super.init(coder: aDecoder)
+        setupUI()
+    }
+    
     @objc private func doneButtonTapped() {
         self.endEditing(true) // Закрывает клавиатуру
     }
     
-    private let dateFormatter: DateFormatter = {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter
-    }()
-    
+    // MARK: - Methods
     @objc private func pickerChanged(_ sender: UIDatePicker) {
         let selectedDate = sender.date
         textField.text = dateFormatter.string(from: selectedDate)
     }
-    func textChanged(_ newValue: String) {
+    private func textChanged(_ newValue: String) {
         if let enteredDate = dateFormatter.date(from: newValue) {
             datePicker.date = enteredDate
         }
@@ -134,6 +142,8 @@ class DateChooser: UIView, UITextFieldDelegate {
         }
     }
     
+    // MARK: - Delegation Methods
+    /// управление обновлением текста в текством поле
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         // Обрабатываем добавление цифр и форматируем текст

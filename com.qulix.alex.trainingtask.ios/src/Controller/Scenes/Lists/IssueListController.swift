@@ -7,10 +7,12 @@
 
 import UIKit
 
+/// контроллер списка задач
 class IssueListController: UIViewController {
-    
+    // MARK: - Root View
     private var listView = ListView()
 
+    // MARK: - Properties
     private var nm: NetworkManager
     private var projectStore: ProjectStore
     private var employeeStore: EmployeeStore
@@ -18,6 +20,8 @@ class IssueListController: UIViewController {
     private var openedFromProject: Bool
     private var project: Project?
     
+    // MARK: - Initializers
+    /// стандартный инициализатор
     init(nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings, openedFromProject: Bool, openedFrom project: Project? = nil) {
         self.nm = nm
         self.projectStore = projectStore
@@ -28,10 +32,14 @@ class IssueListController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// не использовать
+    /// - Warning: не использовать!!!!
+    @available(*, deprecated, message: "Use init(nm: NetworkManager, projectStore: ProjectStore, employeeStore: EmployeeStore, settings: Settings, openedFromProject: Bool, openedFrom project: Project? = nil) instead.")
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
     override func loadView() {
         super.loadView()
         self.view = listView
@@ -41,7 +49,11 @@ class IssueListController: UIViewController {
         super.viewDidLoad()
         listView.controls.reloadAction = reloadTable
         listView.controls.addAction = addIssue
-        self.navigationItem.title = Strings.issues
+        if let project = project {
+            self.navigationItem.title = Strings.issues + " (\(project.name))"
+        } else {
+            self.navigationItem.title = Strings.issues
+        }
         self.view = view
         listView.table.dataSource = self
         listView.table.delegate = self
@@ -49,8 +61,7 @@ class IssueListController: UIViewController {
         // Do any additional setup after loading the view.
     }
     
-    
-    
+    // MARK: - Methods
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.updateMessage)
@@ -75,12 +86,14 @@ class IssueListController: UIViewController {
     
     @objc private func addIssue() {
         do {
-            guard let project = project else { throw vcErrors.nilProjectWhenOpenedFromProject }
+            if (openedFromProject) {
+                guard let project = project else { throw vcErrors.nilProjectWhenOpenedFromProject }
+            }
             let editor = IssueEditController(
                 isNew: true,
                 openedFromProject: openedFromProject,
                 project: project,
-                issue: openedFromProject ? try Issue(settings: settings, project: project) : Issue(settings: settings),
+                issue: openedFromProject ? try Issue(settings: settings, project: project!) : Issue(settings: settings),
                 updateTable: listView.table.reloadData,
                 nm: nm,
                 projectStore: projectStore,
@@ -93,10 +106,11 @@ class IssueListController: UIViewController {
             progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
         }
     }
-
 }
 
+// MARK: - UITableView Delegation
 extension IssueListController: UITableViewDataSource, UITableViewDelegate {
+    /// количество элементов в таблице
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if openedFromProject {
             return project?.issues.count ?? 0
@@ -105,25 +119,26 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
         }
     }
     
+    /// ячейка в таблице по индеку
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: Strings.issueCellId, for: indexPath)
         if let issueListCell = cell as? IssueListCell {
-            issueListCell.nm = nm
-            issueListCell.projectStore = projectStore
-            issueListCell.employeeStore = employeeStore
-            issueListCell.settings = settings
-            issueListCell.updateTable = listView.table.reloadData
-            issueListCell.present = { view in
-                self.present(view, animated: true)
-            }
-            if openedFromProject {
-                issueListCell.project = project
-            }
-            issueListCell.setup(forIssueAtIndex: indexPath.row, openedFromProject: openedFromProject)
+            issueListCell.setup(
+                forIssueAtIndex: indexPath.row,
+                openedFromProject: openedFromProject,
+                nm: nm,
+                projectStore: projectStore,
+                employeeStore: employeeStore,
+                settings: settings, 
+                project: project,
+                updateTable: listView.table.reloadData) { vc in
+                    self.present(vc, animated: true)
+                }
         }
         return cell
     }
     
+    /// свайпменю ячейки в таблице по индексу
     func tableView(_ tableView: UITableView, trailingSwipeActionsConfigurationForRowAt indexPath: IndexPath) -> UISwipeActionsConfiguration? {
         let deleteAction = UIContextualAction(style: .destructive, title: nil) { (action, view, completionHandler) in
             let issue = self.projectStore.allIssues[indexPath.row]

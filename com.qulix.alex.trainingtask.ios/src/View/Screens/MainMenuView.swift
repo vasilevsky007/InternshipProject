@@ -7,13 +7,20 @@
 
 import UIKit
 
+/// экран главного меню.
+/// использует констрейнты.
 class MainMenuView: UIView {
-    
+    // MARK: - Properties
+    /// кнопка открытия экрана со списком проектов
     var projects = UIButton()
+    /// кнопка открытия экрана со списком задач
     var issues = UIButton()
+    /// кнопка открытия экрана со списком работников
     var employees = UIButton()
+    /// кнопка открытия экрана настроек
     var settings = UIButton()
 
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -24,6 +31,7 @@ class MainMenuView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.backgroundColor = .systemBackground
         let stack = UIStackView()
@@ -65,5 +73,4 @@ class MainMenuView: UIView {
             stack.centerYAnchor.constraint(equalTo: centerYAnchor),
         ])
     }
-
 }

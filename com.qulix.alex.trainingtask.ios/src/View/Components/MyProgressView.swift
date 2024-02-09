@@ -8,11 +8,18 @@
 import UIKit
 import CoreImage.CIFilterBuiltins
 
+/// элемент интерфейса, включающий в себя стилизованные `UILabel` а также  `UIImageView` и `UIActivityIndicatorView` для отображения состояния.
+/// использует констрейнты.
 class MyProgressView: UIView {
+    // MARK: - Properties
+    /// показываемое под спиннером или иконкой сообщение
     let message = UILabel()
+    /// спиннер
     let spinner = UIActivityIndicatorView()
+    /// иконка
     let statusImage = UIImageView()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -23,6 +30,7 @@ class MyProgressView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.isOpaque = false

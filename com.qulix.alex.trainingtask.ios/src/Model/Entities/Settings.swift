@@ -7,11 +7,16 @@
 
 import Foundation
 
+/// сущность настроек
 class Settings: Codable {
-    var server = URL(string: "http://example.com")
+    // MARK: - Properties
+    var server = URL(string: "http://example.com")!
     var maxEntries = 100
+    /// TimeInterval в секундах. для количества дней необходимо использовать ``defaultIntervalBetweenStartAndEndInDays``
     private(set) var defaultBetweenStartAndEnd: TimeInterval = 86400//sec = 1 day
     
+    // MARK: - Computed Properties
+    /// интервал между стандартным началом и концом выполнения задачи в днях
     var defaultIntervalBetweenStartAndEndInDays: Int {
         set {
             defaultBetweenStartAndEnd = Double(newValue) * 86400
@@ -21,6 +26,7 @@ class Settings: Codable {
         }
     }
     
+    // MARK: - Static Methods
     static func loadFromPlist() -> Settings? {
         guard let plistURL = Bundle.main.url(forResource: "Settings", withExtension: "plist"),
               let plistData = try? Data(contentsOf: plistURL) else {
@@ -28,7 +34,7 @@ class Settings: Codable {
             return nil
         }
         
-        var settings = Settings()
+        let settings = Settings()
         
         do {
             guard let plistDictionary = try PropertyListSerialization.propertyList(from: plistData, options: [], format: nil) as? [String: Any] else {

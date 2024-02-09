@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// протокол для определения методов, которыми должен обладать объект взаимодействия с сервером
 protocol NetworkManager {
     func fetchAll() async throws -> (projects: [Project], employees: [Employee])
     

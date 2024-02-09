@@ -6,14 +6,20 @@
 //
 
 import UIKit
-
+/// экран настроек.
+/// использует констрейнты.
 class SettingsView: UIView {
-    
+    // MARK: - Properties
+    /// поле для ввода URL сервера
     let urlField = NamedTextField()
+    /// поле для ввода максимального количества записей в списках
     let entriesField = NamedTextField()
+    /// поле для ввода стандартного количества дней между начальной и конечной датой зачачи
     let daysField = NamedTextField()
+    /// кнопки сохранения/отмены
     let dialogBox = DialogButtons()
 
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -24,6 +30,7 @@ class SettingsView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.backgroundColor = .systemBackground
         let stack = UIStackView()
@@ -60,5 +67,4 @@ class SettingsView: UIView {
             
         ])
     }
-
 }

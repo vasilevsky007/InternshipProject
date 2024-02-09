@@ -7,12 +7,18 @@
 
 import UIKit
 
+/// экран редактирования проекта.
+/// использует констрейнты.
 class ProjectEditView: UIView {
-    
+    // MARK: - Properties
+    /// поле для ввода названия проекта
     let nameField = NamedTextField()
+    /// поле для ввода описания проекта
     let descriptionField = NamedTextView()
+    /// кнопки сохранения/отмены
     let dialogBox = DialogButtons()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -23,6 +29,7 @@ class ProjectEditView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.translatesAutoresizingMaskIntoConstraints = false
         self.backgroundColor = .systemBackground
@@ -55,5 +62,4 @@ class ProjectEditView: UIView {
             
         ])
     }
-
 }

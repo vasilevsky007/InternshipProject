@@ -7,6 +7,7 @@
 
 import Foundation
 
+/// структура содежащая различные константы для отрисовки интерфейса
 struct DrawingConstants {
     static let standardSpacing: CGFloat = 8
     static let doubleSpacing: CGFloat = 16

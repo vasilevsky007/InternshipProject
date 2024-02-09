@@ -7,16 +7,23 @@
 
 import Foundation
 
+/// сущность задачи
 struct Issue: Equatable {
-    enum Status: String {
+    ///состояние задачи
+    enum Status: String, CaseIterable {
         case notStarted = "Не начата"
         case inProgress = "В процессе"
         case completed = "Завершена"
         case postponed = "Отложена"
     }
     
+    // MARK: - Properties
+    /// идентификатор задачи. сравнение проводится именно по нему
     let id:  UUID
     var name: String
+    /// ссылка на проект, которому принадлежит данная задача (и в котором она и хранится)
+    /// - important: никогда не должно быть  nil, кроме как после начальной инициализации. т. е. при сохранении в проект всегда необходимо заполнять это поле соответсвующе
+    /// - warning: лучше никогда вручную не изменять, а пользоваться ``Issue/changeProject(to:settings:)`` для того чтобы не только изменить значение поля, но и переместить задачу в нужный объект
     var project: Project?
     var job: TimeInterval
     var start: Date
@@ -24,6 +31,9 @@ struct Issue: Equatable {
     var status: Status
     var employee: Employee?
     
+    // MARK: - Initializers
+    /// стандартный инициализатор
+    /// - Parameter settings: используется для получения интервала между датой  начала и конца
     init(settings: Settings) {
         self.id = UUID()
         self.name = ""
@@ -47,6 +57,10 @@ struct Issue: Equatable {
         self.employee = nil
     }
     
+    /// инициализатор, который сразу добавляет задачу в проект
+    /// - Parameters:
+    ///   - settings: объект настроек, используется для получения интервала между датой  начала и конца
+    ///   - project: проект в котрый должна добавляться задача
     init(settings: Settings, project: Project) throws {
         self.id = UUID()
         self.name = ""
@@ -71,10 +85,17 @@ struct Issue: Equatable {
         try project.addIssue(self, settings: settings)
     }
     
+    /// инициализатор копирования
+    /// - Parameters:
+    ///   - issue: исходный, старый объект
+    ///   - newEmployees: массив сущностей работников,
+    ///    нужен если мы хотим привязать к другим сущностям работников (т. е создать отдельную копию все объектов).
+    ///    работники в задачах на проектах выбираются с такими же полями идентификаторов как висходном объекте
+    /// - Important: поле ``Issue/project`` должно быть заменено, для корректной копии всей базы в памяти
     init(_ issue: Issue, newEmployees: [Employee]) {
         id = issue.id
         name = issue.name
-        project = issue.project //MARK: this is not copy. it should be changed in Project init after initialization
+        project = issue.project //this is not copy. it should be changed in Project init after initialization
         job = issue.job
         start = issue.start
         end = issue.end
@@ -87,18 +108,19 @@ struct Issue: Equatable {
         }
     }
     
+    // MARK: - Methods
     static func == (lhs: Issue, rhs: Issue) -> Bool {
         lhs.id == rhs.id
     }
     
+    /// метод, не только изменяющий значене поля, но и перемещающий задачу в новый объект
+    /// - Parameters:
+    ///   - newProject: новый объект, в который должна быть помещена задача
+    ///   - settings: объект настроек, для собдюдения размеров списка
     mutating func changeProject(to newProject: Project, settings: Settings) throws {
         project?.removeIssue(self)
         project = newProject
         try newProject.addIssue(self, settings: settings)
-    }
-    
-    mutating func changeEmployee(to newEmployee: Employee) {
-        self.employee = newEmployee
     }
     
     mutating func deleteEmployee() {

@@ -7,14 +7,22 @@
 
 import UIKit
 
+/// экран редактирования работника.
+/// использует констрейнты.
 class EmployeeEditView: UIView {
-    
+    // MARK: - Properties
+    /// поле для ввода имени работника
     let nameField = NamedTextField()
+    /// поле для ввода фамилии работника
     let surnameField = NamedTextField()
+    /// поле для ввода отчества работника
     let middleNameField = NamedTextField()
+    /// поле для ввода должности работника
     let positionField = NamedTextField()
+    /// кнопки сохранения/отмены
     let dialogBox = DialogButtons()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -25,6 +33,7 @@ class EmployeeEditView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.backgroundColor = .systemBackground
         let stack = UIStackView()

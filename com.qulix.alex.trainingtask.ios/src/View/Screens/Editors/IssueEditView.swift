@@ -7,16 +7,28 @@
 
 import UIKit
 
+/// экран редактирования задачи.
+/// использует констрейнты.
 class IssueEditView: UIView {
+    // MARK: - Properties
+    /// поле для ввода названия задачи
     let nameField = NamedTextField()
+    /// поле для ввода работы(часы)
     let workField = NamedTextField()
+    /// поле для ввода даты начала задачи
     let start = DateChooser()
+    /// поле для ввода даты конца задачи
     let end = DateChooser()
+    /// поле для выбора статуса задачи
     let statusPicker = NamedPicker()
+    /// поле для выбора работника выполняющего задачу
     let employeePicker = NamedPicker()
+    /// поле для выбора проекта к которому относится задача
     let projectPicker = NamedPicker()
+    /// кнопки сохранения/отмены
     let dialogBox = DialogButtons()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -27,6 +39,7 @@ class IssueEditView: UIView {
         setupUI()
     }
     
+    // MARK: - Methods
     private func setupUI() {
         self.backgroundColor = .systemBackground
         
@@ -86,5 +99,4 @@ class IssueEditView: UIView {
             
         ])
     }
-
 }

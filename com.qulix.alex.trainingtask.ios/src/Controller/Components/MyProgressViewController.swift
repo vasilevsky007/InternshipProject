@@ -7,10 +7,17 @@
 
 import UIKit
 
+/// контроллер индикатора прогресса.
+/// способен пказывать спиннер загрузки, иконку удачи или ошибки и кастомное сообщение
+/// показывается в отдельном`UIWindow` поверх всего экрана
+///
+/// для использования необходимо создать экземпляр данного класса метод
 class MyProgressViewController: UIViewController {
-    
+    // MARK: - Root View
     private let progressView = MyProgressView()
 
+    // MARK: - Properties
+    /// перечисление с возможными состояниями контроллера
     enum Progress {
         case loading
         case ok
@@ -21,6 +28,49 @@ class MyProgressViewController: UIViewController {
     private var message = ""
     private var overlayWindow: UIWindow?
     private var isShown = false
+    
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        super.loadView()
+        self.view = progressView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+    }
+    
+    // MARK: - Methods
+    /// метод, который показывает в отдельном`UIWindow` поверх всего экрана спиннер загрузки и кастомное сообщение
+    /// - Important: чтобы скрыть окно, необхходимо вызвать ``stopLoad(successfully:with:)``
+    /// - Parameter message: сообщение которое будет показано под спиннером загрузки
+    func startLoad(with message: String) {
+        showOverlay()
+        self.status = .loading
+        self.message = message
+        updateView()
+    }
+    
+    /// метод, который показывает  в отдельном`UIWindow` поверх всего экрана иконку удачи или ошибки и кастомное сообщение
+    /// - Important: автоматически скрывает окно через некоторое время
+    /// - Parameters:
+    ///   - successfully: параметр, определяющий показывать иконку удачи или ошибки
+    ///   - message: сообщение которое будет показано под иконкой
+    func stopLoad(successfully: Bool, with message: String) {
+        if !isShown {
+            showOverlay()
+        }
+        if successfully {
+            status = .ok
+        } else {
+            status = .error
+        }
+        self.message = message
+        updateView()
+        Task {
+            try? await Task.sleep(nanoseconds:1_500_000_000)
+            hideOverlay()
+        }
+    }
     
     private func showOverlay() {
         guard let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene else {
@@ -59,37 +109,5 @@ class MyProgressViewController: UIViewController {
             progressView.statusImage.image = UIImage(systemName: Strings.errorImage)
         }
         progressView.message.text = message
-    }
-    
-    func startLoad(with message: String) {
-        showOverlay()
-        self.status = .loading
-        self.message = message
-        updateView()
-    }
-    
-    func stopLoad(successfully: Bool, with message: String) {
-        if !isShown {
-            showOverlay()
-        }
-        if successfully {
-            status = .ok
-        } else {
-            status = .error
-        }
-        self.message = message
-        updateView()
-        Task {
-            try? await Task.sleep(nanoseconds:1_500_000_000)
-            hideOverlay()
-        }
-    }
-    override func loadView() {
-        super.loadView()
-        self.view = progressView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
     }
 }

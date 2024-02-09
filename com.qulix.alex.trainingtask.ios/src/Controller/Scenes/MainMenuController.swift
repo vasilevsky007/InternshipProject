@@ -7,9 +7,12 @@
 
 import UIKit
 
+/// контроллер главного меню. необходимо поместить в `UINavigationController` для корректной работы
 class MainMenuController: UIViewController {
+    // MARK: - Root View
     private var menuView = MainMenuView()
     
+    // MARK: - Properties
     private let nm: NetworkManager = NetworkStub()
     private let projectStore = ProjectStore()
     private let employeeStore = EmployeeStore()
@@ -22,6 +25,23 @@ class MainMenuController: UIViewController {
         return Settings.loadFromPlist() ?? Settings()
     }()
     
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        super.loadView()
+        self.view = menuView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        // Do any additional setup after loading the view.
+        menuView.projects.addTarget(self, action: #selector(openProjects), for: .touchUpInside)
+        menuView.issues.addTarget(self, action: #selector(openIssues), for: .touchUpInside)
+        menuView.employees.addTarget(self, action: #selector(openEmployees), for: .touchUpInside)
+        menuView.settings.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
+        self.navigationItem.title = Strings.mainMenu
+    }
+    
+    // MARK: - Methods
     @objc private func openProjects() {
         let projectListController = ProjectListController(
             nm: self.nm,
@@ -52,21 +72,5 @@ class MainMenuController: UIViewController {
         let settingsController = SettingsController(settings: settings)
         navigationController?.show(settingsController, sender: self)
     }
-    
-    override func loadView() {
-        super.loadView()
-        self.view = menuView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        // Do any additional setup after loading the view.
-        menuView.projects.addTarget(self, action: #selector(openProjects), for: .touchUpInside)
-        menuView.issues.addTarget(self, action: #selector(openIssues), for: .touchUpInside)
-        menuView.employees.addTarget(self, action: #selector(openEmployees), for: .touchUpInside)
-        menuView.settings.addTarget(self, action: #selector(openSettings), for: .touchUpInside)
-        self.navigationItem.title = Strings.mainMenu
-    }
-    
 }
 

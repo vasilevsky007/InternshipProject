@@ -7,10 +7,12 @@
 
 import UIKit
 
+/// контроллер редакотра работников
 class EmployeeEditController: UIViewController {
-    
+    // MARK: - Root View
     private let employeeEditView = EmployeeEditView()
     
+    // MARK: - Properties
     private var isNew: Bool = true
     private var employee: Employee
     private var updateTable: () -> Void
@@ -19,6 +21,8 @@ class EmployeeEditController: UIViewController {
     private var employeeStore: EmployeeStore
     private var settings: Settings
     
+    // MARK: - Initializers
+    /// стандартный инициализатор
     init(isNew: Bool, employee: Employee, updateTable: @escaping () -> Void, nm: NetworkManager, employeeStore: EmployeeStore, settings: Settings) {
         self.isNew = isNew
         self.employee = employee
@@ -29,10 +33,30 @@ class EmployeeEditController: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
+    /// не использовать
+    /// - Warning: не использовать!!!!
+    @available(*, deprecated, message: "Use init(isNew: Bool, employee: Employee, updateTable: @escaping () -> Void, nm: NetworkManager, employeeStore: EmployeeStore, settings: Settings) instead.")
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Lifecycle Methods
+    override func loadView() {
+        super.loadView()
+        self.view = employeeEditView
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        employeeEditView.nameField.enteredText = employee.name
+        employeeEditView.surnameField.enteredText = employee.surname
+        employeeEditView.middleNameField.enteredText = employee.middleName
+        employeeEditView.positionField.enteredText = employee.position
+        employeeEditView.dialogBox.cancelAction = close
+        employeeEditView.dialogBox.saveAction = saveEmployee
+    }
+    
+    // MARK: - Methods
     private func saveEmployee() {
         employee.name = employeeEditView.nameField.enteredText ?? ""
         employee.surname = employeeEditView.surnameField.enteredText ?? ""
@@ -73,20 +97,5 @@ class EmployeeEditController: UIViewController {
     private func close() {
         self.dismiss(animated: true)
         self.updateTable()
-    }
-    
-    override func loadView() {
-        super.loadView()
-        self.view = employeeEditView
-    }
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        employeeEditView.nameField.enteredText = employee.name
-        employeeEditView.surnameField.enteredText = employee.surname
-        employeeEditView.middleNameField.enteredText = employee.middleName
-        employeeEditView.positionField.enteredText = employee.position
-        employeeEditView.dialogBox.cancelAction = close
-        employeeEditView.dialogBox.saveAction = saveEmployee
     }
 }

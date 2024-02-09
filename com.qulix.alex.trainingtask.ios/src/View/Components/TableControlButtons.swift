@@ -7,10 +7,20 @@
 
 import UIKit
 
+/// элемент интерфейса, включающий в себя кнопки обновления и добавления нового элемента.
+/// использует констрейнты.
+/// - Important: задайте   ``addAction`` и ``reloadAction`` для  работы кнопок
 class TableControlButtons: UIView {
+    // MARK: - Properties
+    /// действие, которое происходит при нажатии на кнопку обновления
+    var reloadAction: () -> Void = {}
+    /// действие, которое происходит при нажатии на кнопку добавления новго элемента
+    var addAction: () -> Void = {}
+    
     private var reload = UIButton()
     private var add = UIButton()
     
+    // MARK: - Initializers
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -21,9 +31,7 @@ class TableControlButtons: UIView {
         setupUI()
     }
     
-    var reloadAction: () -> Void = {}
-    var addAction: () -> Void = {}
-    
+    // MARK: - Methods
     @objc private func reloadTapped() {
         reloadAction()
     }

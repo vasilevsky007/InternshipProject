@@ -7,15 +7,16 @@
 
 import Foundation
 
+/// ошибки связанные с непосредсвенной логикой, описанной в заднии от заказчика
 enum BusinessLogicErrors: Error {
     case maxNumOfEtriesExceeded
     case noProjectInIssue
 }
-
+/// ошибки связанные с валидацией полей
 enum InputValidationErrors: Error {
     case invalidDateInTextField
 }
-
+/// ошибки связанные с неправильным использованием контролеров
 enum vcErrors: Error {
     case nilProjectWhenOpenedFromProject
 }

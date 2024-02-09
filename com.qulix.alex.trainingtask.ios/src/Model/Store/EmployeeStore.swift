@@ -7,14 +7,11 @@
 
 import Foundation
 
-@MainActor
-class EmployeeStore {
-    private(set) var items: [Employee]
+/// сущность для хранения работников
+@MainActor class EmployeeStore {
+    private(set) var items: [Employee] = []
     
-    init() {
-        self.items = []
-    }
-    
+    // MARK: - Methods
     func delete(employee removingEmployee: Employee, projects: ProjectStore) {
         items.removeAll { employee in
             removingEmployee == employee
