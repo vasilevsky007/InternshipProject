@@ -8,28 +8,34 @@
 import Foundation
 
 /// сущность для хранения работников
-@MainActor class EmployeeStore {
+class EmployeeStore {
+    // MARK: - Properties
     private(set) var items: [Employee] = []
+    private var serialQueue = DispatchQueue.init(label: "EmployeeStoreQ")
     
     // MARK: - Methods
     func delete(employee removingEmployee: Employee, projects: ProjectStore) {
-        items.removeAll { employee in
-            removingEmployee == employee
-        }
-        Task {
+        serialQueue.sync {
+            items.removeAll { employee in
+                removingEmployee == employee
+            }
             projects.removeEmployeeFromAllProjects(removingEmployee)
         }
     }
     
     func add(employee: Employee, settings: Settings) throws {
-        if items.count < settings.maxEntries {
-            items.append(employee)
-        } else {
-            throw BusinessLogicErrors.maxNumOfEtriesExceeded
+        try serialQueue.sync {
+            if items.count < settings.maxEntries {
+                items.append(employee)
+            } else {
+                throw BusinessLogicErrors.maxNumOfEtriesExceeded
+            }
         }
     }
     
     func deleteAll() {
-        self.items = []
+        serialQueue.sync {
+            self.items = []
+        }
     }
 }

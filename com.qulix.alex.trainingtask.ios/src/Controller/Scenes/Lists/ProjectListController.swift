@@ -57,21 +57,28 @@ class ProjectListController: UIViewController {
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.updateMessage)
-        Task.detached {
-            do {
-                let (projects, employees) = try await self.nm.fetchAll()
-                await self.projectStore.deleteAll()
-                await self.employeeStore.deleteAll()
-                for project in projects {
-                    try await self.projectStore.add(project: project, settings: self.settings)
+        DispatchQueue.main.async {
+            self.nm.fetchAll() { result, error in
+                if let error = error {
+                    progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                } else {
+                    do {
+                        if let (projects, employees) = result {
+                            self.projectStore.deleteAll()
+                            self.employeeStore.deleteAll()
+                            for project in projects {
+                                try self.projectStore.add(project: project, settings: self.settings)
+                            }
+                            for employee in employees {
+                                try self.employeeStore.add(employee: employee, settings: self.settings)
+                            }
+                            self.listView.table.reloadData()
+                            progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
+                        }
+                    } catch {
+                        progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                    }
                 }
-                for employee in employees {
-                    try await self.employeeStore.add(employee: employee, settings: self.settings)
-                }
-                await self.listView.table.reloadData()
-                await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
-            } catch {
-                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }
@@ -132,12 +139,14 @@ extension ProjectListController: UITableViewDataSource, UITableViewDelegate {
             let project = self.projectStore.items[indexPath.row]
             self.projectStore.delete(project: project)
             self.listView.table.reloadData()
-            Task.detached {
-                do {
-                    try await self.nm.deleteProjectRequest(project)
-                    await progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            DispatchQueue.main.async {
+                self.nm.deleteProjectRequest(project) { error in
+                    if let error = error {
+                        progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                    }
+                    else {
+                        progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
+                    }
                 }
             }
             completionHandler(true)

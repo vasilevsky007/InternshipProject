@@ -60,32 +60,27 @@ class ProjectEditController: UIViewController {
         project.descriprion = projectEditView.descriptionField.enteredText ?? ""
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.saveMessage)
-        if isNew {
-            Task.detached {
-                do {
-                    try await self.projectStore.add(project: self.project, settings: self.settings)
-                    try await self.nm.addProjectRequest(project: self.project)
-                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
-                    DispatchQueue.main.async {
-                        self.updateTable()
-                        self.dismiss(animated: true)
-                    }
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
-                }
+        
+        let callback: (_ error: Error?) -> Void = { error in
+            if let error =  error {
+                progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            } else {
+                progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
+                self.updateTable()
+                self.dismiss(animated: true)
             }
-        } else {
-            Task.detached {
-                do {
-                    try await self.nm.changeProjectRequest(newValue: self.project)
-                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
-                    DispatchQueue.main.async {
-                        self.updateTable()
-                        self.dismiss(animated: true)
-                    }
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+        }
+        
+        DispatchQueue.main.async {
+            do {
+                if self.isNew {
+                    try self.projectStore.add(project: self.project, settings: self.settings)
+                    self.nm.addProjectRequest(project: self.project, completion: callback)
+                } else {
+                    self.nm.changeProjectRequest(newValue: self.project, completion: callback)
                 }
+            } catch {
+                progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }

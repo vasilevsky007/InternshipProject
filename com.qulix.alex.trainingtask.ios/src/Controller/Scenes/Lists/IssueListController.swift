@@ -65,21 +65,28 @@ class IssueListController: UIViewController {
     @objc private func reloadTable() {
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.updateMessage)
-        Task.detached {
-            do {
-                let (projects, employees) = try await self.nm.fetchAll()
-                await self.projectStore.deleteAll()
-                await self.employeeStore.deleteAll()
-                for project in projects {
-                    try await self.projectStore.add(project: project, settings: self.settings)
+        DispatchQueue.main.async {
+            self.nm.fetchAll() { result, error in
+                if let error = error {
+                    progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                } else {
+                    do {
+                        if let (projects, employees) = result {
+                            self.projectStore.deleteAll()
+                            self.employeeStore.deleteAll()
+                            for project in projects {
+                                try self.projectStore.add(project: project, settings: self.settings)
+                            }
+                            for employee in employees {
+                                try self.employeeStore.add(employee: employee, settings: self.settings)
+                            }
+                            self.listView.table.reloadData()
+                            progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
+                        }
+                    } catch {
+                        progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                    }
                 }
-                for employee in employees {
-                    try await self.employeeStore.add(employee: employee, settings: self.settings)
-                }
-                await self.listView.table.reloadData()
-                await progress.stopLoad(successfully: true, with: Strings.updateDoneMessage)
-            } catch {
-                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             }
         }
     }
@@ -87,7 +94,7 @@ class IssueListController: UIViewController {
     @objc private func addIssue() {
         do {
             if (openedFromProject) {
-                guard let project = project else { throw vcErrors.nilProjectWhenOpenedFromProject }
+                guard let _ = project else { throw vcErrors.nilProjectWhenOpenedFromProject }
             }
             let editor = IssueEditController(
                 isNew: true,
@@ -146,12 +153,13 @@ extension IssueListController: UITableViewDataSource, UITableViewDelegate {
             let progress = MyProgressViewController()
             progress.startLoad(with: Strings.deleteMessage)
             self.listView.table.reloadData()
-            Task.detached {
-                do {
-                    try await self.nm.removeIssueRequest(issue)
-                    await progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            DispatchQueue.main.async {
+                self.nm.removeIssueRequest(issue) { error in
+                    if let error =  error {
+                        progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+                    } else {
+                        progress.stopLoad(successfully: true, with: Strings.deleteDoneMessage)
+                    }
                 }
             }
             completionHandler(true)

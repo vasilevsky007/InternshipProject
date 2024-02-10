@@ -116,21 +116,23 @@ class IssueEditController: UIViewController {
             progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
             return
         }
-        Task.detached {
-            do {
-                if await self.isNew {
-                    //здесь используется force unwrap так как ранее (guard let projectUnwrapped = project else { throw BusinessLogicErrors.noProjectInIssue }) было проверено что это значение не является nil
-                    try await self.nm.addIssueRequest(self.issue, to: self.issue.project!)
-                } else {
-                    try await self.nm.changeIssueRequest(self.issue)
-                }
-                await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
-                DispatchQueue.main.async {
-                    self.updateTable()
-                    self.dismiss(animated: true)
-                }
-            } catch {
-                await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+        
+        let callback: (_ error: Error?) -> Void = { error in
+            if let error =  error {
+                progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            } else {
+                progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
+                self.updateTable()
+                self.dismiss(animated: true)
+            }
+        }
+        
+        DispatchQueue.main.async {
+            if self.isNew {
+                //здесь используется force unwrap так как ранее (guard let projectUnwrapped = project else { throw BusinessLogicErrors.noProjectInIssue }) было проверено что это значение не является nil
+                self.nm.addIssueRequest(self.issue, to: self.issue.project!, completion: callback)
+            } else {
+                self.nm.changeIssueRequest(self.issue, completion: callback)
             }
         }
     }

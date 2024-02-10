@@ -66,9 +66,8 @@ class MyProgressViewController: UIViewController {
         }
         self.message = message
         updateView()
-        Task {
-            try? await Task.sleep(nanoseconds:1_500_000_000)
-            hideOverlay()
+        DispatchQueue.main.asyncAfter(deadline: .now().advanced(by: .milliseconds(1500))) {
+            self.hideOverlay()
         }
     }
     

@@ -64,34 +64,30 @@ class EmployeeEditController: UIViewController {
         employee.position = employeeEditView.positionField.enteredText ?? ""
         let progress = MyProgressViewController()
         progress.startLoad(with: Strings.saveMessage)
-        if isNew {
-            Task.detached {
-                do {
-                    try await self.employeeStore.add(employee: self.employee, settings: self.settings)
-                    try await self.nm.addEmployeeRequest(employee: self.employee)
-                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
-                    DispatchQueue.main.async {
-                        self.updateTable()
-                        self.dismiss(animated: true)
-                    }
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
-                }
-            }
-        } else {
-            Task.detached {
-                do {
-                    try await self.nm.changeEmployeeRequest(newValue: self.employee)
-                    await progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
-                    DispatchQueue.main.async {
-                        self.updateTable()
-                        self.dismiss(animated: true)
-                    }
-                } catch {
-                    await progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
-                }
+        
+        let callback: (_ error: Error?) -> Void = { error in
+            if let error =  error {
+                progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            } else {
+                progress.stopLoad(successfully: true, with: Strings.saveDoneMessage)
+                self.updateTable()
+                self.dismiss(animated: true)
             }
         }
+        
+        DispatchQueue.main.async {
+            do {
+                if self.isNew {
+                    try self.employeeStore.add(employee: self.employee, settings: self.settings)
+                    self.nm.addEmployeeRequest(employee: self.employee, completion: callback)
+                } else {
+                    self.nm.changeEmployeeRequest(newValue: self.employee, completion: callback)
+                }
+            } catch {
+                progress.stopLoad(successfully: false, with: Strings.error + error.localizedDescription)
+            }
+        }
+        
     }
     
     private func close() {
