@@ -329,6 +329,7 @@
 			buildPhases = (
 				FA2818CE2B500B5F006E8329 /* Sources */,
 				FA2818CF2B500B5F006E8329 /* Frameworks */,
+				FAC4932F2B777C130072CDAD /* Increment build number */,
 				FA885E4A2B5ED573008D1544 /* Show version on launchscreen */,
 				FA2818D02B500B5F006E8329 /* Resources */,
 			);
@@ -407,6 +408,25 @@
 			shellPath = /bin/sh;
 			shellScript = "#   ON/OFF Script Toggle (script ON with #, script OFF without #)\n#exit 0\n\n#   App vesion / Build version constants\nsourceFilePath=\"$PROJECT_DIR/com.qulix.alex.trainingtask.ios/src/View/Screens/Base.lproj/LaunchScreen.storyboard\"\nversionNumber=\"$MARKETING_VERSION\"\nbuildNumber=\"$CURRENT_PROJECT_VERSION\"\n\n#   Output version & build numbers into a label on LaunchScreen.storyboard\nsed -i .bak -e \"/userLabel=\\\"APP_VERSION\\\"/s/text=\\\"[^\\\"]*\\\"/text=\\\"$versionNumber($buildNumber)\\\"/\" \"$sourceFilePath\"\n";
 			showEnvVarsInLog = 0;
+		};
+		FAC4932F2B777C130072CDAD /* Increment build number */ = {
+			isa = PBXShellScriptBuildPhase;
+			alwaysOutOfDate = 1;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Increment build number";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\ncd \"${PROJECT_DIR}\" ; agvtool bump\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -597,7 +617,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = QUGY3G28TX;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -626,10 +646,10 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
-				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Qulix UK LTD";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution: Qulix UK LTD";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 25;
 				DEVELOPMENT_TEAM = "";
 				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = QUGY3G28TX;
 				GENERATE_INFOPLIST_FILE = YES;
@@ -646,7 +666,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.qulix.avasilevsky.trainingtask;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "d0b85cb8-ca87-4704-9148-0ae2fa13f3a8";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = com.qulix.avasilevsky.trainingtask;
 				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = com.qulix.avasilevsky.trainingtask;
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
